@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
+import auth from './reducers/auth'
 import posts from './reducers/posts'
 const store = configureStore({
   reducer: {
-    posts
+    posts,
+    auth
   },
 })
 export type RootState = ReturnType<typeof store.getState>

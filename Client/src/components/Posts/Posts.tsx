@@ -2,8 +2,10 @@ import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { useAppDispatch } from '../../hooks'
 import { deletePosts , likePosts} from '../../actions/posts'
+import { useState } from 'react'
 
 const Posts = (props:any) => {
+
     const posts = useSelector((state:any)=>state.posts)
     console.log(posts)
     const dispatch = useAppDispatch()

@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
-import { getPosts } from "../../actions/posts";
-import Forms from "../Form/Forms";
-import Posts from "../Posts/Posts";
 import {useAppDispatch}  from "../../hooks";
 import './NavBar.css'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import Posts from "../Posts/Posts";
 
 function Navbar() {
-  const [currentId,setCurrentId] = useState(null);
-  const user = null;
+  const [user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const dispatch = useAppDispatch();
-
+  const location = useLocation()
+  const logout = () =>{
+    dispatch({type:"LOGOUT"})
+    setUser(null)
+  }
   useEffect(()=>{
-    dispatch(getPosts())
-  },[dispatch])
-  
+    const token = user?.token;
+    setUser(JSON.parse(localStorage.getItem('profile')))
+  },[location])
+
   return (
     <div className="container position-relative">
     <div className="card text-center">
@@ -23,10 +25,9 @@ function Navbar() {
       style={{width: "5rem"}}/>
         {user ? (
             <div>
-                
-                <img src={user.result.imageUrl}>{user.result.name.charAt(0)}</img>
+                <img src={user.result.imageUrl}></img>
                 <h5>{user.result.name}</h5>
-                <button>Logout</button>
+                <button onClick={logout}>Logout</button>
                 </div> 
         ):(
           <Link to="/auth">

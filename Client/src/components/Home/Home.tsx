@@ -6,7 +6,6 @@ import {useAppDispatch}  from "../../hooks";
 
 function Home() {
   const [currentId,setCurrentId] = useState(null);
-  const user = null;
   const dispatch = useAppDispatch();
 
   useEffect(()=>{
