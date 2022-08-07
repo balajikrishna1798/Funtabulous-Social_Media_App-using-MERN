@@ -6,7 +6,6 @@ import { useAppDispatch } from "../../hooks";
 interface post{
    title:string;
     message:string;
-    creator:string;
     tags:string[];
     selectedFile:string;
 }
@@ -15,28 +14,27 @@ const Forms = (props:any) => {
   const [postData,setPostdata] = useState<post>({
     title:"",
     message:"",
-    creator:"",
     tags:[],
     selectedFile:""
   })
-
+const user = JSON.parse(localStorage.getItem('profile'))
   const post = useSelector((state:any)=>props.currentId?state.posts.find((p:any)=>p._id===props.currentId):null)
   const dispatch = useAppDispatch()
   const handleSubmit = (e:any) =>{
     e.preventDefault();
     console.log(postData)
     if(props.currentId){
-      dispatch(updatePosts(props.currentId ,postData))
+      dispatch(updatePosts(props.currentId ,{...postData,name:user?.result?.name}))
       
     }
     else{
-      dispatch(createPosts(postData))
+      dispatch(createPosts({...postData,name:user?.result?.name}))
     }
     clear()
   }
   const clear = () =>{
     props.setCurrentId(null);
-    setPostdata({title:"",message:"",creator:"",tags:[],selectedFile:""})
+    setPostdata({title:"",message:"",tags:[],selectedFile:""})
   }
  
 useEffect(() => {
@@ -45,11 +43,19 @@ useEffect(() => {
  }
 }, [post])
 
+if(!user?.result?.name){
+  return(
+    <div>
+      <h2>SignIn To create your own post</h2>
+    </div>
+  )
+}
+
+
   return (
     <div className='container'>
       <form onSubmit={handleSubmit} className='mt-4' autoComplete='off'>
        <div className='text-center fw-bold mb-2'>{!props.currentId?'Creating' : 'Editing'} a Memory</div>
-        <input type="text" placeholder='Uploaded by' className="form-control mb-3" name="creator" value={postData.creator} onChange={(e)=>setPostdata({...postData, creator:e.target.value})}/>
         <input type="text" placeholder='Title' className="form-control mb-3" name="title" value={postData.title} onChange={(e)=>setPostdata({...postData, title:e.target.value})}/>
         <input type="text" placeholder='Tags' className="form-control mb-3" name="tags" value={postData.tags} onChange={(e)=>setPostdata({...postData, tags:e.target.value.split(",")})}/>
         <input type="text" placeholder='Description' className="form-control mb-3" name="message" value={postData.message} onChange={(e)=>setPostdata({...postData, message:e.target.value})}/>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const auth = (state={authData:null},action:any) => {
   switch(action.type){
-    case "Auth":
+    case "AUTH":
         localStorage.setItem("profile",JSON.stringify({...action?.data}));
         return {...state,authData:action?.data};
         case "LOGOUT":

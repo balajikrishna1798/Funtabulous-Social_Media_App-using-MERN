@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../../actions/posts";
 import Forms from "../Form/Forms";
-import Posts from "../Posts/Posts";
 import {useAppDispatch}  from "../../hooks";
+import Posts from "../Posts/Posts";
 
 function Home() {
   const [currentId,setCurrentId] = useState(null);

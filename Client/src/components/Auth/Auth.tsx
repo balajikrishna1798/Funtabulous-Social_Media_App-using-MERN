@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
+import { signin, signup } from '../../actions/auth';
 import { useAppDispatch } from '../../hooks';
 
 
@@ -15,13 +16,19 @@ const Auth = () => {
     const clientId="205061424218-08uogm1rqah0jsn9ulmbaqr3iskh7q4g.apps.googleusercontent.com"
     const [isSignup,setIsSignup] = useState(false);
     const [showPassword,setShowPassword] = useState(false)
+
     const handleSubmit = (e:any) =>{
         e.preventDefault()
-        console.log(formData);
+        if(isSignup){
+            dispatch(signup(formData,navigate))
+        }
+        else{
+            dispatch(signin(formData,navigate))
+        }
         
     }
 
-    const handleChange = (e) =>{
+    const handleChange = (e:any) =>{
         setFormdata({...formData,[e.target.name]:e.target.value})
          
     }
@@ -29,11 +36,11 @@ const Auth = () => {
         const result = res?.profileObj;
         const token = res?.tokenId;
         try {
-            dispatch({type:'Auth',data:{result,token}})
+            dispatch({type:'AUTH',data:{result,token}})
             navigate("/")
             
         } catch (error) {
-            
+            console.log(error)
         }
         
     }
@@ -67,15 +74,15 @@ const Auth = () => {
                  {(
                  isSignup && 
                  <>
-                <input type="text" required name="First Name" placeholder="First Name" onChange={handleChange}/>
+                <input type="text" required name="firstName" placeholder="First Name" onChange={handleChange}/>
                 </>
                 )}
-                <input type="email" required name="Email Address" placeholder="Email Address" onChange={handleChange}/>
-                <input type={showPassword?'text':'password'} required name="Password" placeholder="Password" onChange={handleChange}/>
+                <input type="email" required name="email" placeholder="Email Address" onChange={handleChange}/>
+                <input type={showPassword?'text':'password'} required name="password" placeholder="Password" onChange={handleChange}/>
                 {(
                  isSignup && 
                  <>
-                <input type='password' required name="Confirm_Password" placeholder="Confirm Password" onChange={handleChange}/>
+                <input type='password' required name="confirmPassword" placeholder="Confirm Password" onChange={handleChange}/>
                 </>
                 )}
                 <GoogleLogin

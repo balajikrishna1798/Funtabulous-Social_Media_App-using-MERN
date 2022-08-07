@@ -15,7 +15,7 @@ export const createPosts = (post:any) => async ( dispatch:any )=>{
         const action = {type:'CREATE',payload:data}
         dispatch(action)
     } catch (error) {
-        
+        console.log(error)
     }
 }
 export const updatePosts = (id:any,post:any) => async ( dispatch:any )=>{
@@ -24,7 +24,7 @@ export const updatePosts = (id:any,post:any) => async ( dispatch:any )=>{
         const action = {type:'UPDATE',payload:data}
         dispatch(action)
     } catch (error) {
-        
+        console.log(error)
     }
 }
 export const deletePosts = (id:any) => async ( dispatch:any )=>{
@@ -33,7 +33,7 @@ export const deletePosts = (id:any) => async ( dispatch:any )=>{
         const action = {type:'DELETE',payload:id}
         dispatch(action)
     } catch (error) {
-        
+        console.log(error)
     }
 }
 export const likePosts = (id:any) => async ( dispatch:any )=>{
@@ -42,6 +42,7 @@ export const likePosts = (id:any) => async ( dispatch:any )=>{
         const action = {type:'UPDATE',payload:data}
         dispatch(action)
     } catch (error) {
-        
+        console.log(error)
     }
 }
+

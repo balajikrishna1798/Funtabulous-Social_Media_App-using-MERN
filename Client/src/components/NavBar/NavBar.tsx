@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {useAppDispatch}  from "../../hooks";
 import './NavBar.css'
 import { Link, useLocation } from "react-router-dom";
-import Posts from "../Posts/Posts";
 
 function Navbar() {
   const [user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
