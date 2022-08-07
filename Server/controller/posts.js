@@ -11,7 +11,7 @@ export const getPosts = async (req,res)=>{
 
 }
 export const createPosts = async (req,res)=>{
-    const newPost = new postMessage(req.body);
+    const newPost = new postMessage({...req.body,creator:req.userId,createdAt:new Date().toISOString()});
     try {
         await newPost.save();
         res.send(newPost)
@@ -39,11 +39,15 @@ export const deletePosts = async (req,res)=>{
 }
 export const likePosts = async (req,res)=>{
     const {id } = req.params;
-    try {
+        if(!req.userId) return res.json({message:"Unauthorized"})
        const post = await postMessage.findById(id)
-       const updatedPost = await postMessage.findByIdAndUpdate(id,{likeCount:post.likeCount+1},{new:true})
+       const index = post.likes.findIndex((id)=>id===String(req.userId))
+       if(index===-1){
+         post.likes.push(req.userId)
+       }
+       else{
+        post.likes = post.likes.filter((id)=>id!==String(req.userId))
+       }
+       const updatedPost = await postMessage.findByIdAndUpdate(id,post,{new:true})
        res.json(updatedPost)
-    } catch (error) {
-        
-    }
 }
