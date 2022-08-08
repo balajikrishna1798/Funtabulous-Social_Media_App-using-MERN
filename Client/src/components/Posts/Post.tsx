@@ -1,11 +1,17 @@
 import moment from 'moment'
 import { useAppDispatch } from '../../hooks'
 import { deletePosts , likePosts} from '../../actions/posts'
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const Post = ({post,setCurrentId}) => {
+  const location = useLocation()
   const user = JSON.parse(localStorage.getItem('profile'))
     const dispatch = useAppDispatch()
+    useEffect(()=>{
     
+      
+    },[location])
 const Likes = () =>{
   
   if(post.likes.length>0){

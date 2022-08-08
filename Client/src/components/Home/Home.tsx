@@ -10,7 +10,7 @@ function Home() {
 
   useEffect(()=>{
     dispatch(getPosts())
-  },[dispatch])
+  },[dispatch,currentId])
   
   return (
     <div className="container"> 

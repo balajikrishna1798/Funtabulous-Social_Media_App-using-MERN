@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import FileBase64 from 'react-file-base64'
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { createPosts, updatePosts } from '../../actions/posts'
 import { useAppDispatch } from "../../hooks";
 interface post{
@@ -17,6 +18,7 @@ const Forms = (props:any) => {
     tags:[],
     selectedFile:""
   })
+  const location = useLocation()
 const user = JSON.parse(localStorage.getItem('profile'))
   const post = useSelector((state:any)=>props.currentId?state.posts.find((p:any)=>p._id===props.currentId):null)
   const dispatch = useAppDispatch()
@@ -41,7 +43,7 @@ useEffect(() => {
  if(post){
   setPostdata(post)
  }
-}, [post])
+}, [post,location])
 
 if(!user?.result?.name){
   return(

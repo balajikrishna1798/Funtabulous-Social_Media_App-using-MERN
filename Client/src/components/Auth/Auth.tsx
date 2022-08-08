@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../hooks';
 
 const Auth = () => {
     const [formData,setFormdata] = useState({
-        firstName:"",email:"",Password:"",Confirm_Password:""
+        firstName:"",email:"",password:"",confirmPassword:""
     })
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -67,38 +67,41 @@ const Auth = () => {
     gapi.load('client:auth2',start)
     })
   return (
-    <div>
-        {isSignup ?'signup' : 'signin'}
+    <div className='container'>
+        <p className='text-center text-success' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
         <form onSubmit={handleSubmit} autoComplete="off"> 
-            <div>
+            <div className='container w-50'>
                  {(
                  isSignup && 
                  <>
-                <input type="text" required name="firstName" placeholder="First Name" onChange={handleChange}/>
+                <input type="text" className="form-control mb-3" required name="firstName" placeholder="First Name" onChange={handleChange}/>
                 </>
                 )}
-                <input type="email" required name="email" placeholder="Email Address" onChange={handleChange}/>
-                <input type={showPassword?'text':'password'} required name="password" placeholder="Password" onChange={handleChange}/>
+                <input type="email" className="form-control mb-3" required name="email" placeholder="Email Address" onChange={handleChange}/>
+                <input type={showPassword?'text':'password'} className="form-control mb-3" required name="password" placeholder="Password" onChange={handleChange}/>
                 {(
                  isSignup && 
                  <>
-                <input type='password' required name="confirmPassword" placeholder="Confirm Password" onChange={handleChange}/>
+                <input type='password' className="form-control mb-3"  required name="confirmPassword" placeholder="Confirm Password" onChange={handleChange}/>
                 </>
                 )}
+                <div className='d-flex justify-content-around'>
                 <GoogleLogin
+                 
                  clientId={`${clientId}`}
                  render={(renderprops)=>(
-                        <button onClick={renderprops.onClick} disabled={renderprops.disabled}>
+                        <button onClick={renderprops.onClick} className="btn btn-outline-danger"  disabled={renderprops.disabled}>
                             Google Login
                         </button>
                     )}
                     onSuccess={googleSuccess}
                     onFailure={googleFailure}
                 />
-                <button type='submit'>{isSignup ? 'Sign Up' : 'Sign In'}</button>
-                <button type='button' onClick={switchMode}>
+                <button type='submit' className='btn btn-outline-success' >{isSignup ? 'Sign Up' : 'Sign In'}</button>
+                <button type='button' onClick={switchMode} className="btn btn-secondary">
                     {!isSignup?"If you don't have and account.Create New!!":"Already have an account?Sign In"}
                 </button>
+                </div>
             </div>
 
         </form>
