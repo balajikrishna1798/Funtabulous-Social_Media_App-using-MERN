@@ -4,14 +4,14 @@ import { Users } from '../models/Users.js'
 
 export const signin = async (req,res)=>{
     const {email,password} =  req.body
-    try {
+ 
         const existingUser = await Users.findOne({email})
 
         if(!existingUser){
-            return res.status(404).json({message:"EmailId is not found"})
+            return res.status(400).json({message:"EmailId is not found"})
         }
 
-        isPasswordCorrect = await bcrypt.compare(password,existingUser.password)
+        const isPasswordCorrect = await bcrypt.compare(password,existingUser.password)
 
         if(!isPasswordCorrect){
             return res.status(400).json("Password is incorrect")
@@ -19,10 +19,9 @@ export const signin = async (req,res)=>{
         
         const token = jwt.sign({email:existingUser.email,id:existingUser._id},'test')
         res.status(200).json({result:existingUser,token})
-    } catch (error) {
-        console.log(error);
+    
     }
-}
+
 export const signup = async (req,res)=>{
     const {firstName,email,password,confirmPassword} =  req.body
     try {
