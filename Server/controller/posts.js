@@ -10,6 +10,17 @@ export const getPosts = async (req,res)=>{
     }
 
 }
+export const getPostsBySearch = async (req,res)=>{
+    const {searchQuery,tags} = req.query
+    try {
+        const title = new RegExp(searchQuery,'i')
+        const posts = await postMessage.find({ $or:[{title},{tags:{$in:tags.split(',')} }] });
+        res.json({data:posts})
+    } catch (error) {
+        
+    }
+
+}
 export const createPosts = async (req,res)=>{
     const newPost = new postMessage({...req.body,creator:req.userId,createdAt:new Date().toISOString()});
     try {
