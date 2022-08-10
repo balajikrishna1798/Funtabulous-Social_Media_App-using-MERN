@@ -2,16 +2,21 @@ import moment from 'moment'
 import { useAppDispatch } from '../../hooks'
 import { deletePosts , likePosts} from '../../actions/posts'
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Post = ({post,setCurrentId}) => {
   const location = useLocation()
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'))
     const dispatch = useAppDispatch()
     useEffect(()=>{
-    
-      
+     
     },[location])
+
+    const onPost = () =>{
+      
+      navigate(`/posts/${post._id}`)
+    }
 const Likes = () =>{
   
   if(post.likes.length>0){
@@ -31,9 +36,11 @@ const Likes = () =>{
 }
 
   return (
+    
     <div className='d-flex-column justify-content-center mb-5'>  
+   
         <div className='card mt-5' style={{width:"18rem"}} key={post._id}>
-          
+          <button onClick={onPost}>
           <h6 className='position-absolute' style={{zIndex:10}}>{moment(new Date(post.createdAt)).fromNow()}</h6>
           {(user?.result?.googleId===post.creator||user?.result?._id===post.creator)&&(
           <button className='position-absolute'  style={{zIndex:10,marginLeft:"260px",border:"none"}} onClick={()=>setCurrentId(post._id)}>
@@ -46,6 +53,7 @@ const Likes = () =>{
         <h6 className='mb-3'>{post.title}</h6>
         <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>
         <h5>{post.message}</h5>
+        
         <button style={{border:"none",backgroundColor:"white"}} disabled={!user?.result} onClick={()=>dispatch(likePosts(post._id))}>
         <Likes /> 
         </button>
@@ -53,8 +61,11 @@ const Likes = () =>{
         <button style={{border:"none",backgroundColor:"white",marginLeft:"100px"}} onClick={()=>dispatch(deletePosts(post._id))}><i className="fas fa-trash"></i>
          <span style={{color:"blue"}}>Delete</span></button>
         )}
+        
         </div>
+        </button>
         </div>
+       
     </div> 
   )
   }
