@@ -49,10 +49,7 @@ const Auth = () => {
         console.log("Google Login was not successfull")
     }
 
-    const handleShowPassword = () =>{
-        setShowPassword((prevShowPassword=>!prevShowPassword))
-    }
-
+   
     const switchMode = () =>{
         setIsSignup((previsSignUp=>!previsSignUp))
     }

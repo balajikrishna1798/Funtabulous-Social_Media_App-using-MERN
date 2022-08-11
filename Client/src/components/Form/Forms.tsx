@@ -43,7 +43,7 @@ useEffect(() => {
  if(post){
   setPostdata(post)
  }
-}, [post,location])
+}, [post])
 
 if(!user?.result?.name){
   return(

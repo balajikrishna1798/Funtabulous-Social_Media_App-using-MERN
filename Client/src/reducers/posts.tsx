@@ -4,6 +4,8 @@ export default (posts = [],action:any) =>{
             return action.payload
         case "FETCH_BY_SEARCH":
                 return action.payload
+        case "FETCH_POST":
+                return action.payload
         case "CREATE":
                 return [...posts, action.payload]
         case "UPDATE":

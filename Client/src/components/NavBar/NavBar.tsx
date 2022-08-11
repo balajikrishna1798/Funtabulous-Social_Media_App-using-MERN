@@ -22,7 +22,7 @@ function Navbar() {
   return (
     <div className="container position-relative">
     <div className="card text-center">
-      <div className="memories"><Link to = "/">Bahnapost</Link>
+      <div className="memories"><Link to = "/posts">Bahnapost</Link>
      <img className="" src="https://dcassetcdn.com/design_img/3401269/577133/577133_18643225_3401269_120b1173_image.jpg"
       style={{width: "5rem"}}/>
         {user ? (

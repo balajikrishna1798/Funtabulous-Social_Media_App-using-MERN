@@ -9,14 +9,10 @@ const Post = ({post,setCurrentId}) => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'))
     const dispatch = useAppDispatch()
-    useEffect(()=>{
-     
-    },[location])
 
-    const onPost = () =>{
-      
-      navigate(`/posts/${post._id}`)
-    }
+    useEffect(()=>{
+
+    },[location])
 const Likes = () =>{
   
   if(post.likes.length>0){
@@ -40,14 +36,16 @@ const Likes = () =>{
     <div className='d-flex-column justify-content-center mb-5'>  
    
         <div className='card mt-5' style={{width:"18rem"}} key={post._id}>
-          <button onClick={onPost}>
+          
           <h6 className='position-absolute' style={{zIndex:10}}>{moment(new Date(post.createdAt)).fromNow()}</h6>
           {(user?.result?.googleId===post.creator||user?.result?._id===post.creator)&&(
           <button className='position-absolute'  style={{zIndex:10,marginLeft:"260px",border:"none"}} onClick={()=>setCurrentId(post._id)}>
           <i className="fa-solid fa-ellipsis" style={{marginLeft:"auto"}}></i>
           </button>
           )}
-        <img src={post.selectedFile} className="card-img-top position-relative"/>
+          
+        <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer'}}/>
+        
         <div className="card-body">
         <h5 className='position-absolute' style={{top:"19px"}}>{post.name}</h5>
         <h6 className='mb-3'>{post.title}</h6>
@@ -63,7 +61,7 @@ const Likes = () =>{
         )}
         
         </div>
-        </button>
+        
         </div>
        
     </div> 

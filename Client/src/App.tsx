@@ -2,7 +2,7 @@ import Navbar from "./components/NavBar/NavBar";
 import {BrowserRouter as Router,Routes,Route, useNavigate, Navigate, useLocation} from 'react-router-dom'
 import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
-import { useEffect } from "react";
+import PostDetails from "./PostDetails/PostDetails";
 
 
 

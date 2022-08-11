@@ -18,7 +18,6 @@ function Home() {
   const [search,setSearch] = useState('')
   const [ tags,setTags] = useState([])
 
-
   const searchPost = () =>{
     if(search.trim() || tags){
       dispatch(getPostsBySearch({search,tags:tags.join(',')}))
@@ -31,7 +30,7 @@ function Home() {
 
   useEffect(()=>{
     dispatch(getPosts())
-  },[dispatch,currentId])
+  },[dispatch,currentId,navigate])
   
   return (
     <div className="container"> 
@@ -44,9 +43,9 @@ function Home() {
             <div className='col-md-2'>
          </div>
             <div className='col-md-4'>
-              <input type="text" name="search" value={search} onChange={(e)=>setSearch(e.target.value)}/>
-              <input type="text" name="tags" value={tags} onChange={(e)=>setTags([e.target.value])}/>
-              <button type="button" onClick={searchPost}> Search</button>
+              <input type="text" className="form-control mb-3" name="search" value={search} placeholder="Search with title" onChange={(e)=>setSearch(e.target.value)}/>
+              <input type="text" className="form-control mb-3" name="tags" value={tags} placeholder="Search with tags" onChange={(e)=>setTags([e.target.value])}/>
+              <button className="btn btn-outline-success " style={{width:"100%"}} type="button" onClick={searchPost}> Search</button>
            <Forms currentId={currentId} setCurrentId={setCurrentId}/>
           </div>
     </div>
