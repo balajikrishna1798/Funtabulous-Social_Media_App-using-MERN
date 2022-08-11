@@ -30,7 +30,9 @@ const Likes = () =>{
   }
   return <> <i className="fa-solid fa-thumbs-up "></i>Like</>
 }
-
+const openPost = () =>{
+  navigate(`/posts/${post._id}`)
+}
   return (
     
     <div className='d-flex-column justify-content-center mb-5'>  
@@ -44,7 +46,7 @@ const Likes = () =>{
           </button>
           )}
           
-        <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer'}}/>
+        <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer'}} onClick={openPost}/>
         
         <div className="card-body">
         <h5 className='position-absolute' style={{top:"19px"}}>{post.name}</h5>
