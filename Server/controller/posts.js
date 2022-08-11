@@ -1,23 +1,44 @@
 import { postMessage } from "../models/PostsMessage.js"
 
 export const getPosts = async (req,res)=>{
+    // const {title,tags} = req.query
+    // console.log(title);
     try {
+        // if(title){
+        //     const posts = await postMessage.find({ $or:[{title},{tags:{$in:tags.split(',')} }] });
+        //     console.log(posts);
+        //    return res.json({data:posts})
+        // }
         const postMessages = await postMessage.find();
+       
+        res.send(postMessages)
+    } catch (error) {
+        
+    }
+}
+
+export const getPost = async (req,res)=>{
+    const {id} = req.params
+    try {
+        const postMessages = await postMessage.findById(id);
         console.log(postMessages);
         res.send(postMessages)
     } catch (error) {
         
     }
-
 }
+
 export const getPostsBySearch = async (req,res)=>{
-    const {searchQuery,tags} = req.query
+    const {title,tags} = req.query
     try {
-        const title = new RegExp(searchQuery,'i')
-        const posts = await postMessage.find({ $or:[{title},{tags:{$in:tags.split(',')} }] });
-        res.json({data:posts})
-    } catch (error) {
         
+        // const title = new RegExp(searchQuery,'i')     
+        const posts = await postMessage.find({ $or:[{title},{tags:{$in:tags.split(',')} }] });
+        console.log(posts);
+        res.json({data:posts})
+        
+    } catch (error) {
+        console.log(error);
     }
 
 }
