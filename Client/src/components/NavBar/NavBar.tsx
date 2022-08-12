@@ -29,11 +29,11 @@ function Navbar() {
             <div className="position-absolute end-0 d-flex align-items-center justify-content-around" 
             style={{marginRight:"20px",marginTop:"-60px"}}>
                 {/* <img src={user.result.imageUrl}></img> */}
-                <h5 className="text-success" style={{marginRight:"50px"}}>{user.result.name}</h5>
+                <h5 className="text-success" style={{marginRight:"50px"}}>{user?.result?.name}</h5>
                 <button onClick={logout} className="btn btn-danger">Logout</button>
                 </div> 
         ):(
-          <Link to="/auth">
+          <Link to="/auth  ">
             <button className="Signin position-absolute end-0 btn btn-outline-danger">SignIn</button>
             </Link>
         ) }

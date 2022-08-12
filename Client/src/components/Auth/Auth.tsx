@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
-import { signin, signup } from '../../actions/auth';
+import { login, register } from '../../features/authSlice';
 import { useAppDispatch } from '../../hooks';
 
 
@@ -20,10 +20,12 @@ const Auth = () => {
     const handleSubmit = (e:any) =>{
         e.preventDefault()
         if(isSignup){
-            dispatch(signup(formData,navigate))
+            //@ts-expect-error
+            dispatch(register({formData,navigate}))
         }
         else{
-            dispatch(signin(formData,navigate))
+            //@ts-expect-error
+            dispatch(login({formData,navigate}))
         }
         
     }

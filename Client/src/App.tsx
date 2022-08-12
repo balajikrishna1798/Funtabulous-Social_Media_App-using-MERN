@@ -1,8 +1,9 @@
 import Navbar from "./components/NavBar/NavBar";
 import {BrowserRouter as Router,Routes,Route, useNavigate, Navigate, useLocation} from 'react-router-dom'
 import Home from "./components/Home/Home";
-import Auth from "./components/Auth/Auth";
 import PostDetails from "./PostDetails/PostDetails";
+import Auth from "./components/Auth/Auth";
+// import { Login } from "./components/Auth/Login";
 
 
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/posts/search" element={<Home/>}/>
         <Route path="/posts/:id" element={<PostDetails/>}/>
         <Route path="/auth" element={!user?<Auth/>:<Navigate to="/"/>}/>
+        {/* <Route path="/login" element={<Login/>}/> */}
       </Routes>
 
     </Router>
