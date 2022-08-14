@@ -1,9 +1,9 @@
 import React, { useState,useEffect } from 'react'
 import FileBase64 from 'react-file-base64'
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { createPosts, updatePosts } from '../../actions/posts'
-import { useAppDispatch } from "../../hooks";
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { createPost, updatePost } from '../../features/postSlice';
+import { useAppDispatch, useAppSelector } from "../../hooks";
 interface post{
    title:string;
     message:string;
@@ -11,26 +11,29 @@ interface post{
     selectedFile:string;
 }
 const Forms = (props:any) => {
-  
+  const navigate=useNavigate();
   const [postData,setPostdata] = useState<post>({
     title:"",
     message:"",
     tags:[],
     selectedFile:""
   })
+  const { id } = useParams();
   const location = useLocation()
 const user = JSON.parse(localStorage.getItem('profile'))
-  const post = useSelector((state:any)=>props.currentId?state.posts.find((p:any)=>p._id===props.currentId):null)
+  const post = useAppSelector((state:any)=>props.currentId?state.posts.posts.find((p:any)=>p._id===props.currentId):null)
   const dispatch = useAppDispatch()
   const handleSubmit = (e:any) =>{
     e.preventDefault();
     console.log(postData)
     if(props.currentId){
-      dispatch(updatePosts(props.currentId ,{...postData,name:user?.result?.name}))
+      //@ts-expect-error
+      dispatch(updatePost({id:props.currentId ,postData,navigate}))
       
     }
     else{
-      dispatch(createPosts({...postData,name:user?.result?.name}))
+      //@ts-expect-error
+      dispatch(createPost({postData,navigate}))
     }
     clear()
   }
@@ -43,7 +46,7 @@ useEffect(() => {
  if(post){
   setPostdata(post)
  }
-}, [post])
+}, [post,navigate,dispatch])
 
 if(!user?.result?.name){
   return(

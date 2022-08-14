@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {useAppDispatch}  from "../../hooks";
 import './NavBar.css'
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Logout } from "../../features/authSlice";
 
 function Navbar() {
   const Navigate = useNavigate()
@@ -9,7 +10,8 @@ function Navbar() {
   const dispatch = useAppDispatch();
   const location = useLocation()
   const logout = () =>{
-    dispatch({type:"LOGOUT"})
+    //@ts-expect-error
+    dispatch(Logout())
     setUser(null)
     Navigate("/")
   }
@@ -22,10 +24,10 @@ function Navbar() {
   return (
     <div className="container position-relative">
     <div className="card text-center">
-      <div className="memories"><Link to = "/posts">Bahnapost</Link>
+      <div className="memories"><Link to = "/">Bahnapost</Link>
      <img className="" src="https://dcassetcdn.com/design_img/3401269/577133/577133_18643225_3401269_120b1173_image.jpg"
       style={{width: "5rem"}}/>
-        {user ? (
+        {user?.result ? (
             <div className="position-absolute end-0 d-flex align-items-center justify-content-around" 
             style={{marginRight:"20px",marginTop:"-60px"}}>
                 {/* <img src={user.result.imageUrl}></img> */}

@@ -17,7 +17,7 @@ function App() {
         <Route path="/posts" element={<Home/>}/>
         <Route path="/posts/search" element={<Home/>}/>
         <Route path="/posts/:id" element={<PostDetails/>}/>
-        <Route path="/auth" element={!user?<Auth/>:<Navigate to="/"/>}/>
+        <Route path="/auth" element={!user?.result ?<Auth/>:<Navigate to="/"/>}/>
         {/* <Route path="/login" element={<Login/>}/> */}
       </Routes>
 

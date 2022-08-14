@@ -24,27 +24,38 @@ export const register = createAsyncThunk("auth/register",async({formData,navigat
         
     }
 })
-
-
-
+export const googleSignIn = createAsyncThunk("auth/googleSignIn",async({result,navigate})=>{
+    try {
+        const response = await api.googleSignIn(result)
+        navigate("/")
+        return response.data
+    } catch (error) {
+        
+    }
+})
 
 const authSlice = createSlice({
     name:"auth",
     initialState,
+    reducers:{
+        Logout: (state, action) => {
+            localStorage.clear();
+            state.user = null;
+          },
+    },
     extraReducers:{
         [login.pending]:(state)=>{
-            state.loading = true
+             state.loading = true
         },
         [login.fulfilled]:(state,action)=>{
             state.loading = false
             localStorage.setItem("profile",JSON.stringify({...action.payload}));
-            state.user = action.payload
+             state.user = action.payload
         },
         [login.rejected]:(state,action)=>{
             state.loading = false
             state.error= action.payload.message
-        }
-    },
+        },
     [register.pending]:(state)=>{
         state.loading = true
     },
@@ -56,7 +67,21 @@ const authSlice = createSlice({
     [register.rejected]:(state,action)=>{
         state.loading = false
         state.error= action.payload.message
-    }
-})
+    },
+    [googleSignIn.pending]:(state)=>{
+        state.loading = true
+    },
+    [googleSignIn.fulfilled]:(state,action)=>{
+        state.loading = false
+        localStorage.setItem("profile",JSON.stringify({...action.payload}));
+        state.user = action.payload
+    },
+    [googleSignIn.rejected]:(state,action)=>{
+        state.loading = false
+        state.error= action.payload.message
+    },
+}}
+)
+export const { Logout } = authSlice.actions;
 
 export default authSlice.reducer

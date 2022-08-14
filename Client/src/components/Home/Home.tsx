@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { getPosts,getPostsBySearch } from "../../actions/posts";
 import Forms from "../Form/Forms";
 import {useAppDispatch}  from "../../hooks";
 import Posts from "../Posts/Posts";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getPosts,getPostBySearch } from "../../features/postSlice";
+import ChipInput from "material-ui-chip-input";
 
 function useQuery() {
    return new URLSearchParams(useLocation().search)
@@ -18,10 +19,18 @@ function Home() {
   const [search,setSearch] = useState('')
   const [ tags,setTags] = useState([])
 
+const handleAdd = (tag:any)=>{
+setTags([...tags,tag])
+}
+const handleDelete = (tagToDelete:any) =>{
+  setTags(tags.filter((tag)=>tag!==tagToDelete))
+}
+
   const searchPost = () =>{
-    if(search.trim() || tags){
-      dispatch(getPostsBySearch({search,tags:tags.join(',')}))
-      navigate(`/posts/search?title=${search||'none'}&tags=${tags.join(",")}`)
+    if(search.trim()){
+      //@ts-expect-error
+      dispatch(getPostBySearch({search}))
+      navigate(`/posts/search?title=${search}`)
     }
     else{
       navigate("/")
@@ -30,7 +39,7 @@ function Home() {
 
   useEffect(()=>{
     dispatch(getPosts())
-  },[dispatch,currentId,navigate])
+  },[dispatch,currentId])
   
   return (
     <div className="container"> 
@@ -44,7 +53,8 @@ function Home() {
          </div>
             <div className='col-md-4'>
               <input type="text" className="form-control mb-3" name="search" value={search} placeholder="Search with title" onChange={(e)=>setSearch(e.target.value)}/>
-              <input type="text" className="form-control mb-3" name="tags" value={tags} placeholder="Search with tags" onChange={(e)=>setTags([e.target.value])}/>
+              <ChipInput style={{marginBottom:"20px",width:"100%"}} value={tags} onAdd={handleAdd} onDelete={handleDelete} placeholder="Search for tags" variant="outlined"/>
+              {/* <input type="text" className="form-control mb-3" name="tags" value={tags} placeholder="Search with tags" onChange={(e)=>setTags([e.target.value])}/> */}
               <button className="btn btn-outline-success " style={{width:"100%"}} type="button" onClick={searchPost}> Search</button>
            <Forms currentId={currentId} setCurrentId={setCurrentId}/>
           </div>
