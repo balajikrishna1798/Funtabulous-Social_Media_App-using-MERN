@@ -40,3 +40,25 @@ export const signup = async (req,res)=>{
         console.log(error)
     }
 }
+
+export const GoogleSignIn = async (req,res)=>{
+    
+    const {email,name,token,googleId} =  req.body
+ try{
+        const existingUser = await Users.findOne({email})
+if(existingUser){
+    res.status(200).json({result:existingUser,token})
+}
+if(!existingUser){       
+    const result = await Users.create({
+            email,
+            name,
+            googleId
+        })
+        res.status(200).json({result,token})
+    }
+ }
+ catch(err){
+    console.log(err);
+ }
+    }

@@ -10,7 +10,7 @@ export const auth = async(req,res,next) =>{
         }
         else{
             let decodedData = jwt.decode(token)
-            req.userId = decodedData?.sub;
+            req.userId  = decodedData?.sub;  
         }
         next()
     }
