@@ -1,14 +1,8 @@
 import { postMessage } from "../models/PostsMessage.js"
 
 export const getPosts = async (req,res)=>{
-    // const {title,tags} = req.query
-    // console.log(title);
     try {
-        // if(title){
-        //     const posts = await postMessage.find({ $or:[{title},{tags:{$in:tags.split(',')} }] });
-        //     console.log(posts);
-        //    return res.json({data:posts})
-        // }
+        
         const postMessages = await postMessage.find();
        
         res.send(postMessages)
@@ -58,6 +52,15 @@ export const updatePosts = async (req,res)=>{
     } catch (error) {
         
     }
+}
+export const commentPosts = async (req,res)=>{
+    const {id} = req.params;
+    const {value} = req.body;
+    const comment = await postMessage.findById(id)
+    comment.comments.push(value)
+    const updatedComment = await postMessage.findByIdAndUpdate(id,comment,{new:true})
+    res.json(updatedComment)
+ 
 }
 export const deletePosts = async (req,res)=>{
     const {id } = req.params;
