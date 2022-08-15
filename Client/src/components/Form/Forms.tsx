@@ -1,9 +1,10 @@
 import React, { useState,useEffect } from 'react'
 import FileBase64 from 'react-file-base64'
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createPost, updatePost } from '../../features/postSlice';
 import { useAppDispatch, useAppSelector } from "../../hooks";
+import Navbar from '../NavBar/NavBar';
 interface post{
    title:string;
     message:string;
@@ -41,7 +42,7 @@ const user = JSON.parse(localStorage.getItem('profile'))
     props.setCurrentId(null);
     setPostdata({title:"",message:"",tags:[],selectedFile:""})
   }
- 
+
 useEffect(() => {
  if(post){
   setPostdata(post)
@@ -58,6 +59,8 @@ if(!user?.result?.name){
 
 
   return (
+    <>
+    <Navbar />
     <div className='container'>
       <form onSubmit={handleSubmit} className='mt-4' autoComplete='off'>
        <div className='text-center fw-bold mb-2'>{!props.currentId?'Creating' : 'Editing'} a Memory</div>
@@ -73,8 +76,10 @@ if(!user?.result?.name){
         </div>
         <button className="btn btn-primary mb-3 mt-3" style={{display:"block",width:"100%"}} type='submit'>Submit</button>
         <button className="btn btn-danger" type="button" style={{display:"block",width:"100%"}} onClick={clear}>Clear</button>
+
       </form>
       </div>
+      </>
   
   )
 }

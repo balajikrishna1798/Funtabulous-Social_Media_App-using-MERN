@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import Forms from "../Form/Forms";
 import {useAppDispatch}  from "../../hooks";
 import Posts from "../Posts/Posts";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getPosts,getPostBySearch } from "../../features/postSlice";
 import ChipInput from "material-ui-chip-input";
-
+import Navbar from "../NavBar/NavBar";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css'
 function useQuery() {
    return new URLSearchParams(useLocation().search)
 }
 
-function Home() {
-  const [currentId,setCurrentId] = useState(null);
+function Home({setCurrentId}) {
+ 
   const dispatch = useAppDispatch();
   const query = useQuery();
   const navigate = useNavigate();
@@ -39,27 +41,36 @@ const handleDelete = (tagToDelete:any) =>{
 
   useEffect(()=>{
     dispatch(getPosts())
-  },[dispatch,currentId])
+    
+   
+  },[dispatch])
   
   return (
-    <div className="container"> 
-      <div className='row'>
-      <div className='col-md-3 col-sm-3 col-2'>
+    
+      <div>
+
+        <Navbar />
+
+      <div>
          </div>
-          <div className='col-md-3 col-sm-9 col-6'>
+          <div>
             <Posts setCurrentId={setCurrentId}/>
             </div>
-            <div className='col-md-2'>
+            <div>
          </div>
-            <div className='col-md-4'>
-              <input type="text" className="form-control mb-3" name="search" value={search} placeholder="Search with title" onChange={(e)=>setSearch(e.target.value)}/>
-              <ChipInput style={{marginBottom:"20px",width:"100%"}} value={tags} onAdd={handleAdd} onDelete={handleDelete} placeholder="Search for tags" variant="outlined"/>
-              {/* <input type="text" className="form-control mb-3" name="tags" value={tags} placeholder="Search with tags" onChange={(e)=>setTags([e.target.value])}/> */}
-              <button className="btn btn-outline-success " style={{width:"100%"}} type="button" onClick={searchPost}> Search</button>
-           <Forms currentId={currentId} setCurrentId={setCurrentId}/>
+        
+            <div style={{marginBottom:"70px"}}>
+             <div className="d-flex justify-content-around fixed-bottom" style={{backgroundColor:"pink"}}>  
+    <Link to="/forms" ><i className="fa-solid fa-square-plus mb-2 mt-2" style={{color:"blue",fontSize:"20px"}}></i></Link>
+    <div className="d-flex">
+    <i className="fa-brands fa-searchengin mb-2 mt-2" onClick={searchPost} style={{color:"brown",fontSize:"20px",cursor:"pointer"}}></i>
+    <input type="text" className="form-control mb-2 mt-2" style={{height:25,marginLeft:"10px"}} name="search" value={search} placeholder="Search with title" onChange={(e)=>setSearch(e.target.value)}/>
+    </div>
+    <Link to="/profile" ><i className="fa-solid fa-id-badge mb-2 mt-2" style={{color:"red",fontSize:"20px"}}></i></Link>
+    </div>
+              </div>
           </div>
-    </div>
-    </div>
+
   );
 }
 

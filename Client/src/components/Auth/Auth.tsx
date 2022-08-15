@@ -5,7 +5,8 @@ import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import { googleSignIn, login, register } from '../../features/authSlice';
 import { useAppDispatch } from '../../hooks';
-
+import { toast,ToastContainer, } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css'
 
 const Auth = () => {
     const [formData,setFormdata] = useState({
@@ -41,7 +42,7 @@ const Auth = () => {
         const result = {email,name,token,googleId}
         try {
             //@ts-expect-error
-            dispatch(googleSignIn({result,navigate}))
+            dispatch(googleSignIn({result,navigate,toast}))
             navigate("/")
             
         } catch (error) {
@@ -70,6 +71,7 @@ const Auth = () => {
     })
   return (
     <div className='container'>
+        <ToastContainer />
         <p className='text-center text-success' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
         <form onSubmit={handleSubmit} autoComplete="off"> 
             <div className='container w-50'>

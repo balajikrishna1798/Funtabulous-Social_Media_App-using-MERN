@@ -1,6 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from '../api'
-
+import 'react-toastify/dist/ReactToastify.min.css'
 const initialState= {
     user:null,
     error:"",
@@ -9,6 +9,7 @@ const initialState= {
     export const login = createAsyncThunk("auth/login",async({formData,navigate})=>{
     try {
         const response = await api.signIn(formData)
+      
         navigate("/")
         return response.data
     } catch (error) {
@@ -18,6 +19,7 @@ const initialState= {
 export const register = createAsyncThunk("auth/register",async({formData,navigate})=>{
     try {
         const response = await api.signUp(formData)
+     
         navigate("/")
         return response.data
     } catch (error) {
@@ -27,6 +29,7 @@ export const register = createAsyncThunk("auth/register",async({formData,navigat
 export const googleSignIn = createAsyncThunk("auth/googleSignIn",async({result,navigate})=>{
     try {
         const response = await api.googleSignIn(result)
+
         navigate("/")
         return response.data
     } catch (error) {

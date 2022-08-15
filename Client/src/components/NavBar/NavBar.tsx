@@ -13,7 +13,7 @@ function Navbar() {
     //@ts-expect-error
     dispatch(Logout())
     setUser(null)
-    Navigate("/")
+    Navigate(0)
   }
   
   useEffect(()=>{
@@ -22,7 +22,7 @@ function Navbar() {
   },[location])
 
   return (
-    <div className="container position-relative">
+    <div className="sticky-top">
     <div className="card text-center">
       <div className="memories"><Link to = "/">Bahnapost</Link>
      <img className="" src="https://dcassetcdn.com/design_img/3401269/577133/577133_18643225_3401269_120b1173_image.jpg"

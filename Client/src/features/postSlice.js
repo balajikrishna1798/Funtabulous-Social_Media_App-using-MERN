@@ -10,6 +10,7 @@ const initialState= {
 export const createPost = createAsyncThunk("post/createPost",async({postData,navigate})=>{
     try {
         const response = await api.createPosts(postData)
+        navigate("/posts")
         return response.data
     } catch (error) {
         
@@ -31,7 +32,7 @@ export const deletePost = createAsyncThunk("post/deletePost",async({id,navigate}
         
     }
 }) 
-export const likePost = createAsyncThunk("post/likePost",async({id,navigate})=>{
+export const likePost = createAsyncThunk("post/likePost",async({id})=>{
     try {
         const response = await api.likePosts(id)
         return response.data
@@ -39,9 +40,11 @@ export const likePost = createAsyncThunk("post/likePost",async({id,navigate})=>{
         
     }
 }) 
+
 export const updatePost = createAsyncThunk("post/updatePost",async({id,postData,navigate})=>{
     try {
         const response = await api.updatePosts(id,postData)
+        navigate("/posts")
         return response.data
     } catch (error) {
         
@@ -55,10 +58,19 @@ export const getPost = createAsyncThunk("post/getPost",async({id,navigate})=>{
         
     }
 }) 
-export const getPostBySearch = createAsyncThunk("post/getPostBySearch",async({search,navigate})=>{
+export const getPostBySearch = createAsyncThunk("post/getPostBySearch",async({search})=>{
     try {
         const response = await api.fetchPostsBySearch(search)
         return response.data
+    } catch (error) {
+        
+    }
+}) 
+export const commentPost = createAsyncThunk("post/commentPost",async({value,id})=>{
+    try {
+        const response = await api.commentPosts(value,id)
+        return response.data
+        
     } catch (error) {
         
     }
@@ -147,6 +159,18 @@ const postSlice = createSlice({
    state.posts = state.posts.map((post) => post["_id"] === action.payload._id ? action.payload : post)
 },
 [updatePost.rejected]:(state,action)=>{
+   state.loading = false
+   state.error= action.payload.message
+},
+[commentPost.pending]:(state)=>{
+    state.loading = true
+},
+[commentPost.fulfilled]:(state,action)=>{
+    
+   state.loading = false
+    state.posts = state.posts.map((post) => post["_id"] === action.payload._id ? action.payload : post)
+},
+[commentPost.rejected]:(state,action)=>{
    state.loading = false
    state.error= action.payload.message
 },
