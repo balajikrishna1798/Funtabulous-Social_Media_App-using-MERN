@@ -8,12 +8,13 @@ API.interceptors.request.use((req)=>{
 })
 export const fetchPosts = () => API.get("/posts")
 export const fetchPost = (id:any) => API.get(`/posts/${id}`)
+export const fetchPostsByUser = (GoogleUserId:any) => API.get(`/posts/userPosts/${GoogleUserId}`)
+
 export const fetchPostsBySearch = (search:any) => API.get(`/posts/search?title=${search} `)
 export const createPosts = (postData:any) => API.post("/posts",postData)
 export const updatePosts = (id:any,postData:any) => API.patch(`/posts/${id}`,postData)
 export const deletePosts = (id:any) => API.delete(`/posts/${id}`)
 export const likePosts = (id:any) => API.patch(`/posts/${id}/likePost`)
-export const commentPosts = (value:any,id:any) => API.patch(`/posts/${id}/commentPost`,{value})
 
 
 export const signIn = (formData:any) => API.post("/users/signin",formData)

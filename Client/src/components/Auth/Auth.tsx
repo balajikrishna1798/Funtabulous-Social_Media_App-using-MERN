@@ -5,8 +5,8 @@ import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import { googleSignIn, login, register } from '../../features/authSlice';
 import { useAppDispatch } from '../../hooks';
-import { toast,ToastContainer, } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.min.css'
+//@ts-expect-error
+import background from '../../assets/background.mp4'
 
 const Auth = () => {
     const [formData,setFormdata] = useState({
@@ -36,13 +36,13 @@ const Auth = () => {
     }
     const googleSuccess = async(res:any) =>{
         const email = res?.profileObj?.email;
-        const name = res?.profileObj?.name
+        const name = res?.profileObj?.name;
         const token = res?.tokenId;
         const googleId = res?.googleId;
         const result = {email,name,token,googleId}
         try {
             //@ts-expect-error
-            dispatch(googleSignIn({result,navigate,toast}))
+            dispatch(googleSignIn({result,navigate}))
             navigate("/")
             
         } catch (error) {
@@ -64,17 +64,20 @@ const Auth = () => {
         function start(){
         gapi.client.init({
             clientId:clientId,
-            scope:""
+            scope:"profile"
         })
     }
     gapi.load('client:auth2',start)
     })
-  return (
+
+   return (
     <div className='container'>
-        <ToastContainer />
-        <p className='text-center text-success' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
+        {//@ts-expect-error
+        <video src={background} controls={false}  type="video/mp4" loop autoPlay className='position-absolute' style={{right:0,bottom:0,objectFit:"cover"}}/>}
+        <div className='position-relative' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"60%",marginTop:"25%",marginLeft:"20%"}}>
+        <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
         <form onSubmit={handleSubmit} autoComplete="off"> 
-            <div className='container w-50'>
+            <div className='container w-75'>
                  {(
                  isSignup && 
                  <>
@@ -107,8 +110,8 @@ const Auth = () => {
                 </button>
                 </div>
             </div>
-
         </form>
+        </div>
     </div>
 
   )

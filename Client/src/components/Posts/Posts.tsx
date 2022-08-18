@@ -1,12 +1,11 @@
 import { useAppSelector } from '../../hooks';
-import Navbar from '../NavBar/NavBar';
 import Post from './Post'
 
 const Posts = ({ setCurrentId }) => {
   const posts = useAppSelector((state:any) => (state.posts.posts));
 
   return (
-    <>
+    <>  
 {
   
          posts.length>0 && posts.map((post:any) => (

@@ -47,8 +47,8 @@ const openPost = () =>{
         <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer'}} onClick={openPost}/>
         
         <div className="card-body">
-       {user && <h5 style={{color:"red"}}>{`Uploaded by ${user.result.name}`}</h5>}
-        <h6 className='mb-2'>{post.title}</h6>
+       {user && <h5 style={{color:"red"}}>{`Uploaded by ${user?.result?.name}`}</h5>}
+        <h6 className='mb-2'>{post?.title}</h6>
         <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>
         <h5>{post.message}</h5>
         <div className='d-flex justify-content-between'>

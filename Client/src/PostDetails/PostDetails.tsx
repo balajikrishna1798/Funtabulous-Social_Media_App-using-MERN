@@ -1,11 +1,9 @@
 import moment from 'moment';
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux';
 import {  useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { getPost } from '../features/postSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import CommentSections from './CommentSections';
 
 const PostDetails = () => {
     const post = useAppSelector((state:any) => state.posts.posts);
@@ -26,7 +24,6 @@ const PostDetails = () => {
         <h6 className='mb-3'>{post.title}</h6>
         {post.tags && <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>}
         <h5>{post.message}</h5>
-        <CommentSections/>
         </div>
         </div>
         </div>

@@ -14,7 +14,10 @@ function Navbar() {
     dispatch(Logout())
     setUser(null)
     Navigate(0)
+    
+    
   }
+  console.log(user);
   
   useEffect(()=>{
     const token = user?.token;
@@ -22,7 +25,10 @@ function Navbar() {
   },[location])
 
   return (
+    
+    
     <div className="sticky-top">
+      
     <div className="card text-center">
       <div className="memories"><Link to = "/">Bahnapost</Link>
      <img className="" src="https://dcassetcdn.com/design_img/3401269/577133/577133_18643225_3401269_120b1173_image.jpg"
@@ -30,7 +36,7 @@ function Navbar() {
         {user?.result ? (
             <div className="position-absolute end-0 d-flex align-items-center justify-content-around" 
             style={{marginRight:"20px",marginTop:"-60px"}}>
-                {/* <img src={user.result.imageUrl}></img> */}
+                <img src={user?.result?.imageUrl}></img>
                 <h5 className="text-success" style={{marginRight:"50px"}}>{user?.result?.name}</h5>
                 <button onClick={logout} className="btn btn-danger">Logout</button>
                 </div> 

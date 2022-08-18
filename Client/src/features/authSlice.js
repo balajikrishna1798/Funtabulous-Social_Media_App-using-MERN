@@ -1,6 +1,5 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from '../api'
-import 'react-toastify/dist/ReactToastify.min.css'
 const initialState= {
     user:null,
     error:"",

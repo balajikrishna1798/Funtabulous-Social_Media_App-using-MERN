@@ -6,8 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getPosts,getPostBySearch } from "../../features/postSlice";
 import ChipInput from "material-ui-chip-input";
 import Navbar from "../NavBar/NavBar";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.min.css'
+
 function useQuery() {
    return new URLSearchParams(useLocation().search)
 }
