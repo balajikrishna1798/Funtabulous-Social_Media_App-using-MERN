@@ -53,15 +53,7 @@ export const updatePosts = async (req,res)=>{
         
     }
 }
-export const commentPosts = async (req,res)=>{
-    const {id} = req.params;
-    const {value} = req.body;
-    const comment = await postMessage.findById(id)
-    comment.comments.push(value)
-    const updatedComment = await postMessage.findByIdAndUpdate(id,comment,{new:true})
-    res.json(updatedComment)
- 
-}
+
 export const deletePosts = async (req,res)=>{
     const {id } = req.params;
     try {
@@ -85,3 +77,11 @@ export const likePosts = async (req,res)=>{
        const updatedPost = await postMessage.findByIdAndUpdate(id,post,{new:true})
        res.json(updatedPost)
 }
+
+export const getPostsByUser = async (req,res)=>{
+    const {id } = req.params;
+     const userPosts = await postMessage.find({creator:id})
+     res.status(200).json(userPosts)
+}
+
+
