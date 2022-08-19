@@ -44,10 +44,11 @@ const openPost = () =>{
           </button>
           )}
           
-        <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer'}} onClick={openPost}/>
+        <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer',height:"500px"}} onClick={openPost}/>
         
         <div className="card-body">
        {user && <h5 style={{color:"red"}}>{`Uploaded by ${user?.result?.name}`}</h5>}
+       
         <h6 className='mb-2'>{post?.title}</h6>
         <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>
         <h5>{post.message}</h5>

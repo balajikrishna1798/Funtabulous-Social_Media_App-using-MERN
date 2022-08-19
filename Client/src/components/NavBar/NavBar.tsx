@@ -36,7 +36,8 @@ function Navbar() {
         {user?.result ? (
             <div className="position-absolute end-0 d-flex align-items-center justify-content-around" 
             style={{marginRight:"20px",marginTop:"-60px"}}>
-                <img src={user?.result?.imageUrl}></img>
+                
+                <h5 className="text-light" style={{marginRight:"50px",borderRadius:"50%",height:40,border:"2px solid red",width:"40px",padding:"2px",backgroundColor:"black"}}>{user?.result?.name.charAt(0)}</h5>
                 <h5 className="text-success" style={{marginRight:"50px"}}>{user?.result?.name}</h5>
                 <button onClick={logout} className="btn btn-danger">Logout</button>
                 </div> 

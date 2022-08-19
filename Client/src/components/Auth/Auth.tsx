@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { googleSignIn, login, register } from '../../features/authSlice';
 import { useAppDispatch } from '../../hooks';
 //@ts-expect-error
-import background from '../../assets/background.mp4'
+import video from '../../assets/video.mp4'
 
 const Auth = () => {
     const [formData,setFormdata] = useState({
@@ -73,7 +73,7 @@ const Auth = () => {
    return (
     <div className='container'>
         {//@ts-expect-error
-        <video src={background} controls={false}  type="video/mp4" loop autoPlay className='position-absolute' style={{right:0,bottom:0,objectFit:"cover"}}/>}
+        <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-absolute' style={{right:0,bottom:0,objectFit:"cover"}}/>}
         <div className='position-relative' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"60%",marginTop:"25%",marginLeft:"20%"}}>
         <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
         <form onSubmit={handleSubmit} autoComplete="off"> 

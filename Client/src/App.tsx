@@ -5,7 +5,6 @@ import Auth from "./components/Auth/Auth";
 import Forms from "./components/Form/Forms";
 import { useState } from "react";
 import Profile from "./components/Profile/Profile";
-import Dashboard from './components/DashBoard/Dashboard';
 
 
 
@@ -24,7 +23,7 @@ function App() {
         <Route path="/posts/:id" element={<PostDetails/>}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/auth" element={!user?.result ?<Auth/>:<Navigate to="/"/>}/>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
    

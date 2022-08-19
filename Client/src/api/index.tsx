@@ -8,8 +8,8 @@ API.interceptors.request.use((req)=>{
 })
 export const fetchPosts = () => API.get("/posts")
 export const fetchPost = (id:any) => API.get(`/posts/${id}`)
-export const fetchPostsByUser = (GoogleUserId:any) => API.get(`/posts/userPosts/${GoogleUserId}`)
-
+export const fetchPostsByUser = (userId:any) => API.get(`/posts/userPosts/${userId}`)
+export const fetchPostsByGoogleUser = (googleUserId:any) => API.get(`/posts/userPosts/${googleUserId}`)
 export const fetchPostsBySearch = (search:any) => API.get(`/posts/search?title=${search} `)
 export const createPosts = (postData:any) => API.post("/posts",postData)
 export const updatePosts = (id:any,postData:any) => API.patch(`/posts/${id}`,postData)

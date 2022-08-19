@@ -60,14 +60,24 @@ export const getPost = createAsyncThunk("post/getPost",async({id,navigate})=>{
     }
 }) 
 
-export const getPostByUser = createAsyncThunk("post/getPostByUser",async({GoogleUserId})=>{
+export const getPostByUser = createAsyncThunk("post/getPostByUser",async({userId})=>{
     try {
-        const response = await api.fetchPostsByUser(GoogleUserId)
+        const response = await api.fetchPostsByUser(userId)
         return response.data
     } catch (error) {
         
     }
 }) 
+
+export const getPostByGoogleUser = createAsyncThunk("post/getPostByGoogleUser",async({googleUserId})=>{
+    try {
+        const response = await api.fetchPostsByGoogleUser(googleUserId)
+        return response.data
+    } catch (error) {
+        
+    }
+}) 
+
 
 export const getPostBySearch = createAsyncThunk("post/getPostBySearch",async({search})=>{
     try {
@@ -130,6 +140,17 @@ const postSlice = createSlice({
        state.loading = false
        state.error= action.payload.message
    },
+   [getPostByGoogleUser.pending]:(state)=>{
+    state.loading = true
+},
+[getPostByGoogleUser.fulfilled]:(state,action)=>{
+   state.loading = false
+    state.userPosts = action.payload
+},
+[getPostByGoogleUser.rejected]:(state,action)=>{
+   state.loading = false
+   state.error= action.payload.message
+},
        [getPostBySearch.pending]:(state)=>{
         state.loading = true
    },
