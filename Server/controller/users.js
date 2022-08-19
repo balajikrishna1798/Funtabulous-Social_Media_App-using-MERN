@@ -41,6 +41,16 @@ export const signup = async (req,res)=>{
     }
 }
 
+export const updateProfile = async (req,res)=>{
+    try {
+        const existingUser = await Users.findById(req.userId)
+      if(existingUser)
+        res.status(200).json({result,token})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const GoogleSignIn = async (req,res)=>{
     
     const {email,name,token,googleId} =  req.body
