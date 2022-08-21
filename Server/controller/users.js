@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { postMessage } from '../models/PostsMessage.js'
 import { Users } from '../models/Users.js'
 
 export const signin = async (req,res)=>{
@@ -45,7 +46,11 @@ export const updateProfile = async (req,res)=>{
     try {
         const existingUser = await Users.findById(req.userId)
       if(existingUser)
-        res.status(200).json({result,token})
+      existingUser.name = req.body.name || existingUser.name;
+      existingUser.email = req.body.email || existingUser.email;
+      const updatedUser = await existingUser.save();
+      const token = jwt.sign({email:updatedUser.email,id:updatedUser._id},'test')
+        res.status(200).json({ _id: updatedUser._id,name: updatedUser.name,email: updatedUser.email,token})
     } catch (error) {
         console.log(error)
     }
@@ -72,3 +77,29 @@ if(!existingUser){
     console.log(err);
  }
     }
+
+export const getOthersPosts = async (req,res)=>{
+
+        Users.findOne({_id:req.params.id}).select("-password")
+        .then((user) => {
+            postMessage.find({creator:req.params.id}).populate("creator","_id name").exec((err,posts)=>{
+                if(posts){
+                    res.json({user,posts})
+                }
+            })
+        })
+        .catch(err => {return res.status(400).send(err)});
+    }
+    
+export const getOthersGooglePosts = async (req,res)=>{
+
+    Users.findOne({googleId:req.params.id}).select("-password")
+    .then((user) => {
+        postMessage.find({creator:req.params.id}).populate("creator","_id googleId").exec((err,posts)=>{
+            if(posts){
+                res.json({user,posts})
+            }
+        })
+    })
+    .catch(err => {return res.status(400).send(err)});
+}
