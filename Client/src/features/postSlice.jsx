@@ -20,6 +20,7 @@ export const createPost = createAsyncThunk("post/createPost",async({postData,nav
 export const getPosts = createAsyncThunk("post/getPosts",async(_)=>{
     try {
         const response = await api.fetchPosts()
+        console.log(response);
         return response.data
     } catch (error) {
         

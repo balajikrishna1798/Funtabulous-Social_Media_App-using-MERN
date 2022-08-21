@@ -13,8 +13,8 @@
 }
 a{
     text-decoration: none;
-    color: orange;
+    color: blue;
 }
 a:hover{
-    color: orange;
+    color: red;
 }

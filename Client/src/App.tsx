@@ -5,6 +5,7 @@ import Auth from "./components/Auth/Auth";
 import Forms from "./components/Form/Forms";
 import { useState } from "react";
 import Profile from "./components/Profile/Profile";
+import UserProfile from './components/userProfile/UserProfile';
 
 
 
@@ -24,6 +25,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/auth" element={!user?.result ?<Auth/>:<Navigate to="/"/>}/>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/userProfile/:id" element={<UserProfile />} />
+        <Route path="/googleuserProfile/:googleid" element={<UserProfile />} />
       </Routes>
     </Router>
    

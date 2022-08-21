@@ -47,7 +47,8 @@ const openPost = () =>{
         <img src={post.selectedFile} className="card-img-top position-relative" style={{cursor:'pointer',height:"500px"}} onClick={openPost}/>
         
         <div className="card-body">
-       {user && <h5 style={{color:"red"}}>{`Uploaded by ${user?.result?.name}`}</h5>}
+        {
+       <Link to ={`/userProfile/${post._id}`}>{user && <h5 style={{color:"red"}}>{`Uploaded by ${post.name}`}</h5>}</Link>}
        
         <h6 className='mb-2'>{post?.title}</h6>
         <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>

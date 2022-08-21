@@ -1,16 +1,32 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { updateUser } from '../../features/authSlice'
 import { getPostByUser,getPostByGoogleUser} from '../../features/postSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 
 const Profile = () => {
-    const user = JSON.parse(localStorage.getItem('profile'))
+  const [formData,setFormdata] = useState({
+    name:"",email:""
+})
+
+    const user = JSON.parse(localStorage.getItem('profile'));
     const userPosts = useAppSelector((state)=>(state.posts.userPosts))
     const userId = user?.result?._id 
     const googleUserId = user?.result?.googleId;
     const dispatch = useAppDispatch()
     console.log(userId);
-    
+    const location = useLocation()
+    const submitHandler = (e:any) =>{
+      e.preventDefault();
+      //@ts-expect-error
+      dispatch(updateUser({formData}))
+
+    }
+    const handleChange = (e:any) =>{
+      setFormdata({...formData,[e.target.name]:e.target.value})
+       
+  }
+
 useEffect(()=>{
 
     if(userId){
@@ -32,10 +48,17 @@ useEffect(()=>{
       
       <p ><span style={{fontSize:"25px"}}>Name:</span><span className='text-success' style={{fontWeight:600,fontSize:"25px"}}>&nbsp;{user?.result?.name}</span></p>
       <p className='text-center' style={{fontWeight:600,fontSize:"30px",color:"blue"}}>My Posts</p>
+      <form onSubmit={submitHandler}>
+        <input type="text" placeholder='Name' name="name" onChange={handleChange}/>
+        <input type="text" placeholder='Email' name="email" onChange={handleChange}/>
+        <button type='submit'>Submit</button>
+      </form>
+      
       <div className="row">
       {
         
         userPosts && userPosts.map((item)=>(
+          <div key={item._id}>
           <div className="col-md-4">
           <div className='card '>
          <img src={item.selectedFile} className="card-img-top img-fluid"/>
@@ -46,7 +69,7 @@ useEffect(()=>{
          </div>
          </div>
          </div>
-    
+    </div>
         ))
       }
       </div>

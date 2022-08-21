@@ -73,8 +73,8 @@ const Auth = () => {
    return (
     <div className='container'>
         {//@ts-expect-error
-        <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-absolute' style={{right:0,bottom:0,objectFit:"cover"}}/>}
-        <div className='position-relative' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"60%",marginTop:"25%",marginLeft:"20%"}}>
+        <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-fixed' style={{right:0,bottom:0,objectFit:"cover"}}/>}
+        <div className='position-relative mb' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"70%",marginTop:"14%",marginLeft:"18%"}}>
         <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
         <form onSubmit={handleSubmit} autoComplete="off"> 
             <div className='container w-75'>
