@@ -26,11 +26,11 @@ export const register = createAsyncThunk("auth/register",async({formData,navigat
     }
 })
 
-export const updateUser = createAsyncThunk("auth/updateUser",async({formData,navigate})=>{
+export const updateUser = createAsyncThunk("auth/updateUser",async({formData})=>{
     try {
         const response = await api.updateProfile(formData)
      
-        navigate("/")
+        console.log(response.data);
         return response.data
     } catch (error) {
         
@@ -40,6 +40,14 @@ export const updateUser = createAsyncThunk("auth/updateUser",async({formData,nav
 export const usersProfile = createAsyncThunk("auth/usersProfile",async({id})=>{
     try {
         const response = await api.usersProfile(id)
+        return response.data
+    } catch (error) {
+        
+    }
+})
+export const getMyProfile = createAsyncThunk("auth/getMyProfile",async(_)=>{
+    try {
+        const response = await api.getMyProfile()
         return response.data
     } catch (error) {
         
@@ -72,6 +80,7 @@ const authSlice = createSlice({
             localStorage.clear();
             state.user = null;
           },
+ 
     },
     extraReducers:{
         [login.pending]:(state)=>{
@@ -97,6 +106,18 @@ const authSlice = createSlice({
            state.loading = false
            state.error= action.payload.message
        },
+       [getMyProfile.pending]:(state)=>{
+        state.loading = true
+   },
+   [getMyProfile.fulfilled]:(state,action)=>{
+       state.loading = false
+       localStorage.setItem("profile",JSON.stringify({...action.payload}))
+        state.user = action.payload
+   },
+   [getMyProfile.rejected]:(state,action)=>{
+       state.loading = false
+       state.error= action.payload.message
+   },
        [googleusersProfile.pending]:(state)=>{
         state.loading = true
    },
@@ -125,7 +146,6 @@ const authSlice = createSlice({
     },
     [updateUser.fulfilled]:(state,action)=>{
             state.loading = false
-            // localStorage.setItem("profile",JSON.stringify({...action.payload}));
             state.user = action.payload
     },
     [updateUser.rejected]:(state,action)=>{
@@ -146,6 +166,6 @@ const authSlice = createSlice({
     },
 }}
 )
-export const { Logout } = authSlice.actions;
+export const { Logout,saveProfile } = authSlice.actions;
 
 export default authSlice.reducer

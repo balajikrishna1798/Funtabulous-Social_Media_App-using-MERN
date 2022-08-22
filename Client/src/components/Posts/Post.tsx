@@ -48,7 +48,8 @@ const openPost = () =>{
         
         <div className="card-body">
         {
-       <Link to ={`/userProfile/${post._id}`}>{user && <h5 style={{color:"red"}}>{`Uploaded by ${post.name}`}</h5>}</Link>}
+          
+       <Link to = {`/${isNaN(post?.creator)?"userProfile":"googleuserProfile"}/${post?.creator}`}>{user && <h5 style={{color:"red"}}>{`Uploaded by ${post.name}`}</h5>}</Link>}
        
         <h6 className='mb-2'>{post?.title}</h6>
         <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>

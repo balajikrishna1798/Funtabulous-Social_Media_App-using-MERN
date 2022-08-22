@@ -15,6 +15,7 @@ export const createPosts = (postData:any) => API.post("/posts",postData)
 export const usersProfile = (id:any) => API.get(`/users/usersProfile/${id}`)
 export const googleusersProfile = (googleid:any) => API.get(`/users/googleUsersProfile/${googleid}`)
 
+export const getMyProfile = () =>API.get(`/users/profile`);
 
 export const updatePosts = (id:any,postData:any) => API.patch(`/posts/${id}`,postData)
 export const deletePosts = (id:any) => API.delete(`/posts/${id}`)
