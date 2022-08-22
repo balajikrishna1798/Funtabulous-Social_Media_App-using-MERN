@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import {  getMyProfile, Logout, saveProfile, updateUser } from '../../features/authSlice'
+import {  getMyProfile, updateUser } from '../../features/authSlice'
 import { getPostByUser,getPostByGoogleUser} from '../../features/postSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 
@@ -28,11 +28,7 @@ const Profile = () => {
       setFormdata({...formData,[e.target.name]:e.target.value})
        
   }
-  // const onClickHandler = async () =>{
-  //    //@ts-expect-error
-  //   await dispatch(getMyProfile({userId}))
-  // }
-
+ 
 useEffect(()=>{
   
     if(userId){
@@ -44,7 +40,7 @@ useEffect(()=>{
       dispatch(getPostByGoogleUser({googleUserId}))
   }
  
-},[userId,googleUserId,dispatch])
+},[userId,googleUserId,submitHandler])
   return (
     <div className='container'>
 

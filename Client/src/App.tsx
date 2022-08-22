@@ -3,16 +3,22 @@ import Home from "./components/Home/Home";
 import PostDetails from "./PostDetails/PostDetails";
 import Auth from "./components/Auth/Auth";
 import Forms from "./components/Form/Forms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Profile from "./components/Profile/Profile";
 import UserProfile from './components/userProfile/UserProfile';
+import { useAppDispatch } from './hooks';
+import { setUser } from './features/authSlice';
 
 
 
 
 function App() {
   const [currentId,setCurrentId] = useState(null);
+  const dispatch = useAppDispatch()
   const user = JSON.parse(localStorage.getItem('profile'))
+  useEffect(()=>{
+    dispatch(setUser(user))
+  })
   return (
     <Router>
 

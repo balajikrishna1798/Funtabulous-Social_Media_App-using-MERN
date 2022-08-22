@@ -80,6 +80,9 @@ const authSlice = createSlice({
             localStorage.clear();
             state.user = null;
           },
+        setUser:(state,action)=>{
+            state.user = action.payload
+        }
  
     },
     extraReducers:{
@@ -166,6 +169,6 @@ const authSlice = createSlice({
     },
 }}
 )
-export const { Logout,saveProfile } = authSlice.actions;
+export const { Logout,setUser } = authSlice.actions;
 
 export default authSlice.reducer
