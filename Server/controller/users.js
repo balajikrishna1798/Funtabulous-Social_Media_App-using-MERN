@@ -45,14 +45,26 @@ export const signup = async (req,res)=>{
 export const updateProfile = async (req,res)=>{
     try {
         const existingUser = await Users.findById(req.userId)
-      if(existingUser)
+      if(existingUser){
       existingUser.name = req.body.name || existingUser.name;
       existingUser.email = req.body.email || existingUser.email;
-      const updatedUser = await existingUser.save();
-      const token = jwt.sign({email:updatedUser.email,id:updatedUser._id},'test')
-        res.status(200).json({ _id: updatedUser._id,name: updatedUser.name,email: updatedUser.email,token})
-    } catch (error) {
+      await existingUser.save();
+      console.log(existingUser);
+        return  res.status(200).json({ result:existingUser})
+    } }catch (error) {
         console.log(error)
+    }
+}
+
+export const getMyProfile = async(req,res) =>{
+    try {
+        const existingUser = await Users.findById(req.userId)
+        const token = jwt.sign({email:existingUser.email,id:existingUser._id},'test')
+        if(existingUser){
+            return  res.status(200).json({ result:existingUser,token})
+        }  
+    } catch (error) {
+        
     }
 }
 
