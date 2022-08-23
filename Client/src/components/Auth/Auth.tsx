@@ -103,6 +103,7 @@ const Auth = () => {
                     )}
                     onSuccess={googleSuccess}
                     onFailure={googleFailure}
+                    cookiePolicy="single_host_origin"
                 />
                 <button type='submit' className='btn btn-outline-success' >{isSignup ? 'Sign Up' : 'Sign In'}</button>
                 <button type='button' onClick={switchMode} className="btn btn-secondary">

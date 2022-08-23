@@ -3,18 +3,23 @@ import { useAppDispatch } from '../../hooks'
 
 import {  Link, useNavigate } from 'react-router-dom'
 import { deletePost, likePost } from '../../features/postSlice'
+import { useState } from 'react'
 
 const Post = ({post,setCurrentId}) => {
   const navigate = useNavigate();
   
   const user = JSON.parse(localStorage.getItem('profile'))
+  const userId = user?.result?.googleId || user?.result?._id 
     const dispatch = useAppDispatch()
-
-
+const handleLike = async () =>{
+  //@ts-expect-error
+   await dispatch(likePost({id:post._id}))
+   
+  }
 const Likes = () =>{
   
   if(post.likes.length>0){
-    return post.likes.find((like:any)=>like===(user?.result?.googleId || user?.result?._id ))
+    return post.likes.find((like:any)=>like===userId)
     ?
     (
     <>
@@ -55,10 +60,10 @@ const openPost = () =>{
         <h6>{post.tags.map((tag:any)=>(`#${tag}`))}</h6>
         <h5>{post.message}</h5>
         <div className='d-flex justify-content-between'>
-        {//@ts-expect-error
-        <button style={{border:"none",backgroundColor:"white"}} disabled={!user?.result} onClick={()=>dispatch(likePost({id:post._id,navigate}))}>
+      
+        <button style={{border:"none",backgroundColor:"white"}} disabled={!user?.result} onClick={handleLike}>
         <Likes /> 
-        </button>}
+        </button>
         {(user?.result?.googleId===post.creator||user?.result?._id===post.creator)&&(
           //@ts-expect-error
         <button className='' style={{border:"none",backgroundColor:"white"}} onClick={()=>dispatch(deletePost({id:post._id,navigate}))}><i className="fas fa-trash"></i>

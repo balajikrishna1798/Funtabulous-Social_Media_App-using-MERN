@@ -40,7 +40,7 @@ useEffect(()=>{
       dispatch(getPostByGoogleUser({googleUserId}))
   }
  
-},[userId,googleUserId,submitHandler])
+},[userId,googleUserId])
   return (
     <div className='container'>
 
