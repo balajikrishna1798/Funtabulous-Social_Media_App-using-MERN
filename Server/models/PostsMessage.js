@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+const  { ObjectId } = mongoose.Schema.Types
 const postSchema = mongoose.Schema({
     title:String,
     name:String,
@@ -11,6 +11,10 @@ const postSchema = mongoose.Schema({
     createdAt:{
         type:Date,
         default:new Date()
-    }
+    },
+    comments:[{
+        content:String,
+        postedBy:{type:String,ref:"Users"}
+    }]
 })
 export const postMessage = mongoose.model("postMessage",postSchema)

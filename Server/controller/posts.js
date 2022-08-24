@@ -78,6 +78,19 @@ export const likePosts = async (req,res)=>{
        res.json(updatedPost)
 }
 
+export const commentPosts = async (req,res)=>{
+    const {id} = req.params
+    if(!req.userId) return res.json({message:"Unauthorized"})
+    const comment = {
+        content : req.body.content,
+        postedBy:req.userId
+    }
+    console.log(req.body);
+    const updatedPost = await postMessage.findByIdAndUpdate(id,{$push:{comments:comment}},{new:true})
+    res.json(updatedPost)
+    }   
+
+
 export const getPostsByUser = async (req,res)=>{
     const {id } = req.params;
      const userPosts = await postMessage.find({creator:id})

@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import { postMessage } from '../models/PostsMessage.js'
 import { Users } from '../models/Users.js'
 import nodemailer from 'nodemailer'
-import { userVerification } from '../models/userVerification.js'
 import crypto from 'crypto'
 import { v4 as uuidv4 } from "uuid";
 import path from 'path'
@@ -175,98 +174,3 @@ auth:{
 })
 
 
-const sendVerificationEmail = ({_id,email},res) =>{
-    const currentUrl = "http://localhost:5000/"
-    const uniqueString = uuidv4() + _id
-   
-    bcrypt.hash(uniqueString,10).then((hashedUniqueString)=>{
-        const newVerifiation = new userVerification({
-            userId :_id,
-            uniqueString:hashedUniqueString,
-            createdAt:Date.now(),
-            expiresAt:Date.now()+2160000
-        })
-        newVerifiation.save().then(()=>{
-            transporter.sendMail(mailOptions).then(()=>{
-                res.json({
-                    status:"pending",
-                    message:"verification Email Sent"
-                })
-            })
-        }).catch((error)=>{
-            console.log(error);
-        })
-    })
-}
-export const emaisdlVerify = async (req,res) =>{
-    let {userId,uniqueString} = req.params
-    userVerification.find({userId})
-    .then((result)=>{
-        if(result.length>0){
-            const {expiresAt} = result[0];
-            const hashedUniqueString = result[0].uniqueString;
-
-        if(expiresAt<Date.now()){
-            userVerification.deleteOne({userId})
-            .then(result=>{
-                Users.deleteOne({_id:userId})
-                .then(()=>{
-                    let message = "Link has expired.Please Sign up again"
-                    res.redirect(`/user/verified/error=true&message=${message}`)
-                })
-            .catch((error)=>{
-                let message = "Clearing user with expired unique String failed"
-                res.redirect(`/user/verified/error=true&message=${message}`)
-            })
-            })
-        .catch((error)=>{
-            console.log(error);
-            let message = "An error occured while clearing expired user Verification record"
-            res.redirect(`/user/verified/error=true&message=${message}`)
-        })
-    }else{
-        bcrypt.compare(uniqueString,hashedUniqueString)
-        .then(result=>{
-            if(result){
-        Users.updateOne({_id:userId},{verified:true})
-        .then(()=>{
-            userVerification.deleteOne({userId})
-            .then(()=>{
-                res.sendFile(path.join(__dirname,"./../views/verified.html"))
-            })
-            .catch((error)=>{
-                console.log(error);
-                let message = "An error occured while finalizing successfull verification"
-                 res.redirect(`/user/verified/error=true&message=${message}`)
-            })
-        })
-        .catch(error=>{
-            console.log(error);
-            let message = "An error occured while updating user record to show verified"
-            res.redirect(`/user/verified/error=true&message=${message}`)
-})
-
-            }else{
-                let message = "Invalid verification Details passed.Check your inbox"
-                res.redirect(`/user/verified/error=true&message=${message}`)
-            }
-        })
-        .catch(error=>{
-            let message = "An error occured while comparing unique Strings"
-            res.redirect(`/user/verified/error=true&message=${message}`)
-        })
-    }
-}
-     else{
-        let message = "Account record doesnot exist or has been verified already.Pleas Signup or Login."
-        res.redirect(`/user/verified/error=true&message=${message}`)
-     }
-    }).catch((error)=>{
-        console.log(error);
-        let message = "An error occured while checking for existing user verification record"
-        res.redirect(`/user/verified/error=true&message=${message}`)
-    })
-}
-export const emailVerified = async (req,res) =>{
-  res.sendFile(path.join(__dirname,"./../views/verified.html"))
-}
