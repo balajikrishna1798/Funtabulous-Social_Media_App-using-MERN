@@ -44,6 +44,7 @@ const handleDelete = (tagToDelete:any) =>{
    
   },[dispatch])
   
+
   return (
     
       <div>
@@ -63,7 +64,7 @@ const handleDelete = (tagToDelete:any) =>{
     <Link to="/forms" ><i className="fa-solid fa-square-plus mb-2 mt-2" style={{color:"blue",fontSize:"20px"}}></i></Link>
     <div className="d-flex">
     <i className="fa-brands fa-searchengin mb-2 mt-2" onClick={searchPost} style={{color:"brown",fontSize:"20px",cursor:"pointer"}}></i>
-    <input type="text" className="form-control mb-2 mt-2" style={{height:25,marginLeft:"10px"}} name="search" value={search} placeholder="Search with title" onChange={(e)=>setSearch(e.target.value)}/>
+    <input type="text" className="form-control mb-2 mt-2" style={{height:25,marginLeft:"10px"}} name="search" value={search} placeholder="Search with title" autoComplete="off" onChange={(e)=>setSearch(e.target.value)}/>
     </div>
     <Link to="/profile" ><i className="fa-solid fa-id-badge mb-2 mt-2" style={{color:"red",fontSize:"20px"}}></i></Link>
     </div>

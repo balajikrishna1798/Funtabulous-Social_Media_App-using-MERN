@@ -43,6 +43,16 @@ export const likePost = createAsyncThunk("post/likePost",async({id})=>{
     }
 }) 
 
+export const commentPost = createAsyncThunk("post/commentPost",async({postId,text})=>{
+    try {
+        const response = await api.makeComment(postId,text)
+        console.log(postId,text);
+        return response.data
+    } catch (error) {
+        
+    }
+}) 
+
 export const updatePost = createAsyncThunk("post/updatePost",async({id,postData,navigate})=>{
     try {
         const response = await api.updatePosts(id,postData)
@@ -188,6 +198,17 @@ const postSlice = createSlice({
        state.loading = false
        state.error= action.payload.message
    },
+   [commentPost.pending]:(state)=>{
+    state.loading = true
+},
+[commentPost.fulfilled]:(state,action)=>{
+   state.loading = false
+   state.posts = state.posts.map((post)=>post["_id"] ===action.payload._id ? action.payload : post)  
+},
+[commentPost.rejected]:(state,action)=>{
+   state.loading = false
+   state.error= action.payload.message
+},
    [updatePost.pending]:(state)=>{
     state.loading = true
 },
