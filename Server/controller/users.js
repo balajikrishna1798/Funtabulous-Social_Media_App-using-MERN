@@ -6,6 +6,7 @@ import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 import { v4 as uuidv4 } from "uuid";
 import path from 'path'
+import { Otp } from '../models/Otp.js'
 export const signin = async (req,res)=>{
     const {email,password} =  req.body
  
@@ -83,6 +84,59 @@ export const emailVerify = async(req,res) =>{
     } 
 }
 
+export const verifyPasswordMail = async(req,res) =>{
+        const User = await Users.findOne({email:req.body.email})
+        if(User){
+            let otpCode = Math.floor((Math.random()*10000)+1)
+            let otpData = new Otp({
+                email:req.body.email,
+                code:otpCode,
+                expiresIn:new Date().getTime()+300*1000
+            })
+            await otpData.save()
+            const mailOptions = {
+                from : "balajikrishna44589@gmail.com",
+                to:User.email,
+                subject:"verify your email",
+                html:`<p>Hello ${User.name} your OTP is ${otpData.code}`,
+            }
+            transporter.sendMail(mailOptions,function (error,info){
+                if(error){
+                    console.log(error);
+                }
+                else{
+                    console.log("Verification Mail sent");
+                }
+            })}
+        else{
+            return res.status(400).json("error")
+        }
+       
+}
+
+export const changePassword = async(req,res)=>{
+    let data = await Otp.findOne({email:req.body.email,code:req.body.code})
+   
+    if(data){
+        let currentTime = new Date().getTime()
+        let diff = data.expiresIn - currentTime
+        if(diff<0){
+            return res.status(400).json("error")
+        }
+        else{
+            const User = await Users.findOne({email:req.body.email})
+            const hashedPassword = await bcrypt.hash(req.body.password,12)
+            User.password = hashedPassword
+            User.save();
+            res.status(200).json("Password Changed")
+        }}
+        else{
+            return res.json(400).json("Error")
+        }
+    }
+
+
+
 export const verifyEmail = async(req,res,next) =>{
 const user = await Users.findOne({email:req.body.email})
 if(user.isVerified){
@@ -123,6 +177,9 @@ export const GoogleSignIn = async (req,res)=>{
     const {email,name,token,googleId} =  req.body
  try{
         const existingUser = await Users.findOne({email})
+        if(existingUser.isVerified){
+            res.send("error")
+        }
 if(existingUser){
     res.status(200).json({result:existingUser,token})
 }

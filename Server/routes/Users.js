@@ -1,5 +1,5 @@
 import express from "express";
-import { GoogleSignIn, signin, signup,updateProfile,getOthersPosts,getOthersGooglePosts, getMyProfile,emailVerify, verifyEmail} from "../controller/users.js";
+import { GoogleSignIn, signin, signup,updateProfile,getOthersPosts,getOthersGooglePosts, getMyProfile,emailVerify, verifyEmail,verifyPasswordMail, changePassword} from "../controller/users.js";
 import { auth } from "../middleware/auth.js";
 const router = express.Router();
 
@@ -12,5 +12,8 @@ router.get("/profile",auth,getMyProfile)
 router.get("/usersProfile/:id",auth,getOthersPosts)
 router.get("/googleusersProfile/:id",auth,getOthersGooglePosts)
 router.get("/verify-email",emailVerify)
+router.post("/verifypasswordmail",verifyPasswordMail)
+router.post("/changePassword",changePassword)
+
 
 export default router;
