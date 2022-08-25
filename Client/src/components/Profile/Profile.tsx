@@ -54,6 +54,9 @@ useEffect(()=>{
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
         <input type="text" placeholder='Email' className="form-control mb-3" name="email" onChange={handleChange}/>
         <button type='submit' className='btn btn-danger w-100 mb-5'>Submit</button>
+        <Link to="/forgotPassword">
+          <p>Forgot Password?</p>
+        </Link>
       </form>
       
       <div className="row">
