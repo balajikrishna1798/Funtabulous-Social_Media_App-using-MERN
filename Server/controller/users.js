@@ -4,9 +4,8 @@ import { postMessage } from '../models/PostsMessage.js'
 import { Users } from '../models/Users.js'
 import nodemailer from 'nodemailer'
 import crypto from 'crypto'
-import { v4 as uuidv4 } from "uuid";
-import path from 'path'
 import { Otp } from '../models/Otp.js'
+
 export const signin = async (req,res)=>{
     const {email,password} =  req.body
  
@@ -20,10 +19,8 @@ export const signin = async (req,res)=>{
             const isPasswordCorrect = await bcrypt.compare(password,existingUser.password)
 
             if(!isPasswordCorrect){
-                return res.status(400).json("Password is incorrect")
+                return res.status(400).json({message:"Password is incorrect"})
             }
-            
-    
             const token = jwt.sign({email:existingUser.email,id:existingUser._id},'test')
             res.status(200).json({result:existingUser,token})
         }
@@ -128,6 +125,7 @@ export const changePassword = async(req,res)=>{
             const hashedPassword = await bcrypt.hash(req.body.password,12)
             User.password = hashedPassword
             User.save();
+            console.log("Success");
             res.status(200).json("Password Changed")
         }}
         else{
@@ -139,11 +137,11 @@ export const changePassword = async(req,res)=>{
 
 export const verifyEmail = async(req,res,next) =>{
 const user = await Users.findOne({email:req.body.email})
-if(user.isVerified){
+if(user && user.isVerified){
     next();
 }
 else{
-    console.log("Please Check your mail");
+     return res.status(400).json({message:"EmailId is not found"})
 }
 }
 export const updateProfile = async (req,res)=>{
@@ -178,7 +176,7 @@ export const GoogleSignIn = async (req,res)=>{
  try{
         const existingUser = await Users.findOne({email})
         if(existingUser.isVerified){
-            res.send("error")
+            res.status(400).json({message:"error"})
         }
 if(existingUser){
     res.status(200).json({result:existingUser,token})
