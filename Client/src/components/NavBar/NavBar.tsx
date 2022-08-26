@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Logout } from "../../features/authSlice";
 
 function Navbar() {
-  const Navigate = useNavigate()
+  const navigate = useNavigate()
   const [user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const dispatch = useAppDispatch();
   const location = useLocation()
@@ -13,15 +13,14 @@ function Navbar() {
     //@ts-expect-error
     dispatch(Logout())
     setUser(null)
-    Navigate(0)
-    
+    navigate(0)
     
   }
   console.log(user);
   
   useEffect(()=>{
     const token = user?.token;
-    return setUser(JSON.parse(localStorage.getItem('profile')))
+    return setUser(JSON.parse(localStorage.getItem('profile')))       
   },[location])
 
   return (

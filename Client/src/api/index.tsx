@@ -11,7 +11,7 @@ export const fetchPost = (id:any) => API.get(`/posts/${id}`)
 export const fetchPostsByUser = (userId:any) => API.get(`/posts/userPosts/${userId}`)
 export const fetchPostsByGoogleUser = (googleUserId:any) => API.get(`/posts/userPosts/${googleUserId}`)
 export const fetchPostsBySearch = (search:any) => API.get(`/posts/search?title=${search} `)
-export const createPosts = (postData:any) => API.post("/posts",postData)
+export const createPosts = (postData:any) => API.post("/posts",postData)  
 export const usersProfile = (id:any) => API.get(`/users/usersProfile/${id}`)
 export const googleusersProfile = (googleid:any) => API.get(`/users/googleUsersProfile/${googleid}`)
 
@@ -28,4 +28,8 @@ export const updateProfile = (formData:any) => API.post("/users/profile",formDat
 export const signIn = (formData:any) => API.post("/users/signin",formData)
 export const signUp = (formData:any) => API.post("/users/signup",formData)
 export const googleSignIn = (result:any) => API.post("/users/googleSignIn",result)
+export const emailPasswordVerify = (formData:any) => API.post("/users/verifypasswordmail",formData)
+export const changePassword = (formData:any) => API.post("/users/changePassword",formData)
+
+
 

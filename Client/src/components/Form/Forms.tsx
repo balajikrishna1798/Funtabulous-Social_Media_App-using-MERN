@@ -22,8 +22,7 @@ const Forms = (props:any) => {
     tags:[],
     selectedFile:""
   })
-  const { id } = useParams();
-  const location = useLocation()
+
 
   const post = useAppSelector((state:any)=>props.currentId?state.posts.posts.find((p:any)=>p._id===props.currentId):null)
   const dispatch = useAppDispatch()

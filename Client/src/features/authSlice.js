@@ -5,20 +5,20 @@ const initialState= {
     error:"",
     loading:false
 }
-    export const login = createAsyncThunk("auth/login",async({formData,navigate})=>{
+    export const login = createAsyncThunk("auth/login",async({formData,navigate,toast},{rejectWithValue})=>{
     try {
         const response = await api.signIn(formData)
-      
+        toast.success("Login SuccessFully")
         navigate("/")
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
     }
 }) 
-export const register = createAsyncThunk("auth/register",async({formData,navigate})=>{
+export const register = createAsyncThunk("auth/register",async({formData,navigate,toast})=>{
     try {
         const response = await api.signUp(formData)
-     
+        toast.success("Registered SuccessFully")
         navigate("/")
         return response.data
     } catch (error) {
@@ -72,6 +72,8 @@ export const googleSignIn = createAsyncThunk("auth/googleSignIn",async({result,n
     }
 })
 
+
+
 const authSlice = createSlice({
     name:"auth",
     initialState,
@@ -97,6 +99,7 @@ const authSlice = createSlice({
         [login.rejected]:(state,action)=>{
             state.loading = false
             state.error= action.payload.message
+            console.log(state.error);
         },
         [usersProfile.pending]:(state)=>{
             state.loading = true
@@ -132,6 +135,7 @@ const authSlice = createSlice({
        state.loading = false
        state.error= action.payload.message
    },
+
     [register.pending]:(state)=>{
         state.loading = true
     },

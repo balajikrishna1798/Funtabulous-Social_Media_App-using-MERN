@@ -9,6 +9,7 @@ import UserProfile from './components/userProfile/UserProfile';
 import { useAppDispatch } from './hooks';
 import { setUser } from './features/authSlice';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import ChangePassword from './components/ChangePassword/ChangePassword';
 
 
 
@@ -35,6 +36,8 @@ function App() {
         <Route path="/userProfile/:id" element={<UserProfile />} />
         <Route path="/googleuserProfile/:googleid" element={<UserProfile />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
+        
       </Routes>
     </Router>
    

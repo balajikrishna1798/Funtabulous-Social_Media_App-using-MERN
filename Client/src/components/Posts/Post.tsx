@@ -76,7 +76,6 @@ const Post = ({ post, setCurrentId }) => {
             onClick={() => setCurrentId(post._id)}
           >
             <Link to="/forms">
-              {" "}
               <i
                 className="fa-solid fa-ellipsis-vertical"
                 style={{ color: "black" }}
@@ -123,12 +122,12 @@ const Post = ({ post, setCurrentId }) => {
 
             </div>
             <div className="col-md-5">
-            <button
+           {user?.result && <button
               style={{ border: "none", backgroundColor: "white" }}
               onClick={handleClick}
             >
               <i className="fa-solid fa-comments text-success">Comment</i>
-            </button>
+            </button>}
             </div>
 
             {(user?.result?.googleId === post.creator ||

@@ -4,7 +4,10 @@ import { useState } from 'react'
 import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import { googleSignIn, login, register } from '../../features/authSlice';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 //@ts-expect-error
 import video from '../../assets/video.mp4'
 
@@ -12,6 +15,7 @@ const Auth = () => {
     const [formData,setFormdata] = useState({
         firstName:"",email:"",password:"",confirmPassword:""
     })
+    const {loading,error} = useAppSelector((state)=>({...state.auth}))
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const clientId="205061424218-08uogm1rqah0jsn9ulmbaqr3iskh7q4g.apps.googleusercontent.com"
@@ -25,7 +29,7 @@ const Auth = () => {
         }
         else{
             //@ts-expect-error
-            dispatch(login({formData,navigate}))
+            dispatch(login({formData,navigate,toast}))
         }
         
     }
@@ -59,6 +63,9 @@ const Auth = () => {
     const switchMode = () =>{
         setIsSignup((previsSignUp=>!previsSignUp))
     }
+    useEffect(() => {
+    error && toast.error(error)
+    }, [error])
     
     useEffect(()=>{
         function start(){
@@ -74,7 +81,7 @@ const Auth = () => {
     <div className='container'>
         {//@ts-expect-error
         <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-fixed' style={{right:0,bottom:0,objectFit:"cover"}}/>}
-        <div className='position-relative mb' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"70%",marginTop:"14%",marginLeft:"18%"}}>
+        <div className='position-fixed mb' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"50%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
         <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
         <form onSubmit={handleSubmit} autoComplete="off"> 
             <div className='container w-75'>
