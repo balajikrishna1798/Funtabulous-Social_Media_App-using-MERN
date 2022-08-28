@@ -4,7 +4,6 @@ export const getPosts = async (req,res)=>{
     try {
         
         const postMessages = await postMessage.find();
-       
         res.send(postMessages)
     } catch (error) {
         
@@ -23,10 +22,10 @@ export const getPost = async (req,res)=>{
 }
 
 export const getPostsBySearch = async (req,res)=>{
-    const {title} = req.query
+    const title = req.query.title
     try {
 
-        const posts = await postMessage.find({ title });
+        const posts = await postMessage.find({ title:{$regex:title,$options:'$i'} });
         console.log(posts);
         res.json({data:posts})
         
