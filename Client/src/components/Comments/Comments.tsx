@@ -12,15 +12,14 @@ const Comments = ({post}) => {
   const submitHandler = async (e) =>{
     e.preventDefault();
   const text = ` ${user?.result?.name}:${comment}`
-    //@ts-expect-error
     await dispatch(commentPost({postId:post._id,text:{content:text}}))
     setComment("")
     
 }
     return (
     <div>
-       <div className='container'>
-        <div style={{overflowY: "scroll", height: "100px"}}>{
+       <div className='container card'>
+        <div style={{overflowY: "scroll", height: "150px"}}>{
        post.comments && post?.comments?.map((c:any)=>(
             <div>
              {c.content}

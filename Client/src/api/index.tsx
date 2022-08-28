@@ -30,6 +30,7 @@ export const signUp = (formData:any) => API.post("/users/signup",formData)
 export const googleSignIn = (result:any) => API.post("/users/googleSignIn",result)
 export const emailPasswordVerify = (formData:any) => API.post("/users/verifypasswordmail",formData)
 export const changePassword = (formData:any) => API.post("/users/changePassword",formData)
+export const searchUsers = (name:any) => API.post("/users/searchUsers",name)
 
 
 

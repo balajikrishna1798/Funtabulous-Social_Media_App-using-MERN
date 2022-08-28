@@ -10,6 +10,7 @@ import { useAppDispatch } from './hooks';
 import { setUser } from './features/authSlice';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ChangePassword from './components/ChangePassword/ChangePassword';
+import SearchCreator from './components/searchCreator/SearchCreator';
 
 
 
@@ -26,12 +27,14 @@ function App() {
 
       <Routes>
       <Route path="/" element={<Navigate to="/posts"/>}/>
+
         <Route path="/posts" element={<Home setCurrentId={setCurrentId}/>} />
+        <Route path="/searchCreator" element={<SearchCreator setCurrentId={setCurrentId}/>} />
+
         <Route path="/forms" element={<Forms currentId={currentId} setCurrentId={setCurrentId}/>}/>
-        <Route path="/posts/search" element={<Home setCurrentId={setCurrentId}/>}/>
         <Route path="/posts/:id" element={<PostDetails/>}/>
         <Route path="/profile" element={<Profile />} />
-        <Route path="/auth" element={!user?.result ?<Auth/>:<Navigate to="/"/>}/>
+        <Route path="/auth" element={<Auth/>}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/userProfile/:id" element={<UserProfile />} />
         <Route path="/googleuserProfile/:googleid" element={<UserProfile />} />

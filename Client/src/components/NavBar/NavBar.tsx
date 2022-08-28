@@ -28,23 +28,26 @@ function Navbar() {
     
     <div className="sticky-top" >
       
-    <div className="card text-center p-1" style={{backgroundColor:"yellow"}}>
-      <div className="memories"><Link to = "/">Funtabulous</Link>
+    <div className="card text-center p-1" style={{backgroundColor:"yellow",overflowX:"hidden"}}>
+      <div className="row">
+      <div className="offset-md-4 col-md-4 col-sm-5 col-6 memories"><Link to = "/">Funtabulous</Link>
      <img className="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvMh3EctbWvjFZJhEgxxXIM5QwismuTZyFnBuuz2fpjDGBzMJv8K2Y-fZbCStP1vS0oEM&usqp=CAU"
-      style={{width: "3rem",opacity:0.3}}/>
+      style={{width: "3rem",opacity:0.3}}/> </div>
         {user?.result ? (
-            <div className="position-absolute end-0 d-flex align-items-center justify-content-around" 
-            style={{marginRight:"20px",marginTop:"-44px"}}>
+            <>
                 
-                <h5 className="text-light" style={{marginRight:"50px",borderRadius:"50%",height:40,border:"2px solid red",width:"40px",padding:"2px",backgroundColor:"black"}}>{user?.result?.name.charAt(0)}</h5>
-                <h5 className="text-success" style={{marginRight:"50px"}}>{user?.result?.name}</h5>
-                <button onClick={logout} className="btn btn-danger" style={{marginBottom:"10px"}}>Logout</button>
-                </div> 
+                <h5 className="text-light col-md-2 col-sm-5 col-2 p-1 mt-2" style={{borderRadius:"50%",height:40,border:"2px solid red",width:"40px",backgroundColor:"black"}}>{user?.result?.name.charAt(0)}</h5>
+                <h5 className="text-success col-md-2 col-sm-3 col-2 mt-3" >{user?.result?.name}</h5>
+                <button onClick={logout} className="btn btn-danger col-md-2 col-lg-1 col-sm-2 col-2 mt-2" style={{height:40}}>Logout</button>
+                </> 
         ):(
+          <div className="col-md-4 p-2">
           <Link to="/auth  ">
-            <button className="Signin position-absolute end-0 btn btn-outline-danger" style={{marginTop:"5px"}}>SignIn</button>
+            <button className="Signin btn btn-dark">SignIn</button>
             </Link>
+            </div>
         ) }
+  
     </div>
     </div>
     </div>

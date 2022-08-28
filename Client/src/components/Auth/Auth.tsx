@@ -24,11 +24,9 @@ const Auth = () => {
     const handleSubmit = (e:any) =>{
         e.preventDefault()
         if(isSignup){
-            //@ts-expect-error
             dispatch(register({formData,navigate}))
         }
         else{
-            //@ts-expect-error
             dispatch(login({formData,navigate,toast}))
         }
         
@@ -45,7 +43,6 @@ const Auth = () => {
         const googleId = res?.googleId;
         const result = {email,name,token,googleId}
         try {
-            //@ts-expect-error
             dispatch(googleSignIn({result,navigate}))
             navigate("/")
             
@@ -63,9 +60,7 @@ const Auth = () => {
     const switchMode = () =>{
         setIsSignup((previsSignUp=>!previsSignUp))
     }
-    useEffect(() => {
-    error && toast.error(error)
-    }, [error])
+  
     
     useEffect(()=>{
         function start(){

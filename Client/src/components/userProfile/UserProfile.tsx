@@ -11,12 +11,10 @@ const UserProfile = () => {
     const dispatch = useAppDispatch()
     useEffect(()=>{
         if(id){
-            //@ts-expect-error
-        dispatch(usersProfile({id}))
+        dispatch(usersProfile(id))
         }
         if(googleid){
-            //@ts-expect-error
-        dispatch(googleusersProfile({googleid}))
+        dispatch(googleusersProfile(googleid))
         }
      },[])
   

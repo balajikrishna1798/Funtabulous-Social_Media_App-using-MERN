@@ -1,17 +1,17 @@
 import moment from 'moment';
 import { useEffect } from 'react'
 import {  useParams } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getPost } from '../features/postSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
 const PostDetails = () => {
     const post = useAppSelector((state:any) => state.posts.posts);
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const {id} = useParams()
     useEffect(()=>{
-      //@ts-expect-error
-        dispatch(getPost({id}))
+        dispatch(getPost({id,navigate}))
     },[id])
   return (
     <div className='container' style={{width:"60%"}}>

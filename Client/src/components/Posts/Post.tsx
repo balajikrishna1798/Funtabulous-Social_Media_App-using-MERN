@@ -13,8 +13,7 @@ const Post = ({ post, setCurrentId }) => {
   const userId = user?.result?.googleId || user?.result?._id;
   const dispatch = useAppDispatch();
   const handleLike = async () => {
-    //@ts-expect-error
-    await dispatch(likePost({ id: post._id }));
+    await dispatch(likePost(post._id));
   };
   const [showComment, setShowComment] = useState(true);
   const handleClick = () => {
@@ -31,17 +30,15 @@ const Post = ({ post, setCurrentId }) => {
         </>
       ) : (
         <>
-          {" "}
-          <i className="fa-solid fa-thumbs-up "></i>
-          {post.likes.length}
-          {post.likes.length === 1 ? "Like" : "Likes"}
+          <i className="fa-solid fa-thumbs-up "> {post.likes.length}
+          {post.likes.length === 1 ? "Like" : "Likes"}</i>
+         
         </>
       );
     }
     return (
       <>
-        {" "}
-        <i className="fa-solid fa-thumbs-up "></i>Like
+        <i className="fa-solid fa-thumbs-up ">Like</i>
       </>
     );
   };
@@ -51,7 +48,7 @@ const Post = ({ post, setCurrentId }) => {
   };
 
   return (
-    <div className="d-flex-column justify-content-center mb-3">
+    <div className=" ">
       <div
         className="card mt-5"
         style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}
@@ -109,7 +106,7 @@ const Post = ({ post, setCurrentId }) => {
           <h6>{post.tags.map((tag: any) => `#${tag}`)}</h6>
           <h5>{post.message}</h5>
           <div className="row">
-            <div className="col-md-4" >
+            <div className="col-md-4 col-xs-4" >
             <button 
               style={{ border: "none", backgroundColor: "white" }}
               disabled={!user?.result}
@@ -118,10 +115,8 @@ const Post = ({ post, setCurrentId }) => {
               <Likes />
             </button>
             </div>
-            <div className="col-lg-1">
-
-            </div>
-            <div className="col-md-5">
+         
+            <div className="col-md-3 col-xs-3">
            {user?.result && <button
               style={{ border: "none", backgroundColor: "white" }}
               onClick={handleClick}
@@ -132,11 +127,10 @@ const Post = ({ post, setCurrentId }) => {
 
             {(user?.result?.googleId === post.creator ||
               user?.result?._id === post.creator) && (
-              <div className="col-md-2">
+              <div className="offset-md-1 col-md-3 col-xs-3">
               <button
                 
                 style={{ border: "none", backgroundColor: "white" }}
-                 //@ts-expect-error
                 onClick={() => dispatch(deletePost({ id: post._id, navigate }))}
               >
                 <i className="fas fa-trash" style={{color:"red"}}>delete</i>

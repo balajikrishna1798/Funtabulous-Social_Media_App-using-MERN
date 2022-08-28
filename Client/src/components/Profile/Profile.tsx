@@ -18,10 +18,8 @@ const Profile = () => {
     const location = useLocation()
     const submitHandler =  async (e:any) =>{
       e.preventDefault();
-        //@ts-expect-error
-       await dispatch(updateUser({formData}))
- //@ts-expect-error
-       await dispatch(getMyProfile({userId}))
+       await dispatch(updateUser(formData))
+       await dispatch(getMyProfile(userId))
       
     }
     const handleChange = (e:any) =>{
@@ -32,12 +30,10 @@ const Profile = () => {
 useEffect(()=>{
   
     if(userId){
-        //@ts-expect-error
-        dispatch(getPostByUser({userId}))
+        dispatch(getPostByUser(userId))
     }
     if(googleUserId){
-      //@ts-expect-error
-      dispatch(getPostByGoogleUser({googleUserId}))
+      dispatch(getPostByGoogleUser(googleUserId))
   }
  
 },[userId,googleUserId])
@@ -52,7 +48,7 @@ useEffect(()=>{
       <p className='text-center' style={{fontWeight:600,fontSize:"30px",color:"blue"}}>My Posts</p>
       <form onSubmit={submitHandler}>
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
-        <input type="text" placeholder='Email' className="form-control mb-3" name="email" onChange={handleChange}/>
+        <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" onChange={handleChange}/>
         <button type='submit' className='btn btn-danger w-100 mb-1'>Submit</button>
         <Link to="/forgotPassword">
           <p className='text-center text-success fw-bold'>Need to Change Password?</p>

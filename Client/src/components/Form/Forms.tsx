@@ -30,12 +30,10 @@ const Forms = (props:any) => {
     e.preventDefault();
     console.log(postData)
     if(props.currentId){
-      //@ts-expect-error
       dispatch(updatePost({id:props.currentId ,postData,navigate}))
       
     }
     else{
-      //@ts-expect-error
       dispatch(createPost({postData,navigate}))
     }
     clear()
