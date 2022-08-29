@@ -35,9 +35,12 @@ function Navbar() {
       style={{width: "3rem",opacity:0.3}}/> </div>
         {user?.result ? (
             <>
-                
-                <h5 className="text-light col-md-2 col-sm-5 col-2 p-1 mt-2" style={{borderRadius:"50%",height:40,border:"2px solid red",width:"40px",backgroundColor:"black"}}>{user?.result?.name.charAt(0)}</h5>
+                 {user.result.pic?<img className="col-md-2 col-sm-5 col-2 mt-1 " style={{borderRadius:"50%",height:40,width:"70px"}} src={user?.result?.pic}></img>
+                :<h5 className="text-light col-md-2 col-sm-5 col-2 p-1 " style={{borderRadius:"50%",height:40,border:"2px solid red",width:"40px",backgroundColor:"black"}}>{user?.result?.name.charAt(0)}</h5>}
+
                 <h5 className="text-success col-md-2 col-sm-3 col-2 mt-3" >{user?.result?.name}</h5>
+               
+
                 <button onClick={logout} className="btn btn-danger col-md-2 col-lg-1 col-sm-2 col-2 mt-2" style={{height:40}}>Logout</button>
                 </> 
         ):(

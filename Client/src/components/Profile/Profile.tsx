@@ -3,10 +3,11 @@ import { Link, useLocation } from 'react-router-dom'
 import {  getMyProfile, updateUser } from '../../features/authSlice'
 import { getPostByUser,getPostByGoogleUser} from '../../features/postSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
+import FileBase64 from 'react-file-base64'
 
 const Profile = () => {
   const [formData,setFormdata] = useState({
-    name:"",email:""
+    name:"",email:"",pic:""
 })
 
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -23,8 +24,7 @@ const Profile = () => {
       
     }
     const handleChange = (e:any) =>{
-      setFormdata({...formData,[e.target.name]:e.target.value})
-       
+      setFormdata({...formData,[e.target.name]:e.target.value}) 
   }
  
 useEffect(()=>{
@@ -49,6 +49,11 @@ useEffect(()=>{
       <form onSubmit={submitHandler}>
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
         <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" onChange={handleChange}/>
+        <FileBase64 
+          type="file"
+          multiple={false}
+          onDone={({base64}:any)=>setFormdata({...formData, pic:base64})}
+          />
         <button type='submit' className='btn btn-danger w-100 mb-1'>Submit</button>
         <Link to="/forgotPassword">
           <p className='text-center text-success fw-bold'>Need to Change Password?</p>
