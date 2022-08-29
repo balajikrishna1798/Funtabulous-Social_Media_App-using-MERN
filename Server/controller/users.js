@@ -178,6 +178,8 @@ export const updateProfile = async (req, res) => {
     if (existingUser) {
       existingUser.name = req.body.name || existingUser.name;
       existingUser.email = req.body.email || existingUser.email;
+      existingUser.pic = req.body.pic || existingUser.pic;
+
       await existingUser.save();
       console.log(existingUser);
       return res.status(200).json({ result: existingUser });
