@@ -21,8 +21,9 @@ const Comments = ({post}) => {
        <div className='container card'>
         <div style={{overflowY: "scroll", height: "150px"}}>{
        post.comments && post?.comments?.map((c:any)=>(
-            <div>
-             {c.content}
+            <div className='d-flex'>
+             <strong>{c.content.split(":")[0]}</strong>:
+             <p style={{fontSize:"17px"}}>{c.content.split(":")[1]}</p>
             </div>
         ))
        }

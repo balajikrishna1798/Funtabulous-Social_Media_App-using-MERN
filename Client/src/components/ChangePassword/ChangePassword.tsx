@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { changePassword } from '../../api';
+import { toast } from 'react-toastify';
+import { changePassword } from '../../features/authSlice';
+import { useAppDispatch } from '../../hooks';
 
 const ChangePassword = () => {
     const [formData,setFormData] = useState({
         email:"",code:"",password:""
     }) 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch()
     const ChangepasswordHandle = (e) =>{
       e.preventDefault()
-      changePassword(formData)
+      dispatch(changePassword({formData,navigate,toast}))
       console.log(formData);
-
-      navigate("/profile")
+     
   }
     const handleChange = (e:any) =>{
       setFormData({...formData,[e.target.name]:e.target.value})

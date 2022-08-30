@@ -24,7 +24,8 @@ const Profile = () => {
       
     }
     const handleChange = (e:any) =>{
-      setFormdata({...formData,[e.target.name]:e.target.value}) 
+      setFormdata({...formData,[e.target.name]:e.target.value})
+       
   }
  
 useEffect(()=>{
@@ -38,28 +39,26 @@ useEffect(()=>{
  
 },[userId,googleUserId])
   return (
-    <div className='container'>
+    <div className='container mb-5'>
 
         <div className='position-relative' style={{zIndex:100}}>
       <Link to="/posts"> <i className="fa-solid fa-backward" style={{color:"blue"}}></i></Link>
       <p className='text-center text-danger' style={{fontWeight:600,fontSize:"40px"}}>Profile</p>
       
       <p ><span style={{fontSize:"25px"}}>Name:</span><span className='text-success' style={{fontWeight:600,fontSize:"25px"}}>&nbsp;{user?.result?.name}</span></p>
-      <p className='text-center' style={{fontWeight:600,fontSize:"30px",color:"blue"}}>My Posts</p>
+      
       <form onSubmit={submitHandler}>
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
-        <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" onChange={handleChange}/>
+        <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={handleChange}/>
         <FileBase64 
           type="file"
           multiple={false}
           onDone={({base64}:any)=>setFormdata({...formData, pic:base64})}
           />
-        <button type='submit' className='btn btn-danger w-100 mb-1'>Submit</button>
-        <Link to="/forgotPassword">
-          <p className='text-center text-success fw-bold'>Need to Change Password?</p>
-        </Link>
+        <button type='submit' className='btn btn-danger w-100 mb-1 mt-3'>Submit</button>
+        
       </form>
-      
+      <p className='text-center' style={{fontWeight:600,fontSize:"30px",color:"blue"}}>My Posts</p>
       <div className="row">
       {
         
@@ -67,7 +66,7 @@ useEffect(()=>{
           <div className="col-md-4">
           <div key={item._id}>
           <div className='card'>
-         <img src={item.selectedFile} className="card-img-top img-fluid"/>
+         <img src={item.selectedFile} className="card-img-top img-fluid" style={{height:250}}/>
          <div className="card-body">
          <h6 className='mb-3'>{item.title}</h6>
          {item.tags && <h6>{item.tags.map((tag:any)=>(`#${tag}`))}</h6>}

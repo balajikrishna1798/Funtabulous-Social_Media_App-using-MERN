@@ -4,6 +4,7 @@ import * as api from '../api'
 const initialState= {
     posts:[],
     userPosts:[],
+    tagTours:[],
     error:"",
     loading:false
 }
@@ -108,6 +109,14 @@ export const getPostBySearch:any = createAsyncThunk("post/getPostBySearch",async
     }
 }) 
 
+export const getPostByTag:any = createAsyncThunk("post/getPostByTag",async(tag,{rejectWithValue})=>{
+    try {
+        const response = await api.fetchPostsByTag(tag)
+        return response.data
+    } catch (error) {
+        
+    }
+}) 
 
 
 
@@ -182,6 +191,19 @@ const postSlice = createSlice({
        state.loading = false
        state.error= action.payload.message
    },
+
+   [getPostByTag.pending]:(state)=>{
+    state.loading = true
+},
+[getPostByTag.fulfilled]:(state,action)=>{
+   state.loading = false
+    state.tagTours = action.payload.data
+},
+[getPostByTag.rejected]:(state,action)=>{
+   state.loading = false
+   state.error= action.payload.message
+},
+
            [deletePost.pending]:(state)=>{
             state.loading = true
        },
@@ -212,7 +234,7 @@ const postSlice = createSlice({
 },
 [commentPost.fulfilled]:(state,action)=>{
    state.loading = false
-   state.posts = state.posts.map((post)=>post["_id"] ===action.payload._id ? action.payload : post)  
+   state.posts = state.posts.filter((post)=>post["_id"] !==action.payload["_id"] )  
 },
 [commentPost.rejected]:(state,action)=>{
    state.loading = false

@@ -2,7 +2,7 @@ import { gapi } from 'gapi-script';
 import  { useEffect } from 'react'
 import { useState } from 'react'
 import { GoogleLogin } from 'react-google-login';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { googleSignIn, login, register } from '../../features/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {toast} from 'react-toastify'
@@ -94,7 +94,7 @@ const Auth = () => {
                 <input type='password' className="form-control mb-3"  required name="confirmPassword" placeholder="Confirm Password" onChange={handleChange}/>
                 </>
                 )}
-                <div className='d-flex justify-content-around'>
+                <div className='d-flex justify-content-around mb-3'>
                 <GoogleLogin
                  
                  clientId={`${clientId}`}
@@ -114,6 +114,9 @@ const Auth = () => {
                 </div>
             </div>
         </form>
+        <Link to="/forgotPassword">
+          <p className='text-center text-primary fw-bold' style={{fontSize:"15px"}}>Forgot Password?</p>
+        </Link>
         </div>
     </div>
 

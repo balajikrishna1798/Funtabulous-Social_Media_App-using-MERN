@@ -17,6 +17,17 @@ const initialState= {
         return rejectWithValue(error.response.data)
     }
 }) 
+
+export const changePassword:any = createAsyncThunk("auth/changePassword",async(data:any,{rejectWithValue})=>{
+    const {formData,navigate,toast}=data
+try {
+    const response = await api.changePassword(formData)
+    navigate("/auth")
+    return response.data
+} catch (error) {
+    return rejectWithValue(error.response.data)
+}
+}) 
 export const register:any = createAsyncThunk("auth/register",async(data:any,{rejectWithValue})=>{
     const {formData,navigate,toast}=data
     try {
@@ -24,6 +35,9 @@ export const register:any = createAsyncThunk("auth/register",async(data:any,{rej
         navigate("/")
         return response.data
     } catch (error) {
+        toast.error(error.response.data)
+        console.log(error);
+        
         return rejectWithValue(error.response.data)
     }
 })
@@ -107,6 +121,20 @@ const authSlice = createSlice({
             state.error= action.payload.message
             toast.error(state.error);
         });
+
+        builder.addCase(changePassword.pending,(state)=>{
+            state.loading = true;
+       });
+       builder.addCase(changePassword.fulfilled,(state,action)=>{
+           state.loading = false
+       });
+       builder.addCase(changePassword.rejected,(state,action)=>{
+           state.loading = false
+           state.error= action.payload.message
+           toast.error(state.error);
+       });
+
+
         builder.addCase(usersProfile.pending,(state)=>{
             state.loading = true
        });

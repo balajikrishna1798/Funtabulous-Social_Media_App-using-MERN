@@ -15,6 +15,8 @@ export const createPosts = (postData:any) => API.post("/posts",postData)
 export const usersProfile = (id:any) => API.get(`/users/usersProfile/${id}`)
 export const googleusersProfile = (googleid:any) => API.get(`/users/googleUsersProfile/${googleid}`)
 
+export const fetchPostsByTag = (tag:any) => API.get(`/posts/tag/${tag}`)
+
 export const makeComment = (postId:any,text:any) => API.patch(`/posts/${postId}/comments`,text)
 
 export const getMyProfile = () =>API.get(`/users/profile`);
