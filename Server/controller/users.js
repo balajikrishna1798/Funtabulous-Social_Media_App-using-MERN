@@ -82,7 +82,7 @@ export const signup = async (req, res) => {
         console.log(error);
       } else {
         console.log("Verification Mail sent");
-        return res.status(400).json({ message: "Verification Mail sent" });
+        res.status(400).json({ message: "Verification Mail sent" });
       }
     });
   } catch (error) {
@@ -216,6 +216,7 @@ export const GoogleSignIn = async (req, res) => {
         email,
         name,
         googleId,
+        isVerified:true
       });
       res.status(200).json({ result, token });
     }
@@ -265,8 +266,9 @@ var transporter = nodemailer.createTransport({
 
 export const searchUsers = async(req,res) =>{
     const name = req.body.name
-    Users.find({name:{$regex:name,$options:'$i'}}).then(user=>{
-        res.json({user})
+    Users.find({name:{$regex:name,$options:'$i'}})
+    .then(user=>{
+       res.json({user})
     }).catch(err=>{
         console.log(err);
         res.send(err)
