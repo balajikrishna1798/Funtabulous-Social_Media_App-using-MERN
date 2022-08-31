@@ -28,7 +28,7 @@ try {
     return rejectWithValue(error.response.data)
 }
 }) 
-export const register:any = createAsyncThunk("auth/register",async(data:any,{rejectWithValue})=>{
+export const registerr:any = createAsyncThunk("auth/register",async(data:any,{rejectWithValue})=>{
     const {formData,navigate,toast}=data
     try {
         const response = await api.signUp(formData)
@@ -168,17 +168,17 @@ const authSlice = createSlice({
        state.loading = false
    });
 
-   builder.addCase(register.pending,(state)=>{
+   builder.addCase(registerr.pending,(state)=>{
         state.loading = true
+        toast.success("Verification mail sent")
     });
-    builder.addCase(register.fulfilled,(state,action)=>{
+    builder.addCase(registerr.fulfilled,(state,action)=>{
             state.loading = false
-            localStorage.setItem("profile",JSON.stringify({...action.payload}));
             state.user = action.payload
     });
-    builder.addCase(register.rejected,(state,action)=>{
+    builder.addCase(registerr.rejected,(state,action)=>{
         state.loading = false
-        state.error= action.payload.message
+        state.error= action.payload?.message
         toast.error(state.error);
 
     });

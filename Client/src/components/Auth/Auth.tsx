@@ -3,39 +3,55 @@ import  { useEffect } from 'react'
 import { useState } from 'react'
 import { GoogleLogin } from 'react-google-login';
 import { Link, useNavigate } from 'react-router-dom';
-import { googleSignIn, login, register } from '../../features/authSlice';
+import { googleSignIn, login, registerr } from '../../features/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
 
 //@ts-expect-error
 import video from '../../assets/video.mp4'
 
 const Auth = () => {
-    const [formData,setFormdata] = useState({
-        firstName:"",email:"",password:"",confirmPassword:""
-    })
-    const {loading,error} = useAppSelector((state)=>({...state.auth}))
+  
+    const schema = yup.object().shape({
+      
+        email: yup.string().email().required("Email is invalid"),
+        password: yup
+          .string()
+          .min(
+            6,
+            "Passwords must be at least 6 characters, and contain one special character"
+          )
+          .max(24)
+          .required("Enter your password"),
+       
+      });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+      } = useForm({
+        resolver: yupResolver(schema)
+      });
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const clientId="205061424218-08uogm1rqah0jsn9ulmbaqr3iskh7q4g.apps.googleusercontent.com"
-    const [isSignup,setIsSignup] = useState(false);
 
-    const handleSubmit = (e:any) =>{
-        e.preventDefault()
-        if(isSignup){
-            dispatch(register({formData,navigate}))
-        }
-        else{
+    
+
+
+    const onSubmit = (formData) =>{
             dispatch(login({formData,navigate,toast}))
-        }
         
     }
 
-    const handleChange = (e:any) =>{
-        setFormdata({...formData,[e.target.name]:e.target.value})
+    // const handleChange = (e:any) =>{
+    //     setFormdata({...formData,[e.target.name]:e.target.value})
          
-    }
+    // }
     const googleSuccess = async(res:any) =>{
         const email = res?.profileObj?.email;
         const name = res?.profileObj?.name;
@@ -57,9 +73,7 @@ const Auth = () => {
     }
 
    
-    const switchMode = () =>{
-        setIsSignup((previsSignUp=>!previsSignUp))
-    }
+   
   
     
     useEffect(()=>{
@@ -76,24 +90,28 @@ const Auth = () => {
     <div className='container'>
         {//@ts-expect-error
         <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-fixed' style={{right:0,bottom:0,objectFit:"cover"}}/>}
-        <div className='position-fixed mb' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"50%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
-        <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>{isSignup ?'Sign Up' : 'Sign In'}</p>
-        <form onSubmit={handleSubmit} autoComplete="off"> 
+        <div className='position-fixed' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"60%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
+        <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>Sign In</p>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"> 
             <div className='container w-75'>
-                 {(
-                 isSignup && 
-                 <>
-                <input type="text" className="form-control mb-3" required name="firstName" placeholder="First Name" onChange={handleChange}/>
-                </>
-                )}
-                <input type="email" className="form-control mb-3" required name="email" placeholder="Email Address" onChange={handleChange}/>
-                <input type='password' className="form-control mb-3" required name="password" placeholder="Password" onChange={handleChange}/>
-                {(
-                 isSignup && 
-                 <>
-                <input type='password' className="form-control mb-3"  required name="confirmPassword" placeholder="Confirm Password" onChange={handleChange}/>
-                </>
-                )}
+                 
+
+            <input type="email"  className={`form-control shadow-none ${errors.email?"mb-0":"mb-3"}`} 
+                style={{borderColor:`${errors.email? "red":"green"}` }} 
+                 placeholder="Email Address" {...register("email")}/>
+                 {//@ts-expect-error
+                  errors&& <small className="text-danger">{errors.email?.message}</small>}
+
+<input type='password' className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
+                style={{borderColor:`${errors.password? "red":"green"}` }}
+                placeholder="Password" {...register("password")}/>
+                {//@ts-expect-error
+                  errors&& <small className="text-danger">{errors.password?.message}</small>}
+               
+                
+                
+              
+                
                 <div className='d-flex justify-content-around mb-3'>
                 <GoogleLogin
                  
@@ -107,9 +125,9 @@ const Auth = () => {
                     onFailure={googleFailure}
                     cookiePolicy="single_host_origin"
                 />
-                <button type='submit' className='btn btn-outline-success' >{isSignup ? 'Sign Up' : 'Sign In'}</button>
-                <button type='button' onClick={switchMode} className="btn btn-secondary">
-                    {!isSignup?"If you don't have and account.Create New!!":"Already have an account?Sign In"}
+                <button type='submit' className='btn btn-outline-success' >Sign In</button>
+                <button type='button' className="btn btn-secondary">
+                  <Link to="/register"><span className='text-light'>If you don't have and account.Create New!!</span></Link>
                 </button>
                 </div>
             </div>
