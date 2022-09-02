@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-
+import './Auth.css'
 //@ts-expect-error
 import video from '../../assets/video.mp4'
 
@@ -41,23 +41,20 @@ const Auth = () => {
     const clientId="205061424218-08uogm1rqah0jsn9ulmbaqr3iskh7q4g.apps.googleusercontent.com"
 
     
-
-
     const onSubmit = (formData) =>{
             dispatch(login({formData,navigate,toast}))
         
     }
 
-    // const handleChange = (e:any) =>{
-    //     setFormdata({...formData,[e.target.name]:e.target.value})
-         
-    // }
+  
     const googleSuccess = async(res:any) =>{
         const email = res?.profileObj?.email;
         const name = res?.profileObj?.name;
         const token = res?.tokenId;
         const googleId = res?.googleId;
-        const result = {email,name,token,googleId}
+        const imageUrl = res?.profileObj?.imageUrl;
+
+        const result = {email,name,token,googleId,imageUrl}
         try {
             dispatch(googleSignIn({result,navigate}))
             navigate("/")
@@ -90,7 +87,7 @@ const Auth = () => {
     <div className='container'>
         {//@ts-expect-error
         <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-fixed' style={{right:0,bottom:0,objectFit:"cover"}}/>}
-        <div className='position-fixed' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"60%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
+        <div className='position-fixed videoBG' >
         <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>Sign In</p>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"> 
             <div className='container w-75'>

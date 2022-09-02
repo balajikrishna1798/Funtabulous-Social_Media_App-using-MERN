@@ -28,6 +28,18 @@ try {
     return rejectWithValue(error.response.data)
 }
 }) 
+
+export const forgotPassword:any = createAsyncThunk("auth/forgotPassword",async(data:any,{rejectWithValue})=>{
+    const {formData,navigate,toast}=data
+try {
+    const response = await api.emailPasswordVerify(formData)
+    navigate("/ChangePassword")
+    return response.data
+} catch (error) {
+    return rejectWithValue(error.response.data)
+}
+}) 
+
 export const registerr:any = createAsyncThunk("auth/register",async(data:any,{rejectWithValue})=>{
     const {formData,navigate,toast}=data
     try {
@@ -121,7 +133,18 @@ const authSlice = createSlice({
             state.error= action.payload.message
             toast.error(state.error);
         });
-
+        builder.addCase(forgotPassword.pending,(state)=>{
+            state.loading = true;
+       });
+       builder.addCase(forgotPassword.fulfilled,(state,action)=>{
+           state.loading = false
+           
+       });
+       builder.addCase(forgotPassword.rejected,(state,action)=>{
+           state.loading = false
+           state.error= action.payload.message
+           toast.error(state.error);
+       });
         builder.addCase(changePassword.pending,(state)=>{
             state.loading = true;
        });
@@ -192,6 +215,8 @@ const authSlice = createSlice({
     builder.addCase(updateUser.rejected,(state,action)=>{
         state.loading = false
         state.error= action.payload.message
+        toast.error("Only .jpg, .jpeg, .png formats are allowed");
+
     });
     builder.addCase(googleSignIn.pending,(state)=>{
         state.loading = true

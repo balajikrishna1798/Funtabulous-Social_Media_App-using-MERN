@@ -1,34 +1,40 @@
 import React, { useState } from 'react'
 import {  Link, useNavigate } from 'react-router-dom';
 import { emailPasswordVerify } from '../../api';
+import { forgotPassword } from '../../features/authSlice';
+import { useAppDispatch } from '../../hooks';
 import ChangePassword from '../ChangePassword/ChangePassword';
+import { toast } from 'react-toastify';
+import './ForgotPassword.css'
 
-const ForgotPassword = () => {
+const ForgotPassword = ({show,setShow}) => {
     const [formData,setFormData] = useState({
         email:"",code:"",password:""
     }) 
-    const [show,setShow] = useState(false)
+    const dispatch = useAppDispatch()
+
     const navigate = useNavigate();
     const handleClick = () =>{
     }
     const handleSubmit = (e) =>{
         e.preventDefault();
-        emailPasswordVerify(formData)
-        setShow(true)
+        dispatch(forgotPassword({formData,navigate,toast}))
     }
     const handleChange = (e:any) =>{
       setFormData({...formData,[e.target.name]:e.target.value}) 
+      setShow({...formData,[e.target.name]:e.target.value}) 
+      console.log(show);
+      
   }
   return (
     <div style={{height:"100vh",backgroundColor:"rgb(163, 163, 73)"}}>
-       <Link to="/auth"> <i className="fa-solid fa-backward mt-5" style={{color:"yellow",marginLeft:"20px",fontSize:"25px"}}></i><span style={{color:"black",marginLeft:"10px",fontWeight:"bolder",fontSize:"25px"}}>Back to Login Page</span></Link>
-    <div className='container w-50 position-fixed' style={{backgroundImage: "linear-gradient(to right, blue , green)",padding:"40px",top:"50%",left:"50%", transform: "translate(-50%, -50%)"}}>
+       <Link to="/auth"> <i className="fa-solid fa-backward mt-5 backward"></i><span className='backwardText'>Back to Login Page</span></Link>
+    <div className='container w-50 position-fixed forgotPasswordBG'>
    
-        {!show ? <form onSubmit={handleSubmit} autoComplete="off">
+        {<form onSubmit={handleSubmit} autoComplete="off">
         <input className='form-control mb-3' type="email" name='email' placeholder='Please enter your Email Address' onChange={handleChange}/>
-        <button type="submit" className='btn btn-danger w-100' style={{fontSize:"20px",fontWeight:"bolder"}} onClick={handleClick}>Submit</button>
+        <button type="submit" className='btn btn-danger w-100 forgotPasswordSubmit'  onClick={handleClick}>Submit</button>
         </form>
-      :<ChangePassword/>  
       }
      
     </div>

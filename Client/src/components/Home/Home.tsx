@@ -9,6 +9,7 @@ import Navbar from "../NavBar/NavBar";
 
 
 function Home({setCurrentId}) {
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const handleDelete = (tagToDelete:any) =>{
             <div>
          </div>
         
-            <div style={{marginBottom:"70px"}}>
+         {user?.result?.name&&<div style={{marginBottom:"70px"}}>
              <div className="d-flex justify-content-around fixed-bottom" style={{backgroundColor:"pink"}}>  
     <Link to="/forms" ><i className="fa-solid fa-square-plus mb-2 mt-2" style={{color:"blue",fontSize:"20px"}}></i></Link>
     <div className="d-flex">
@@ -64,8 +65,8 @@ const handleDelete = (tagToDelete:any) =>{
     <Link to="/profile" ><i className="fa-solid fa-id-badge mb-2 mt-2" style={{color:"red",fontSize:"20px"}}></i></Link>
     <Link to="/searchCreator"><i className="fa-brands fa-searchengin mb-2 mt-2" style={{color:"brown",fontSize:"20px",cursor:"pointer"}}></i></Link>
     </div>
-              </div>
-          </div>
+              </div>}
+          </div> 
 
   );
 }

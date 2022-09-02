@@ -5,6 +5,8 @@ import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-route
 import { createPost, updatePost } from '../../features/postSlice';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import Navbar from '../NavBar/NavBar';
+import './Forms.css'
+
 interface post{
   name:string;
    title:string;
@@ -22,7 +24,7 @@ const Forms = (props:any) => {
     tags:[],
     selectedFile:""
   })
-
+console.log(postData)
 
   const post = useAppSelector((state:any)=>props.currentId?state.posts.posts.find((p:any)=>p._id===props.currentId):null)
   const dispatch = useAppDispatch()
@@ -68,8 +70,8 @@ useEffect(() => {
           onDone={({base64}:any)=>setPostdata({...postData, selectedFile:base64})}
           />
         </div>
-        <button className="btn btn-primary mb-3 mt-3" style={{display:"block",width:"100%"}} type='submit'>Submit</button>
-        <button className="btn btn-danger" type="button" style={{display:"block",width:"100%"}} onClick={clear}>Clear</button>
+        <button className="btn btn-primary mb-3 mt-3" type='submit'>Submit</button>
+        <button className="btn btn-danger" type="button"  onClick={clear}>Clear</button>
 
       </form>
       </div>

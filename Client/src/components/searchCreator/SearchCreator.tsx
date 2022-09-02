@@ -35,7 +35,7 @@ const SearchCreator = () => {
         <Link to={`${item.googleId ? "/googleuserProfile/"+item.googleId : "/userProfile/"+item._id}`}> 
         <div className="row">
         
-        {item.isVerified&&<li className='card m-1 p-2 position-relative col-12' key={item._id} style={{listStyle:"none",color:"black"}}>
+        {(item.isVerified||item.googleId)&&<li className='card m-1 p-2 position-relative col-12' key={item._id} style={{listStyle:"none",color:"black"}}>
            {item.name}
         {item.pic?<img className='position-absolute ' src={item.pic} style={{width:"2%",height:23,borderRadius:"50%",left:80}}/>:
         <h5 className="text-light position-absolute" style={{borderRadius:"50%",border:"2px solid red",width:"2%",height:23,backgroundColor:"black",left:80,fontSize:"17px",paddingLeft:"0.5%"}}>{item.name.charAt(0)}</h5>

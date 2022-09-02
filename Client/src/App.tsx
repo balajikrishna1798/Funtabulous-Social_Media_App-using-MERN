@@ -12,6 +12,7 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ChangePassword from './components/ChangePassword/ChangePassword';
 import SearchCreator from './components/searchCreator/SearchCreator';
 import Register from './components/Auth/Register';
+import WebCam from './components/WebCamera/WebCam';
 
 
 
@@ -23,6 +24,7 @@ function App() {
   useEffect(()=>{
     dispatch(setUser(user))
   })
+  const [show,setShow] = useState();
   return (
     <Router>
 
@@ -31,6 +33,7 @@ function App() {
 
         <Route path="/posts" element={<Home setCurrentId={setCurrentId}/>} />
         <Route path="/searchCreator" element={<SearchCreator/>} />
+        <Route path="/videoStream" element={<WebCam/>} />
 
         <Route path="/forms" element={<Forms currentId={currentId} setCurrentId={setCurrentId}/>}/>
         <Route path="/posts/:id" element={<PostDetails/>}/>
@@ -38,11 +41,10 @@ function App() {
         <Route path="/auth" element={!user?.result.name?<Auth/>:<Navigate to="/posts"></Navigate>}/>
         <Route path="/register" element={!user?.result.name?<Register/>:<Navigate to="/posts"></Navigate>}/>
 
-        <Route path="/profile" element={<Profile />} />
         <Route path="/userProfile/:id" element={<UserProfile />} />
         <Route path="/googleuserProfile/:googleid" element={<UserProfile />} />
-        <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/ChangePassword" element={<ChangePassword />} />
+        <Route path="/forgotPassword" element={<ForgotPassword show={show} setShow={setShow}/>} />
+        <Route path="/ChangePassword" element={<ChangePassword show={show} setShow={setShow}/>} />
         
       </Routes>
     </Router>

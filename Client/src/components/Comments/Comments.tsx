@@ -32,7 +32,7 @@ const Comments = ({post}) => {
         <form onSubmit={submitHandler}>
           <div className='container d-flex'>
         <input type="text" placeholder='Comment' className='w-100 mb-3' name="content" value={comment} onChange={(e)=>setComment(e.target.value)}/>
-        <button type='submit' className='w-25 btn btn-outline-info mb-3' style={{marginLeft:""}}>Comment</button>
+        <button type='submit' className='w-25 btn btn-outline-info mb-3'>Comment</button>
         </div>
         </form>
 

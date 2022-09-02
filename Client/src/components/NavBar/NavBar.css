@@ -14,3 +14,19 @@ a{
     text-decoration: none;
     color: blue;
 }
+.navbarLogo{
+    width: 3rem;
+    opacity:0.3;
+}
+.userDp{
+    border-radius:50%;
+    height:40;
+    width:70px
+}
+.defaultDp{
+    border-radius:50%;
+    height:40;
+    border:2px solid red;
+    width:40px;
+    background-color:black;
+}
