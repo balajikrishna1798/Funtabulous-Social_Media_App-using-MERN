@@ -4,9 +4,13 @@ import cors from 'cors';
 import mongoose from "mongoose";
 import postRoutes from './routes/Posts.js'
 import userRoutes from './routes/Users.js'
-
+import path from "path";
+const __dirname = path.resolve();
 const app = express();
 const port = 5000;
+
+
+app.use('/uploads',express.static(path.join(__dirname,"uploads")))
 app.use(bodyParser.json({limit:"30mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
 

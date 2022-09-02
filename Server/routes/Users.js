@@ -1,13 +1,16 @@
 import express from "express";
+import upload from "../controller/Services.js";
 import { GoogleSignIn, signin, signup,updateProfile,getOthersPosts,getOthersGooglePosts, getMyProfile,emailVerified, verifyUser,verifyPasswordMail, changePassword, searchUsers} from "../controller/users.js";
 import { auth } from "../middleware/auth.js";
 const router = express.Router();
-
+import {check} from 'express-validator'
 //routes for users
 router.post("/signin",verifyUser, signin)
 router.post("/signup",signup)
 router.post("/googleSignIn",GoogleSignIn)
-router.post("/profile",auth,updateProfile)
+// router.post("/profile",auth,upload.single('pic'),updateProfile)
+router.post('/profile',auth,upload.single('pic'),updateProfile)
+
 router.get("/profile",auth,getMyProfile)
 router.get("/usersProfile/:id",auth,getOthersPosts)
 router.get("/googleusersProfile/:id",auth,getOthersGooglePosts)

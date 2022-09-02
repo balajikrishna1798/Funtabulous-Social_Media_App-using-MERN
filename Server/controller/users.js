@@ -1,5 +1,4 @@
 //importing libraries
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { postMessage } from "../models/PostsMessage.js";
@@ -141,8 +140,9 @@ export const verifyPasswordMail = async (req, res) => {
         console.log("Verification Mail sent");
       }
     });
+    res.status(200).json({message:"Success"})
   } else {
-    return res.status(400).json("error");
+    return res.status(400).json({message:"EmailId not yet registered with funtabulous"});
   }
 };
 
@@ -166,25 +166,30 @@ export const changePassword = async (req, res) => {
       res.status(200).json("Password Changed");
     }
   } else {
-    return res.json(400).json("Error");
+    return res.status(400).json({message:"Enter correct OTP"});
   }
 };
 
+
 export const updateProfile = async (req, res) => {
+ 
   try {
+   
     //checking any user with that id
     const existingUser = await Users.findById(req.userId);
     //if user exists update details in database
     if (existingUser) {
       existingUser.name = req.body.name || existingUser.name;
       existingUser.email = req.body.email || existingUser.email;
-      existingUser.pic = req.body.pic || existingUser.pic;
-
-      await existingUser.save();
-      console.log(existingUser);
+      existingUser.pic=  req.file?.filename|| existingUser.pic,
+       await existingUser.save();
+       console.log(existingUser);
+      console.log(req.file);
       return res.status(200).json({ result: existingUser });
     }
-  } catch (error) {
+  }
+
+  catch (error) {
     console.log(error);
   }
 };
@@ -203,7 +208,7 @@ export const getMyProfile = async (req, res) => {
 };
 
 export const GoogleSignIn = async (req, res) => {
-  const { email, name, token, googleId } = req.body;
+  const { email, name, token, googleId,imageUrl } = req.body;
   try {
     const existingUser = await Users.findOne({ email });
     if (existingUser &&existingUser.isVerified) {
@@ -216,7 +221,7 @@ export const GoogleSignIn = async (req, res) => {
         email,
         name,
         googleId,
-        isVerified:true
+        pic:imageUrl
       });
       res.status(200).json({ result, token });
     }
@@ -268,10 +273,9 @@ export const searchUsers = async(req,res) =>{
     const name = req.body.name
     Users.find({name:{$regex:name,$options:'$i'}})
     .then(user=>{
-       res.json({user})
+       res.json({user})     
     }).catch(err=>{
         console.log(err);
-        res.send(err)
+        res.send(err)                                 
     })
-
     }
