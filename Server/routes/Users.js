@@ -3,7 +3,6 @@ import upload from "../controller/Services.js";
 import { GoogleSignIn, signin, signup,updateProfile,getOthersPosts,getOthersGooglePosts, getMyProfile,emailVerified, verifyUser,verifyPasswordMail, changePassword, searchUsers} from "../controller/users.js";
 import { auth } from "../middleware/auth.js";
 const router = express.Router();
-import {check} from 'express-validator'
 //routes for users
 router.post("/signin",verifyUser, signin)
 router.post("/signup",signup)

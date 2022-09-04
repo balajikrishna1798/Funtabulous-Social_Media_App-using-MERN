@@ -35,12 +35,18 @@ export const getPostsBySearch = async (req,res)=>{
 
 }
 export const createPosts = async (req,res)=>{
-    const newPost = new postMessage({...req.body,creator:req.userId,createdAt:new Date().toISOString()});
+    const newPost = new postMessage({...req.body,creator:req.userId,selectedFile:req.file?.filename,createdAt:new Date().toISOString()});
     try {
+        if(newPost){
         await newPost.save();
-        res.send(newPost)
+        console.log(newPost);
+        res.status(200).send(newPost)
+        }
+        else{
+            res.status(400).json({message:"sdasdsa"})
+        }
     } catch (error) {
-        
+        console.log(error);
     }
 }
 export const updatePosts = async (req,res)=>{
