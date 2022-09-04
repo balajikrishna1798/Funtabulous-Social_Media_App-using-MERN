@@ -1,4 +1,5 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import * as api from '../api'
 
 const initialState= {
@@ -16,7 +17,8 @@ export const createPost:any = createAsyncThunk("post/createPost",async(data:any,
         navigate("/posts")
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 export const getPosts:any = createAsyncThunk("post/getPosts",async(_,{rejectWithValue})=>{
@@ -135,6 +137,7 @@ const postSlice = createSlice({
             [createPost.rejected]:(state,action)=>{
                 state.loading = false
                 state.error= action.payload.message
+                toast.error("Only .jpg, .jpeg, .png formats are allowed")
             },
             [getPosts.pending]:(state)=>{
                 state.loading = true
@@ -145,7 +148,7 @@ const postSlice = createSlice({
            },
            [getPosts.rejected]:(state,action)=>{
                state.loading = false
-               state.error= action.payload.message
+               toast.error("Only .jpg, .jpeg, .png formats are allowed")
            },
            [getPost.pending]:(state)=>{
             state.loading = true

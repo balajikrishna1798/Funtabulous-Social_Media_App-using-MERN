@@ -15,7 +15,8 @@ import './Auth.css'
 import video from '../../assets/video.mp4'
 
 const Auth = () => {
-  
+  const [isRevealPwd, setIsRevealPwd] = useState(false);
+
     const schema = yup.object().shape({
       
         email: yup.string().email().required("Email is invalid"),
@@ -70,9 +71,6 @@ const Auth = () => {
     }
 
    
-   
-  
-    
     useEffect(()=>{
         function start(){
         gapi.client.init({
@@ -82,6 +80,9 @@ const Auth = () => {
     }
     gapi.load('client:auth2',start)
     })
+
+    const hidePassword = "https://png.pngitem.com/pimgs/s/495-4950508_show-password-show-password-icon-png-transparent-png.png"
+    const showPassword = "https://banner2.cleanpng.com/20190701/gbw/kisspng-computer-icons-password-portable-network-graphics-password-icon-png-vector-clipart-psd-peoplepng-5d1a0c1602a108.9242962015619881180108.jpg"
 
    return (
     <div className='container'>
@@ -98,14 +99,18 @@ const Auth = () => {
                  placeholder="Email Address" {...register("email")}/>
                  {//@ts-expect-error
                   errors&& <small className="text-danger">{errors.email?.message}</small>}
-
-<input type='password' className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
+<div className='position-relative'>
+              <input type={isRevealPwd ? "text" : "password"} className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.password? "red":"green"}` }}
                 placeholder="Password" {...register("password")}/>
                 {//@ts-expect-error
                   errors&& <small className="text-danger">{errors.password?.message}</small>}
-               
-                
+                <img style={{width:`${isRevealPwd?"22px":"26px"}`,top:10,right:10,cursor:"pointer"}} className="position-absolute" 
+          title={isRevealPwd ? "Hide password" : "Show password"}
+          src={isRevealPwd ? hidePassword : showPassword}
+          onClick={() => setIsRevealPwd(prevState => !prevState)}
+        />
+             </div>   
                 
               
                 

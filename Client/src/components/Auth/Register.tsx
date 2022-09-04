@@ -62,8 +62,10 @@ const Register = () => {
   
    
    
+        const [isRevealPwd, setIsRevealPwd] = useState(false);
 
-
+        const hidePassword = "https://png.pngitem.com/pimgs/s/495-4950508_show-password-show-password-icon-png-transparent-png.png"
+        const showPassword = "https://banner2.cleanpng.com/20190701/gbw/kisspng-computer-icons-password-portable-network-graphics-password-icon-png-vector-clipart-psd-peoplepng-5d1a0c1602a108.9242962015619881180108.jpg"
    return (
     <div className='container'>
         {//@ts-expect-error
@@ -74,14 +76,14 @@ const Register = () => {
             <div className='container w-75'>
               
                 
-                 <>
+                
                 <input type="text" className={`form-control shadow-none ${errors.firstName?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.firstName? "red":"green"}` }}
                 {...register("firstName")} 
                 placeholder="First Name" />
                 {//@ts-expect-error
                  errors&& <small className="text-danger">{errors.firstName?.message}</small>}
-                </>
+               
               
                  
 
@@ -90,21 +92,25 @@ const Register = () => {
                  placeholder="Email Address" {...register("email")}/>
                  {//@ts-expect-error
                   errors&& <small className="text-danger">{errors.email?.message}</small>}
-
-                <input type='password' className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
+<div className='position-relative'>
+                <input type={isRevealPwd ? "text" : "password"} className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.password? "red":"green"}` }}
                 placeholder="Password" {...register("password")}/>
                 {//@ts-expect-error
                   errors&& <small className="text-danger">{errors.password?.message}</small>}
-               
-             
-                 <>
+                <img style={{width:`${isRevealPwd?"20px":"26px"}`,top:10,right:10,cursor:"pointer"}} className="position-absolute" 
+          title={isRevealPwd ? "Hide password" : "Show password"}
+          src={isRevealPwd ? hidePassword : showPassword}
+          onClick={() => setIsRevealPwd(prevState => !prevState)}
+        />
+             </div>
+                
                 <input type='password' className={`form-control shadow-none ${errors.confirmPassword?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.confirmPassword? "red":"green"}` }}
                 {...register("confirmPassword")} placeholder="Confirm Password" />
                  {//@ts-expect-error
                  errors&& <small className="text-danger">{errors.confirmPassword?.message}</small>}
-                </>
+               
                 
                 
                 <div className='d-flex justify-content-around mb-3'>

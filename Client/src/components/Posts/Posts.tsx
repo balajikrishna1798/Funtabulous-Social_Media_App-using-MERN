@@ -1,5 +1,4 @@
 import { useAppSelector } from '../../hooks';
-import UserProfile from '../userProfile/UserProfile';
 import Post from './Post'
 
 const Posts = ({ setCurrentId }) => {
@@ -9,7 +8,7 @@ const Posts = ({ setCurrentId }) => {
     <>  
 {
          posts.length>0 && posts.map((post:any) => (
-          <div key={post._id} >
+          <div key={post?._id} >
             <Post post={post} setCurrentId={setCurrentId} />
           </div>
         )

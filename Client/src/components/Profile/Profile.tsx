@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import FileBase64 from 'react-file-base64'
 
 const Profile = () => {
-//   const [formData,setFormData] = useState({
-//     name:"",email:"",pic:""
-// })
+  const [formData,setFormData] = useState({
+    name:"",email:""
+})
 
-const [email,setEmail] = useState("")
-const [name,setName] = useState("")
+// const [email,setEmail] = useState("")
+// const [name,setName] = useState("")
 const [pic,setPic] = useState()
 
 
@@ -26,8 +26,7 @@ const [pic,setPic] = useState()
     const submitHandler =  async (e:any) =>{
       e.preventDefault();
     const formData = new FormData();
-    formData.append("email",email)
-    formData.append("name",name)
+   
     formData.append("pic",pic)
 
 
@@ -35,14 +34,13 @@ const [pic,setPic] = useState()
        await dispatch(getMyProfile(userId))
       
     }
-  //   const handleChange = (e:any) =>{
-  //     setFormData({...formData,[e.target.name]:e.target.value})
-  // }
-  // const changeHandler = (event) => {
-	// 	setPic({...formData,pic:event.target.files[0]});
-  //   console.log(formData.pic);
+    const handleChange = (e:any) =>{
+      setFormData({...formData,[e.target.name]:e.target.value})
+  }
+  const changeHandler = (event) => {
+		setPic(event.target.files[0]);
     
-	// };
+	};
 
  
 useEffect(()=>{
@@ -65,14 +63,13 @@ useEffect(()=>{
       <p ><span style={{fontSize:"25px"}}>Name:</span><span className='text-success' style={{fontWeight:600,fontSize:"25px"}}>&nbsp;{user?.result?.name}</span></p>
       
       <form onSubmit={submitHandler} encType="multipart/form-data">
-        <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={(e)=>{setName(e.target.value)}}/>
-        <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={(e)=>{setEmail(e.target.value)}}/>
+        <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
+        <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={handleChange}/>
         <label htmlFor="pic"></label>
         <input type="file"
          name="pic" 
          id="pic"
-         //@ts-expect-error
-         onChange={(e)=>{setPic(e.target.files[0])}} />
+         onChange={changeHandler} />
         <button type='submit' className='btn btn-danger w-100 mb-1 mt-3'>Submit</button>
         
       </form>

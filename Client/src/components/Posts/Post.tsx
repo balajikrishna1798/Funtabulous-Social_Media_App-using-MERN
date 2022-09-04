@@ -20,18 +20,18 @@ const Post = ({ post, setCurrentId }) => {
     setShowComment((prevshowComment) => !prevshowComment);
   };
   const Likes = () => {
-    if (post.likes.length > 0) {
+    if (post?.likes.length > 0) {
       return post.likes.find((like: any) => like === userId) ? (
         <>
           <i className="fa-solid fa-handshake" style={{ color: "blue" }}></i>
-          {post.likes.length > 2
-            ? `you and ${post.likes.length - 1} others liked`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {post?.likes.length > 2
+            ? `you and ${post?.likes.length - 1} others liked`
+            : `${post?.likes.length} like${post?.likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
-          <i className="fa-solid fa-thumbs-up "> {post.likes.length}
-          {post.likes.length === 1 ? "Like" : "Likes"}</i>
+          <i className="fa-solid fa-thumbs-up "> {post?.likes.length}
+          {post?.likes.length === 1 ? "Like" : "Likes"}</i>
          
         </>
       );
@@ -44,7 +44,7 @@ const Post = ({ post, setCurrentId }) => {
   };
 
   const openPost = () => {
-    navigate(`/posts/${post._id}`);
+    navigate(`/posts/${post?._id}`);
   };
 
   return (
@@ -52,25 +52,26 @@ const Post = ({ post, setCurrentId }) => {
       <div
         className="card mt-5"
         style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}
-        key={post._id}
+        key={post?._id}
       >
         <h6
           className="position-absolute"
           style={{ zIndex: 10, marginLeft: "10px", color: "yellow" }}
         >
-          {moment(new Date(post.createdAt)).fromNow()}
+          {moment(new Date(post?.createdAt)).fromNow()}
         </h6>
-        {(user?.result?.googleId === post.creator ||
-          user?.result?._id === post.creator) && (
+        {(user?.result?.googleId === post?.creator ||
+          user?.result?._id === post?.creator) && (
           <button
             className="position-absolute"
             style={{
               zIndex: 10,
               border: "none",
-              right: 0,
-              backgroundColor: " rgba(240, 248, 255, 0)",
+              right: 10,
+              width:"10px",
+              backgroundColor: "rgba(240, 248, 255, 0)",
             }}
-            onClick={() => setCurrentId(post._id)}
+            onClick={() => setCurrentId(post?._id)}
           >
             <Link to="/forms">
               <i
@@ -82,7 +83,7 @@ const Post = ({ post, setCurrentId }) => {
         )}
 
         <img
-          src={post.selectedFile}
+          src={`http://localhost:5000/uploads/${post?.selectedFile}`}
           alt=""
           className="card-img-top position-relative"
           style={{ cursor: "pointer", height: "500px" }}
@@ -97,18 +98,18 @@ const Post = ({ post, setCurrentId }) => {
               }/${post?.creator}`}
             >
               {user && (
-                <h5 style={{ color: "red" }}>{`Uploaded by ${post.name}`}</h5>
+                <h5 style={{ color: "red" }}>{`Uploaded by ${post?.name}`}</h5>
               )}
             </Link>
           }
 
           <h6 className="mb-2">{post?.title}</h6>
-          <h6>{post.tags.map((tag: any) => `#${tag}`)}</h6>
-          <h5>{post.message}</h5>
+          <h6>{post?.tags.map((tag: any) => `#${tag}`)}</h6>
+          <h5>{post?.message}</h5>
           <div className="row">
             <div className="col-md-4 col-xs-4" >
             <button 
-              style={{ border: "none", backgroundColor: "white" }}
+              style={{ border: "none", backgroundColor: "white"}}
               disabled={!user?.result}
               onClick={handleLike}
             >
@@ -116,7 +117,7 @@ const Post = ({ post, setCurrentId }) => {
             </button>
             </div>
          
-            <div className="col-md-3 col-xs-3">
+            <div className="col-md-4 col-xs-3">
            {user?.result && <button
               style={{ border: "none", backgroundColor: "white" }}
               onClick={handleClick}
@@ -125,13 +126,13 @@ const Post = ({ post, setCurrentId }) => {
             </button>}
             </div>
 
-            {(user?.result?.googleId === post.creator ||
-              user?.result?._id === post.creator) && (
+            {(user?.result?.googleId === post?.creator ||
+              user?.result?._id === post?.creator) && (
               <div className="offset-md-1 col-md-3 col-xs-3">
               <button
                 
-                style={{ border: "none", backgroundColor: "white" }}
-                onClick={() => dispatch(deletePost({ id: post._id, navigate }))}
+                style={{ border: "none", backgroundColor: "white",width:"5%" }}
+                onClick={() => dispatch(deletePost({ id: post?._id, navigate }))}
               >
                 <i className="fas fa-trash" style={{color:"red"}}>delete</i>
                 
