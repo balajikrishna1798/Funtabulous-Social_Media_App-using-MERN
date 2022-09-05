@@ -49,13 +49,17 @@ export const createPosts = async (req,res)=>{
         console.log(error);
     }
 }
+
+
 export const updatePosts = async (req,res)=>{
     const {id:_id } = req.params;
+    console.log("updatedData",_id,req.body)
+
     try {
        const updatedPost = await postMessage.findByIdAndUpdate(_id,req.body,{new:true})
        res.json(updatedPost)
     } catch (error) {
-        
+        console.log(error);
     }
 }
 

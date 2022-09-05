@@ -64,7 +64,7 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
       name: firstName,
-      isVerified: false,
+      isVerified: false, 
       emailToken: crypto.randomBytes(64).toString("hex"),
     });
     await User.save();
@@ -79,10 +79,9 @@ export const signup = async (req, res) => {
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
-      } else {
+      } 
         console.log("Verification Mail sent");
         res.status(400).json({ message: "Verification Mail sent" });
-      }
     });
   } catch (error) {
     console.log(error);
@@ -261,13 +260,7 @@ export const getOthersGooglePosts = async (req, res) => {
       return res.status(400).send(err);
     });
 };
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "balajikrishna44589@gmail.com",
-    pass: "gjvkdihwboxlykyz",
-  },
-});
+
 
 export const searchUsers = async(req,res) =>{
     const name = req.body.name
@@ -279,3 +272,12 @@ export const searchUsers = async(req,res) =>{
         res.send(err)                                 
     })
     }
+
+
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "balajikrishna44589@gmail.com",
+        pass: "gjvkdihwboxlykyz",
+      },
+    });
