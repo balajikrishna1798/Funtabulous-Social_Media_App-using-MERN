@@ -7,12 +7,12 @@ import { googleSignIn, login, registerr } from '../../features/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import {yupResolver} from '@hookform/resolvers/yup'
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import './Auth.css'
 //@ts-expect-error
-import video from '../../assets/video.mp4'
+import video from '../../assets/video.mp4';
 
 const Auth = () => {
   const [isRevealPwd, setIsRevealPwd] = useState(false);

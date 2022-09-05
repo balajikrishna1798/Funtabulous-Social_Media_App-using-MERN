@@ -45,6 +45,7 @@ const Post = ({ post, setCurrentId }) => {
 
   const openPost = () => {
     navigate(`/posts/${post?._id}`);
+    
   };
 
   return (

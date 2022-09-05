@@ -63,8 +63,10 @@ export const commentPost:any = createAsyncThunk("post/commentPost",async(data:an
 export const updatePost:any = createAsyncThunk("post/updatePost",async(data:any,{rejectWithValue})=>{
     const {id,postData,navigate} = data
     try {
+        console.log(id,postData)
         const response = await api.updatePosts(id,postData)
         navigate("/posts")
+        
         return response.data
     } catch (error) {
         return rejectWithValue(error.response.data)

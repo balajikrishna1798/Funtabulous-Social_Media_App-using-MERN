@@ -23,6 +23,7 @@ function Navbar() {
     return setUser(JSON.parse(localStorage.getItem('profile')))       
   },[location])
 
+  
   return (
     
     
@@ -35,8 +36,8 @@ function Navbar() {
      /> </div>
         {user?.result ? (
             <>
-                 {user.result.pic ?<img className="col-md-2 col-sm-5 col-2 mt-1 userDp"
-                  src={user && !user?.result?.googleId ? `http://localhost:5000/uploads/${user.result.pic}`:`${user.result.pic}`}></img>
+                 {user?.result.pic ?<img className="col-md-2 col-sm-5 col-2 mt-1 userDp"
+                  src={user && !user?.result?.googleId ? `http://localhost:5000/uploads/${user?.result.pic}`:`${user?.result.pic}`}></img>
                 :<h5 className="text-light col-md-2 col-sm-5 col-2 p-1 defaultDp">{user?.result?.name.charAt(0)}</h5>}
 
                 <h5 className="text-success col-md-2 col-sm-3 col-2 mt-3" >{user?.result?.name}</h5>
@@ -47,7 +48,7 @@ function Navbar() {
         ):(
           <div className="col-md-4 p-2">
           <Link to="/auth  ">
-            <button className="Signin btn btn-dark">SignIn</button>
+            <button className="Signin btn btn-dark w-25">SignIn</button>
             </Link>
             </div>
         ) }

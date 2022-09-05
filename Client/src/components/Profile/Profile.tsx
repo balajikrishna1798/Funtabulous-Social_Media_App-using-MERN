@@ -6,12 +6,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import FileBase64 from 'react-file-base64'
 
 const Profile = () => {
-  const [formData,setFormData] = useState({
+  const [formdata,setFormData] = useState({
     name:"",email:""
 })
 
-// const [email,setEmail] = useState("")
-// const [name,setName] = useState("")
 const [pic,setPic] = useState()
 
 
@@ -20,22 +18,22 @@ const [pic,setPic] = useState()
     const userId = user?.result?._id 
     const googleUserId = user?.result?.googleId;
     const dispatch = useAppDispatch()
-    const [selectedFile, setSelectedFile] = useState();
     console.log(userId);
     const location = useLocation()
+
     const submitHandler =  async (e:any) =>{
       e.preventDefault();
     const formData = new FormData();
-   
+    formData.append("name",formdata.name)
     formData.append("pic",pic)
-
+    console.log(formData)
 
        await dispatch(updateUser(formData))
        await dispatch(getMyProfile(userId))
       
     }
     const handleChange = (e:any) =>{
-      setFormData({...formData,[e.target.name]:e.target.value})
+      setFormData({...formdata,[e.target.name]:e.target.value})
   }
   const changeHandler = (event) => {
 		setPic(event.target.files[0]);

@@ -41,7 +41,13 @@ const Register = () => {
         handleSubmit,
         formState: { errors }
       } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
+        defaultValues:{
+          firstName:"",
+          email:"",
+          password:"",
+          confirmPassword:""
+        }
       });
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -81,7 +87,7 @@ const Register = () => {
                 style={{borderColor:`${errors.firstName? "red":"green"}` }}
                 {...register("firstName")} 
                 placeholder="First Name" />
-                {//@ts-expect-error
+                {
                  errors&& <small className="text-danger">{errors.firstName?.message}</small>}
                
               
@@ -90,13 +96,13 @@ const Register = () => {
                 <input type="email"  className={`form-control shadow-none ${errors.email?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.email? "red":"green"}` }} 
                  placeholder="Email Address" {...register("email")}/>
-                 {//@ts-expect-error
+                 {
                   errors&& <small className="text-danger">{errors.email?.message}</small>}
 <div className='position-relative'>
                 <input type={isRevealPwd ? "text" : "password"} className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.password? "red":"green"}` }}
                 placeholder="Password" {...register("password")}/>
-                {//@ts-expect-error
+                {
                   errors&& <small className="text-danger">{errors.password?.message}</small>}
                 <img style={{width:`${isRevealPwd?"20px":"26px"}`,top:10,right:10,cursor:"pointer"}} className="position-absolute" 
           title={isRevealPwd ? "Hide password" : "Show password"}
@@ -108,7 +114,7 @@ const Register = () => {
                 <input type='password' className={`form-control shadow-none ${errors.confirmPassword?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.confirmPassword? "red":"green"}` }}
                 {...register("confirmPassword")} placeholder="Confirm Password" />
-                 {//@ts-expect-error
+                 {
                  errors&& <small className="text-danger">{errors.confirmPassword?.message}</small>}
                
                 

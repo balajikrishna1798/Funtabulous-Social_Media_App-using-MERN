@@ -22,6 +22,8 @@ export const makeComment = (postId:any,text:any) => API.patch(`/posts/${postId}/
 export const getMyProfile = () =>API.get(`/users/profile`);
 
 export const updatePosts = (id:any,postData:any) => API.patch(`/posts/${id}`,postData)
+
+
 export const deletePosts = (id:any) => API.delete(`/posts/${id}`)
 export const likePosts = (id:any) => API.patch(`/posts/${id}/likePost`)
 

@@ -40,15 +40,13 @@ try {
 }
 }) 
 
-export const registerr:any = createAsyncThunk("auth/register",async(data:any,{rejectWithValue})=>{
+export const registerr:any = createAsyncThunk("auth/registerr",async(data:any,{rejectWithValue})=>{
     const {formData,navigate,toast}=data
     try {
         const response = await api.signUp(formData)
         navigate("/")
         return response.data
     } catch (error) {
-        toast.error(error.response.data)
-        console.log(error);
         
         return rejectWithValue(error.response.data)
     }
@@ -57,7 +55,6 @@ export const registerr:any = createAsyncThunk("auth/register",async(data:any,{re
 export const updateUser:any = createAsyncThunk("auth/updateUser",async(formData,{rejectWithValue})=>{
     try {
         const response = await api.updateProfile(formData)
-     
         console.log(response.data);
         return response.data
     } catch (error) {
@@ -69,7 +66,7 @@ export const usersProfile:any = createAsyncThunk("auth/usersProfile",async(id,{r
     try {
         const response = await api.usersProfile(id)
         console.log(response.data);
-        return response.data
+        return response.data;
     } catch (error) {
         return rejectWithValue(error.response.data)
     }
@@ -193,7 +190,6 @@ const authSlice = createSlice({
 
    builder.addCase(registerr.pending,(state)=>{
         state.loading = true
-        toast.success("Verification mail sent")
     });
     builder.addCase(registerr.fulfilled,(state,action)=>{
             state.loading = false
@@ -201,7 +197,7 @@ const authSlice = createSlice({
     });
     builder.addCase(registerr.rejected,(state,action)=>{
         state.loading = false
-        state.error= action.payload?.message
+        state.error= action.payload.message
         toast.error(state.error);
 
     });
