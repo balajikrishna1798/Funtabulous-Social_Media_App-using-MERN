@@ -63,12 +63,19 @@ useEffect(()=>{
       <form onSubmit={submitHandler} encType="multipart/form-data">
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
         <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={handleChange}/>
-        <label htmlFor="pic"></label>
+        <label htmlFor="pic" style={{cursor:"pointer"}}>
+          <div 
+          style={{ border: "solid 2px #9f070a",borderRadius: "100%",backgroundColor:"black",
+          width:" 100px",height: "100px",textAlign:"center"}}>
+          <i className="fa-sharp fa-solid fa-upload" style={{fontSize:"30px",margin: "27%",color:"white"}}></i>
+          </div>
+          </label>
         <input type="file"
          name="pic" 
          id="pic"
+         style={{display:"none"}}
          onChange={changeHandler} />
-        <button type='submit' className='btn btn-danger w-100 mb-1 mt-3'>Submit</button>
+        <button type='submit' className='btn btn-danger mb-1 mt-3'>Submit</button>
         
       </form>
       <p className='text-center' style={{fontWeight:600,fontSize:"30px",color:"blue"}}>My Posts</p>
@@ -79,7 +86,7 @@ useEffect(()=>{
           <div className="col-md-4">
           <div key={item._id}>
           <div className='card'>
-         <img src={item.selectedFile} className="card-img-top img-fluid" style={{height:250}}/>
+         <img src={`http://localhost:5000/uploads/${item.selectedFile}`} className="card-img-top img-fluid" style={{height:250}}/>
          <div className="card-body">
          <h6 className='mb-3'>{item.title}</h6>
          {item.tags && <h6>{item.tags.map((tag:any)=>(`#${tag}`))}</h6>}

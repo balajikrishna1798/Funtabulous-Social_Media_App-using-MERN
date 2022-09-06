@@ -18,7 +18,7 @@ const PostDetails = () => {
        <Link to="/posts"> <i className="fa-solid fa-backward" style={{color:"blue"}}></i></Link>
         <div className='card mt-1 mb-5' key={post._id}>
           <h6 className='position-absolute' style={{zIndex:10,color:"yellow"}}>{moment(new Date(post.createdAt)).fromNow()}</h6>
-        <img src={post.selectedFile} className="card-img-top position-relative" style={{height:500}}/>
+        <img src={`http://localhost:5000/uploads/${post.selectedFile}`} className="card-img-top position-relative" style={{height:500}}/>
         <div className="card-body">
         <h5 className='position-absolute text-danger' style={{top:"19px"}}>{post.name}</h5>
         <h6 className='mb-3'>{post.title}</h6>

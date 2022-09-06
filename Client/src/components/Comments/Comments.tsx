@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useRef} from 'react'
 import { commentPost } from '../../features/postSlice';
 import { useAppDispatch } from '../../hooks'
 
@@ -9,22 +9,28 @@ const Comments = ({post}) => {
   
   
   const [comment,setComment] = useState("")
+  const commentsRef = useRef();
   const submitHandler = async (e) =>{
     e.preventDefault();
   const text = ` ${user?.result?.name}:${comment}`
     await dispatch(commentPost({postId:post._id,text:{content:text}}))
     setComment("")
-    
-}
+    //@ts-expect-error
+    commentsRef.current.scrollIntoView({behaviour:"smooth"})
+}   
+ 
     return (
     <div>
        <div className='container card'>
         <div style={{overflowY: "scroll", height: "150px"}}>{
        post.comments && post?.comments?.map((c:any)=>(
-            <div className='d-flex'>
+       
+            <div key={c._id} className='d-flex'>
              <strong>{c.content.split(":")[0]}</strong>:
              <p style={{fontSize:"17px"}}>{c.content.split(":")[1]}</p>
+             <div ref={commentsRef}></div>
             </div>
+            
         ))
        }
        </div>

@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useAppDispatch } from "../../hooks";
-
+import "./Posts.css";
 import { Link, useNavigate } from "react-router-dom";
 import { deletePost, likePost } from "../../features/postSlice";
 import Comments from "../Comments/Comments";
@@ -12,6 +12,7 @@ const Post = ({ post, setCurrentId }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?.googleId || user?.result?._id;
   const dispatch = useAppDispatch();
+ const primaryColor = "black"
   const handleLike = async () => {
     await dispatch(likePost(post._id));
   };

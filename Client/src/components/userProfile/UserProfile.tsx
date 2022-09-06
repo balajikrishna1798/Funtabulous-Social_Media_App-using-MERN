@@ -29,7 +29,7 @@ const UserProfile = () => {
           <div className="col-md-4" >
             <div key={item._id}>
               <div className='card'>
-                <Link to={"/posts/"+item._id}><img src={item.selectedFile} className="card-img-top img-fluid" style={{ height: 250 }} /></Link>
+                <Link to={"/posts/"+item._id}><img src={`http://localhost:5000/uploads/${item.selectedFile}`} className="card-img-top img-fluid" style={{ height: 250 }} /></Link>
               </div>
             </div>
           </div>

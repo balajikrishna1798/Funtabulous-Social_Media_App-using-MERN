@@ -36,7 +36,8 @@ export const deletePost:any = createAsyncThunk("post/deletePost",async(data:any,
         const response = await api.deletePosts(id)
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 export const likePost:any = createAsyncThunk("post/likePost",async(id,{rejectWithValue})=>{
@@ -44,7 +45,8 @@ export const likePost:any = createAsyncThunk("post/likePost",async(id,{rejectWit
         const response = await api.likePosts(id)
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 
@@ -56,7 +58,8 @@ export const commentPost:any = createAsyncThunk("post/commentPost",async(data:an
         console.log(postId,text);
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 
@@ -90,7 +93,8 @@ export const getPostByUser:any = createAsyncThunk("post/getPostByUser",async(use
         const response = await api.fetchPostsByUser(userId)
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 
@@ -99,7 +103,8 @@ export const getPostByGoogleUser:any = createAsyncThunk("post/getPostByGoogleUse
         const response = await api.fetchPostsByGoogleUser(googleUserId)
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 
@@ -109,7 +114,8 @@ export const getPostBySearch:any = createAsyncThunk("post/getPostBySearch",async
         const response = await api.fetchPostsBySearch(search)
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 
@@ -118,7 +124,8 @@ export const getPostByTag:any = createAsyncThunk("post/getPostByTag",async(tag,{
         const response = await api.fetchPostsByTag(tag)
         return response.data
     } catch (error) {
-        
+        return rejectWithValue(error.response.data)
+
     }
 }) 
 
@@ -239,7 +246,7 @@ const postSlice = createSlice({
 },
 [commentPost.fulfilled]:(state,action)=>{
    state.loading = false
-   state.posts = state.posts.filter((post)=>post["_id"] !==action.payload["_id"] )  
+   state.posts = state.posts.map((post)=>post["_id"] ===action.payload._id ? action.payload : post)    
 },
 [commentPost.rejected]:(state,action)=>{
    state.loading = false
