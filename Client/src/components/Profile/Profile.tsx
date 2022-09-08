@@ -87,14 +87,10 @@ useEffect(()=>{
           <div key={item._id}>
           <div className='card'>
          <img src={`http://localhost:5000/uploads/${item.selectedFile}`} className="card-img-top img-fluid" style={{height:250}}/>
-         <div className="card-body">
-         <h6 className='mb-3'>{item.title}</h6>
-         {item.tags && <h6>{item.tags.map((tag:any)=>(`#${tag}`))}</h6>}
-         <h6>{item.message}.</h6>
+         
          </div>
          </div>
          </div>
-    </div>
         ))
       }
       </div>

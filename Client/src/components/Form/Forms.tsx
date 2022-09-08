@@ -72,13 +72,19 @@ useEffect(() => {
        <div className='text-center fw-bold mb-2'>{!props.currentId?'Creating' : 'Editing'} a Memory</div>
        <input type="text" placeholder='Name' className="form-control mb-3" name="name" value={user?.result?.name} disabled/>
 
+
+
+
+
+
+
        <input type="text" placeholder='Title' className="form-control mb-3" name="title" value={postdata.title} onChange={(e)=>setPostdata({...postdata, title:e.target.value})}/>
         <input type="text" placeholder='Tags' className="form-control mb-3" name="tags" value={postdata.tags} onChange={(e)=>setPostdata({...postdata, tags:e.target.value.split(",")})}/>
         <input type="text" placeholder='Description' className="form-control mb-3" name="message" value={postdata.message} onChange={(e)=>setPostdata({...postdata, message:e.target.value})}/>
         <div>
        
            <input type="file"
-           required
+          required={!props.currentId?true:false}
          name="selectedFile" 
          id="selectedFile"
          onChange={(e)=>setPostdata({...postdata, selectedFile:e.target.files})} />

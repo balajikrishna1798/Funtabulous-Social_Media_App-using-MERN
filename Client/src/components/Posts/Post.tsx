@@ -4,15 +4,18 @@ import "./Posts.css";
 import { Link, useNavigate } from "react-router-dom";
 import { deletePost, likePost } from "../../features/postSlice";
 import Comments from "../Comments/Comments";
-import { useState } from "react";
+import {  useState } from "react";
+
 
 const Post = ({ post, setCurrentId }) => {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("profile"));
+
+
+
   const userId = user?.result?.googleId || user?.result?._id;
   const dispatch = useAppDispatch();
- const primaryColor = "black"
   const handleLike = async () => {
     await dispatch(likePost(post._id));
   };
@@ -49,8 +52,17 @@ const Post = ({ post, setCurrentId }) => {
     
   };
 
+
+
+
+
+  
+    
+  
+
   return (
     <div className=" ">
+      
       <div
         className="card mt-5"
         style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}

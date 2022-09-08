@@ -30,6 +30,9 @@ export const likePosts = (id:any) => API.patch(`/posts/${id}/likePost`)
 export const updateProfile = (formData:any) => API.post("/users/profile",formData)
 
 export const signIn = (formData:any) => API.post("/users/signin",formData)
+
+export const payment = (details:any) => API.post("/users/payment",details)
+
 export const signUp = (formData:any) => API.post("/users/signup",formData)
 export const googleSignIn = (result:any) => API.post("/users/googleSignIn",result)
 export const emailPasswordVerify = (formData:any) => API.post("/users/verifypasswordmail",formData)

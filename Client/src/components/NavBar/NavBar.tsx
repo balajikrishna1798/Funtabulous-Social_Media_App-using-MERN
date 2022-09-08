@@ -22,16 +22,26 @@ function Navbar() {
     const token = user?.token;
     return setUser(JSON.parse(localStorage.getItem('profile')))       
   },[location])
-
+  const confirmPayment = async() =>{
+    navigate("/donate")
+      }
   
   return (
     
     
     <div className="sticky-top" >
-      
+
     <div className="card text-center p-1" style={{backgroundColor:"yellow",overflowX:"hidden"}}>
       <div className="row">
-      <div className="offset-md-4 col-md-4 col-sm-5 col-6 memories"><Link to = "/">Funtabulous</Link>
+      <button onClick={confirmPayment} title="Donate to Funtabulous if you wish.ThankYou!!!"  className="offset-md-1 position-relative btn btn-outline-danger col-md-1">
+        Donate
+      </button>
+
+
+
+
+      
+      <div className="offset-md-2 col-md-4 col-sm-5 col-6 memories"><Link to = "/">Funtabulous</Link>
      <img className="navbarLogo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvMh3EctbWvjFZJhEgxxXIM5QwismuTZyFnBuuz2fpjDGBzMJv8K2Y-fZbCStP1vS0oEM&usqp=CAU"
      /> </div>
         {user?.result ? (
