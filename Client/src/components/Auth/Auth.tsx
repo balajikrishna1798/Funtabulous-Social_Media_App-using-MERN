@@ -119,7 +119,7 @@ const Auth = () => {
                  
                  clientId={`${clientId}`}
                  render={(renderprops)=>(
-                        <button onClick={renderprops.onClick} className="btn btn-outline-danger"  disabled={renderprops.disabled}>
+                        <button onClick={renderprops.onClick} className="btn btn-outline-danger m-1"  disabled={renderprops.disabled}>
                             Google Login
                         </button>
                     )}
@@ -127,8 +127,8 @@ const Auth = () => {
                     onFailure={googleFailure}
                     cookiePolicy="single_host_origin"
                 />
-                <button type='submit' className='btn btn-outline-success' >Sign In</button>
-                <button type='button' className="btn btn-secondary">
+                <button type='submit' className='btn btn-outline-success m-1' >Sign In</button>
+                <button type='button' className="btn btn-secondary m-1">
                   <Link to="/register"><span className='text-light'>If you don't have and account.Create New!!</span></Link>
                 </button>
                 </div>

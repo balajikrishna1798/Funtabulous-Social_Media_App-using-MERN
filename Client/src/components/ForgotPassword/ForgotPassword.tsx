@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import {  Link, useNavigate } from 'react-router-dom';
-import { emailPasswordVerify } from '../../api';
 import { forgotPassword } from '../../features/authSlice';
 import { useAppDispatch } from '../../hooks';
-import ChangePassword from '../ChangePassword/ChangePassword';
 import { toast } from 'react-toastify';
 import './ForgotPassword.css'
 

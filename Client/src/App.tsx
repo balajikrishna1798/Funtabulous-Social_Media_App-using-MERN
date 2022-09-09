@@ -34,7 +34,13 @@ function App() {
   return (
     <Router>
 
-      <Routes>
+      <Routes>  
+
+
+
+
+
+        <div className=""></div>
       <Route path="/" element={<Navigate to="/posts"/>}/>
         <Route path="/posts" element={<Elements stripe={stripePromise}> <Home setCurrentId={setCurrentId}/></Elements>} />
         <Route path="/searchCreator" element={<SearchCreator/>} />

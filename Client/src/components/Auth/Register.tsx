@@ -122,8 +122,8 @@ const Register = () => {
                 <div className='d-flex justify-content-around mb-3'>
                
                 <button type='submit' className='btn btn-outline-success w-25' >Sign Up</button>
-                <button type='button' className="btn btn-secondary">
-                    <Link to = "/auth"><span style={{color:"black"}}>Already have an account?Sign In</span></Link>
+                <button type='button' className="btn btn-secondary w-50">
+                    <Link to = "/auth"><span style={{color:"black"}} >Already have an account?Sign In</span></Link>
                 </button>
                 </div>
             </div>
