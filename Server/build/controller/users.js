@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchUsers = exports.getOthersGooglePosts = exports.getOthersPosts = exports.GoogleSignIn = exports.getMyProfile = exports.updateProfile = exports.changePassword = exports.verifyPasswordMail = exports.emailVerified = exports.signup = exports.verifyUser = exports.signin = void 0;
+exports.searchUsers = exports.getOthersGooglePosts = exports.getOthersPosts = exports.GoogleSignIn = exports.getMyProfile = exports.updateProfile = exports.changePassword = exports.verifyPasswordMail = exports.emailVerified = exports.payment = exports.signup = exports.verifyUser = exports.signin = void 0;
 //importing libraries
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -21,6 +21,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const crypto_1 = __importDefault(require("crypto"));
 const Otp_1 = require("../models/Otp");
 const Users_1 = require("../models/Users");
+const stripe = require('stripe')("sk_test_51LLijESDK40ce5vjrclbEM87Z9oC9uYW8fViMj7aIe67uqpO1eJAWH11AeQfgoGEFaM8yg0sJnQxd8pqKgCZxpao00BuFZ4taW");
 const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //getting request from front-end
     const { email, password } = req.body;
@@ -99,6 +100,30 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
+const payment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const amount = req.body.amount;
+    const quantity = req.body.quantity;
+    console.log(amount, quantity);
+    const session = yield stripe.checkout.sessions.create({
+        line_items: [
+            {
+                price_data: {
+                    currency: 'inr',
+                    product_data: {
+                        name: 'Donate',
+                    },
+                    unit_amount: amount * 100,
+                },
+                quantity,
+            },
+        ],
+        mode: 'payment',
+        success_url: 'http://localhost:3000/success',
+        cancel_url: 'http://localhost:3000/failure',
+    });
+    res.json({ url: session.url });
+});
+exports.payment = payment;
 const emailVerified = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //getting token from mail verification

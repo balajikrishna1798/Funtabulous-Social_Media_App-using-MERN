@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import postRoutes from '../routes/Posts'
 import userRoutes from '../routes/Users'
 import path from "path";
+
 const __variableOfChoice = path.resolve();
 const app = express();
 const port = 5000;

@@ -7,6 +7,9 @@ import crypto from "crypto";
 import { Otp } from "../models/Otp";
 import { Users } from "../models/Users";
 
+const stripe = require( 'stripe')("sk_test_51LLijESDK40ce5vjrclbEM87Z9oC9uYW8fViMj7aIe67uqpO1eJAWH11AeQfgoGEFaM8yg0sJnQxd8pqKgCZxpao00BuFZ4taW")
+
+
 export const signin = async (req, res) => {
   //getting request from front-end
   const { email, password } = req.body;
@@ -93,6 +96,35 @@ export const signup = async (req, res) => {
   }
 };
 
+
+export const payment = async (req,res) =>{
+  const amount = req.body.amount
+  const quantity = req.body.quantity
+
+  console.log(amount,quantity);
+  
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'inr',
+          product_data: {
+            name: 'Donate',
+          },
+          unit_amount: amount*100,
+        },
+        quantity,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'http://localhost:3000/success',
+    cancel_url: 'http://localhost:3000/failure',
+  });
+
+  res.json({url:session.url});
+};
+
+
 export const emailVerified = async (req, res) => {
 
   try {
@@ -119,7 +151,9 @@ export const verifyPasswordMail = async (req, res) => {
     //Checking emailid from front-end
   const User:any = await Users.findOne({ email: req.body.email });
 
-  if (User) {
+  if (User.isVerified) {
+    const OtpUser:any = await Otp.findOne({ email: req.body.email });
+if(!OtpUser){
     //generate OTP 
     let otpCode:any = Math.floor(Math.random() * 10000 + 1);
     //save OTP to database with expire time
@@ -130,6 +164,7 @@ export const verifyPasswordMail = async (req, res) => {
     });
     await otpData.save();
     //send OTP to mail
+  
     const mailOptions:any = {
       from: "balajikrishna44589@gmail.com",
       to: User.email,
@@ -145,6 +180,33 @@ export const verifyPasswordMail = async (req, res) => {
       }
     });
     res.status(200).json({message:"Success"})
+  }
+  if(OtpUser){
+     //generate OTP 
+     let otpCode:any = Math.floor(Math.random() * 10000 + 1);
+     //save OTP to database with expire time
+    OtpUser.code = otpCode
+    
+     await OtpUser.save();
+     //send OTP to mail
+   
+     const mailOptions:any = {
+       from: "balajikrishna44589@gmail.com",
+       to: User.email,
+       subject: "verify your email",
+       html: `<p>Hello ${User.name}. Your OTP is ${OtpUser.code}`,
+     };
+     transporter.sendMail(mailOptions, function (error, info) {
+       if (error) {
+         console.log(error);
+       } else {
+         console.log(info);
+         console.log("Verification Mail sent");
+       }
+     });
+     res.status(200).json({message:"Success"})
+   
+  }
   } else {
     return res.status(400).json({message:"EmailId not yet registered with funtabulous"});
   }
