@@ -150,33 +150,61 @@ exports.emailVerified = emailVerified;
 const verifyPasswordMail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Checking emailid from front-end
     const User = yield Users_1.Users.findOne({ email: req.body.email });
-    if (User) {
-        //generate OTP 
-        let otpCode = Math.floor(Math.random() * 10000 + 1);
-        //save OTP to database with expire time
-        let otpData = new Otp_1.Otp({
-            email: req.body.email,
-            code: otpCode,
-            expiresIn: new Date().getTime() + 300 * 1000,
-        });
-        yield otpData.save();
-        //send OTP to mail
-        const mailOptions = {
-            from: "balajikrishna44589@gmail.com",
-            to: User.email,
-            subject: "verify your email",
-            html: `<p>Hello ${User.name}. Your OTP is ${otpData.code}`,
-        };
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            }
-            else {
-                console.log(info);
-                console.log("Verification Mail sent");
-            }
-        });
-        res.status(200).json({ message: "Success" });
+    if (User.isVerified) {
+        const OtpUser = yield Otp_1.Otp.findOne({ email: req.body.email });
+        if (!OtpUser) {
+            //generate OTP 
+            let otpCode = Math.floor(Math.random() * 10000 + 1);
+            //save OTP to database with expire time
+            let otpData = new Otp_1.Otp({
+                email: req.body.email,
+                code: otpCode,
+                expiresIn: new Date().getTime() + 300 * 1000,
+            });
+            yield otpData.save();
+            //send OTP to mail
+            const mailOptions = {
+                from: "balajikrishna44589@gmail.com",
+                to: User.email,
+                subject: "verify your email",
+                html: `<p>Hello ${User.name}. Your OTP is ${otpData.code}`,
+            };
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                }
+                else {
+                    console.log(info);
+                    console.log("Verification Mail sent");
+                }
+            });
+            res.status(200).json({ message: "Success" });
+        }
+        if (OtpUser) {
+            //generate OTP 
+            let otpCode = Math.floor(Math.random() * 10000 + 1);
+            //save OTP to database with expire time
+            OtpUser.code = otpCode;
+            OtpUser.expiresIn = new Date().getTime() + 300 * 1000,
+                yield OtpUser.save();
+            //send OTP to mail
+            const mailOptions = {
+                from: "balajikrishna44589@gmail.com",
+                to: User.email,
+                subject: "verify your email",
+                html: `<p>Hello ${User.name}. Your OTP is ${OtpUser.code}`,
+            };
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                }
+                else {
+                    console.log(info);
+                    console.log("Verification Mail sent");
+                }
+            });
+            res.status(200).json({ message: "Success" });
+        }
     }
     else {
         return res.status(400).json({ message: "EmailId not yet registered with funtabulous" });
