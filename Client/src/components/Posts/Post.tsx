@@ -53,13 +53,6 @@ const Post = ({ post, setCurrentId }) => {
   };
 
 
-
-
-
-  
-    
-  
-
   return (
     <div className=" ">
       
@@ -68,12 +61,7 @@ const Post = ({ post, setCurrentId }) => {
         style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}
         key={post?._id}
       >
-        <h6
-          className="position-absolute"
-          style={{ zIndex: 10, marginLeft: "10px", color: "yellow" }}
-        >
-          {moment(new Date(post?.createdAt)).fromNow()}
-        </h6>
+      
         {(user?.result?.googleId === post?.creator ||
           user?.result?._id === post?.creator) && (
           <button
@@ -112,7 +100,10 @@ const Post = ({ post, setCurrentId }) => {
               }/${post?.creator}`}
             >
               {user && (
-                <h5 style={{ color: "red" }}>{`Uploaded by ${post?.name}`}</h5>
+                <>
+                <h5 style={{ color: "red" }}>{`Uploaded by ${post?.name}  `}</h5>
+                <h6 style={{ color: "blue" }}>{moment(new Date(post?.createdAt)).fromNow()}</h6>
+                </>
               )}
             </Link>
           }

@@ -87,8 +87,9 @@ export const googleusersProfile:any = createAsyncThunk("auth/googleusersProfile"
         
     }
 })
+
 export const googleSignIn:any = createAsyncThunk("auth/googleSignIn",async(data:any,{rejectWithValue})=>{
-         const {result,navigate,toast}=data
+         const {result,navigate}=data
     try {
         const response = await api.googleSignIn(result)
 
@@ -121,9 +122,9 @@ const authSlice = createSlice({
              state.loading = true;
         });
         builder.addCase(login.fulfilled,(state,action)=>{
-            state.loading = false
+            state.loading = false;
             localStorage.setItem("profile",JSON.stringify({...action.payload}));
-             state.user = action.payload
+             state.user = action.payload;
         });
         builder.addCase(login.rejected,(state,action)=>{
             state.loading = false

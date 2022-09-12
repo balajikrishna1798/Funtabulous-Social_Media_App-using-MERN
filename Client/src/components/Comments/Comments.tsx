@@ -25,10 +25,9 @@ const Comments = ({post}) => {
         <div style={{overflowY: "scroll", height: "150px"}}>{
        post.comments && post?.comments?.map((c:any)=>(
        
-            <div key={c._id} className='d-flex'>
+            <div key={c._id} className='d-flex' ref={commentsRef}>
              <strong>{c.content.split(":")[0]}</strong>:
              <p style={{fontSize:"17px"}}>{c.content.split(":")[1]}</p>
-             <div ref={commentsRef}></div>
             </div>
             
         ))

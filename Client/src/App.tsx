@@ -34,13 +34,7 @@ function App() {
   return (
     <Router>
 
-      <Routes>  
-
-
-
-
-
-        <div className=""></div>
+      <Routes>
       <Route path="/" element={<Navigate to="/posts"/>}/>
         <Route path="/posts" element={<Elements stripe={stripePromise}> <Home setCurrentId={setCurrentId}/></Elements>} />
         <Route path="/searchCreator" element={<SearchCreator/>} />
@@ -48,9 +42,6 @@ function App() {
         <Route path="/posts/:id" element={<PostDetails/>}/>
         <Route path="/success" element={<Success/>}/>
         <Route path="/failure" element={<Failure/>}/>
-
-        <Route path="/donate" element={<Donate/>}/>
-
         <Route path="/profile" element={<Profile />} />
         <Route path="/auth" element={!user?.result.name?<Auth/>:<Navigate to="/posts"></Navigate>}/>
         <Route path="/register" element={!user?.result.name?<Register/>:<Navigate to="/posts"></Navigate>}/>
