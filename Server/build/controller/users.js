@@ -150,7 +150,7 @@ exports.emailVerified = emailVerified;
 const verifyPasswordMail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Checking emailid from front-end
     const User = yield Users_1.Users.findOne({ email: req.body.email });
-    if (User.isVerified) {
+    if (User && User.isVerified) {
         const OtpUser = yield Otp_1.Otp.findOne({ email: req.body.email });
         if (!OtpUser) {
             //generate OTP 

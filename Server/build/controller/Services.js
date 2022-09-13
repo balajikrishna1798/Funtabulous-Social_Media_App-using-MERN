@@ -17,7 +17,7 @@ var upload = (0, multer_1.default)({
     storage: storage,
     limits: { fileSize: 10000000 },
     fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == "image/webp") {
             cb(null, true);
         }
         else {

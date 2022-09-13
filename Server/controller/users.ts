@@ -122,6 +122,7 @@ export const payment = async (req,res) =>{
   });
 
   res.json({url:session.url});
+  
 };
 
 
@@ -151,7 +152,7 @@ export const verifyPasswordMail = async (req, res) => {
     //Checking emailid from front-end
   const User:any = await Users.findOne({ email: req.body.email });
 
-  if (User.isVerified) {
+  if (User&&User.isVerified) {
     const OtpUser:any = await Otp.findOne({ email: req.body.email });
 if(!OtpUser){
     //generate OTP 
