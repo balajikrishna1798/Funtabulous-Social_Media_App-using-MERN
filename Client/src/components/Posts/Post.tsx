@@ -23,19 +23,38 @@ const Post = ({ post, setCurrentId }) => {
   const handleClick = () => {
     setShowComment((prevshowComment) => !prevshowComment);
   };
-  const Likes = () => {
+  const LikeCount = () => {
     if (post?.likes.length > 0) {
       return post.likes.find((like: any) => like === userId) ? (
         <>
-          <i className="fa-solid fa-handshake" style={{ color: "blue" }}></i>
+    
           {post?.likes.length > 2
             ? `you and ${post?.likes.length - 1} others liked`
             : `${post?.likes.length} like${post?.likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
-          <i className="fa-solid fa-thumbs-up "> {post?.likes.length}
-          {post?.likes.length === 1 ? "Like" : "Likes"}</i>
+          {post?.likes.length}
+          {post?.likes.length === 1 ? "Like" : "Likes"}
+         
+        </>
+      );
+    }}
+  //   return (
+  //     <>
+  //       <i className="fa-solid fa-thumbs-up ">Like</i>
+  //     </>
+  //   );
+  // };
+  const Likes = () => {
+    if (post?.likes.length > 0) {
+      return post.likes.find((like: any) => like === userId) ? (
+        <>
+          <i className="fa-solid fa-handshake" style={{ color: "blue" }}><span style={{marginLeft:"5px"}}>Liked</span></i>
+        </>
+      ) : (
+        <>
+          <i className="fa-solid fa-thumbs-up "> Like</i>
          
         </>
       );
@@ -46,7 +65,6 @@ const Post = ({ post, setCurrentId }) => {
       </>
     );
   };
-
   const openPost = () => {
     navigate(`/posts/${post?._id}`);
     
@@ -110,7 +128,11 @@ const Post = ({ post, setCurrentId }) => {
 
           <h6 className="mb-2">{post?.title}</h6>
           <h6>{post?.tags.map((tag: any) => `#${tag}`)}</h6>
-          <h5>{post?.message}</h5>
+          <h5>{post?.message}</h5><hr></hr>
+          <p className="fw-bold" style={{marginLeft:"80%"}}>
+          <LikeCount/>
+          </p>
+          <hr></hr>
           <div className="row">
             <div className="col-md-4 col-xs-4" >
             <button 
@@ -118,6 +140,7 @@ const Post = ({ post, setCurrentId }) => {
               disabled={!user?.result}
               onClick={handleLike}
             >
+              
               <Likes />
             </button>
             </div>

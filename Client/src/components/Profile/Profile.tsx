@@ -42,14 +42,15 @@ const [pic,setPic] = useState()
 
  
 useEffect(()=>{
-  
+  const checkID = async () =>{
+  if(googleUserId){
+    return await  dispatch(getPostByGoogleUser(googleUserId))
+}
     if(userId){
-        dispatch(getPostByUser(userId))
+      return await dispatch(getPostByUser(userId))
     }
-    if(googleUserId){
-      dispatch(getPostByGoogleUser(googleUserId))
   }
- 
+  checkID();
 },[userId,googleUserId])
   return (
     <div className='container mb-5'>
@@ -72,7 +73,7 @@ useEffect(()=>{
           </label>
         <input type="file"
          name="pic" 
-         id="pic"
+         id="pic"  
          style={{display:"none"}}
          onChange={changeHandler} />
         <button type='submit' className='btn btn-danger mb-1 mt-3'>Submit</button>

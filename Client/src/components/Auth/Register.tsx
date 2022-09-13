@@ -99,6 +99,7 @@ const Register = () => {
                  {
                   errors&& <small className="text-danger">{errors.email?.message}</small>}
 <div className='position-relative'>
+  
                 <input type={isRevealPwd ? "text" : "password"} className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.password? "red":"green"}` }}
                 placeholder="Password" {...register("password")}/>

@@ -9,14 +9,12 @@ const Comments = ({post}) => {
   
   
   const [comment,setComment] = useState("")
-  const commentsRef = useRef();
   const submitHandler = async (e) =>{
     e.preventDefault();
   const text = ` ${user?.result?.name}:${comment}`
     await dispatch(commentPost({postId:post._id,text:{content:text}}))
     setComment("")
-    //@ts-expect-error
-    commentsRef.current.scrollIntoView({behaviour:"smooth"})
+ 
 }   
  
     return (
@@ -25,9 +23,9 @@ const Comments = ({post}) => {
         <div style={{overflowY: "scroll", height: "150px"}}>{
        post.comments && post?.comments?.map((c:any)=>(
        
-            <div key={c._id} className='d-flex' ref={commentsRef}>
-             <strong>{c.content.split(":")[0]}</strong>:
-             <p style={{fontSize:"17px"}}>{c.content.split(":")[1]}</p>
+            <div key={c._id} className='d-flex' >
+             <strong style={{marginRight:"5px"}}>{c.content.split(":")[0]}</strong>:
+             <p style={{fontSize:"17px",marginLeft:"2px"}}>{c.content.split(":")[1]}</p>
             </div>
             
         ))

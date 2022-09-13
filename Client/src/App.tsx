@@ -30,7 +30,6 @@ function App() {
   useEffect(()=>{
     dispatch(setUser(user))
   })
-  const [show,setShow] = useState();
   return (
     <Router>
 
@@ -48,8 +47,8 @@ function App() {
 
         <Route path="/userProfile/:id" element={<UserProfile />} />
         <Route path="/googleuserProfile/:googleid" element={<UserProfile />} />
-        <Route path="/forgotPassword" element={<ForgotPassword show={show} setShow={setShow}/>} />
-        <Route path="/ChangePassword" element={<ChangePassword show={show} setShow={setShow}/>} />
+        <Route path="/forgotPassword" element={<ForgotPassword/>} />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
         
       </Routes>
     </Router>

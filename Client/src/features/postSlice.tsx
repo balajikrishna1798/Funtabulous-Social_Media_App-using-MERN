@@ -161,6 +161,7 @@ const postSlice = createSlice({
            },
            [getPost.pending]:(state)=>{
             state.loading = true
+        
        },
        [getPost.fulfilled]:(state,action)=>{
            state.loading = false

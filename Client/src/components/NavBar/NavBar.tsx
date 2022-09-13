@@ -54,8 +54,8 @@ function Navbar() {
 
       
       <div className="offset-lg-2 col-md-4 col-8 memories"><Link to = "/">Funtabulous</Link>
-     <img className="navbarLogo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvMh3EctbWvjFZJhEgxxXIM5QwismuTZyFnBuuz2fpjDGBzMJv8K2Y-fZbCStP1vS0oEM&usqp=CAU"
-     /> </div>
+     
+    </div>
         {user?.result ? (
             <>
                  {user?.result.pic ?<img className="col-md-2 offset-md-0  offset-3 col-2 mt-1 userDp"

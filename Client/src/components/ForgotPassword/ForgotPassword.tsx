@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../hooks';
 import { toast } from 'react-toastify';
 import './ForgotPassword.css'
 
-const ForgotPassword = ({show,setShow}) => {
+const ForgotPassword = () => {
     const [formData,setFormData] = useState({
         email:"",code:"",password:""
     }) 
@@ -17,11 +17,11 @@ const ForgotPassword = ({show,setShow}) => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         dispatch(forgotPassword({formData,navigate,toast}))
+        sessionStorage.setItem("email",JSON.stringify(formData.email))
     }
     const handleChange = (e:any) =>{
       setFormData({...formData,[e.target.name]:e.target.value}) 
-      setShow({...formData,[e.target.name]:e.target.value}) 
-      console.log(show);
+      
       
   }
   return (

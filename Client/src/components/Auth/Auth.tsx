@@ -35,7 +35,11 @@ const Auth = () => {
         handleSubmit,
         formState: { errors }
       } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
+        defaultValues:{
+          email:"",
+          password:"",
+        }
       });
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -97,13 +101,13 @@ const Auth = () => {
             <input type="email"  className={`form-control shadow-none ${errors.email?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.email? "red":"green"}` }} 
                  placeholder="Email Address" {...register("email")}/>
-                 {//@ts-expect-error
+                 {
                   errors&& <small className="text-danger">{errors.email?.message}</small>}
 <div className='position-relative'>
               <input type={isRevealPwd ? "text" : "password"} className={`form-control shadow-none ${errors.password?"mb-0":"mb-3"}`} 
                 style={{borderColor:`${errors.password? "red":"green"}` }}
                 placeholder="Password" {...register("password")}/>
-                {//@ts-expect-error
+                {
                   errors&& <small className="text-danger">{errors.password?.message}</small>}
                 <img style={{width:`${isRevealPwd?"22px":"26px"}`,top:10,right:10,cursor:"pointer"}} className="position-absolute" 
           title={isRevealPwd ? "Hide password" : "Show password"}
