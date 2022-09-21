@@ -23,7 +23,7 @@ const Post = ({ post, setCurrentId }) => {
   const handleClick = () => {
     setShowComment((prevshowComment) => !prevshowComment);
   };
-  const LikeCount = () => {
+   const LikeCount = () => {
     if (post?.likes.length > 0) {
       return post.likes.find((like: any) => like === userId) ? (
         <>
@@ -127,7 +127,9 @@ const Post = ({ post, setCurrentId }) => {
           }
 
           <h6 className="mb-2">{post?.title}</h6>
-          <h6>{post?.tags.map((tag: any) => `#${tag}`)}</h6>
+          <h6>{post?.tags.map((tag: any) => (
+          
+          <Link to={`/posts/tag/${tag}`}> #{tag}</Link>))}</h6>
           <h5>{post?.message}</h5><hr></hr>
           <p className="fw-bold" style={{marginLeft:"80%"}}>
           <LikeCount/>

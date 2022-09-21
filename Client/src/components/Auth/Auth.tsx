@@ -58,7 +58,6 @@ const Auth = () => {
         const token = res?.tokenId;
         const googleId = res?.googleId;
         const imageUrl = res?.profileObj?.imageUrl;
-
         const result = {email,name,token,googleId,imageUrl}
         try {
             dispatch(googleSignIn({result,navigate}))
@@ -66,15 +65,14 @@ const Auth = () => {
             
         } catch (error) {
             console.log(error)
-        }
-        
+        }   
     }
+
     const googleFailure = (err:any) =>{
         console.log(err)
         console.log("Google Login was not successfull")
     }
 
-   
     useEffect(()=>{
         function start(){
         gapi.client.init({

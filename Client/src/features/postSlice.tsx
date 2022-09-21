@@ -5,7 +5,7 @@ import * as api from '../api'
 const initialState= {
     posts:[],
     userPosts:[],
-    tagTours:[],
+    tagPosts:[],
     error:"",
     loading:false
 }
@@ -122,6 +122,8 @@ export const getPostBySearch:any = createAsyncThunk("post/getPostBySearch",async
 export const getPostByTag:any = createAsyncThunk("post/getPostByTag",async(tag,{rejectWithValue})=>{
     try {
         const response = await api.fetchPostsByTag(tag)
+        console.log(response);
+        
         return response.data
     } catch (error) {
         return rejectWithValue(error.response.data)
@@ -205,12 +207,27 @@ const postSlice = createSlice({
        state.error= action.payload.message
    },
 
+
    [getPostByTag.pending]:(state)=>{
     state.loading = true
 },
 [getPostByTag.fulfilled]:(state,action)=>{
    state.loading = false
-    state.tagTours = action.payload.data
+    state.posts = action.payload.data
+},
+[getPostByTag.rejected]:(state,action)=>{
+   state.loading = false
+   state.error= action.payload.message
+},
+
+
+   [getPostByTag.pending]:(state)=>{
+    state.loading = true
+},
+[getPostByTag.fulfilled]:(state,action)=>{
+   state.loading = false
+    state.tagPosts= action.payload
+    console.log(state.tagPosts)
 },
 [getPostByTag.rejected]:(state,action)=>{
    state.loading = false

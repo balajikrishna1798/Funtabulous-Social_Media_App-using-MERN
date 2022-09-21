@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {  getMyProfile, updateUser } from '../../features/authSlice'
 import { getPostByUser,getPostByGoogleUser} from '../../features/postSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import FileBase64 from 'react-file-base64'
 
 const Profile = () => {
   const [formdata,setFormData] = useState({
@@ -19,7 +18,6 @@ const [pic,setPic] = useState()
     const googleUserId = user?.result?.googleId;
     const dispatch = useAppDispatch()
     console.log(userId);
-    const location = useLocation()
 
     const submitHandler =  async (e:any) =>{
       e.preventDefault();

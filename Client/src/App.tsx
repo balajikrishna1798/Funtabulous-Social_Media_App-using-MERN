@@ -17,6 +17,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import Success from './components/Donate/Success';
 import Donate from './components/Donate/Donate';
 import Failure from './components/Donate/Failure';
+import Tagpost from './components/tag/Tagpost';
+import Calendar from './components/Calender/Calendar';
 
 
 
@@ -39,6 +41,9 @@ function App() {
         <Route path="/searchCreator" element={<SearchCreator/>} />
         <Route path="/forms" element={<Forms currentId={currentId} setCurrentId={setCurrentId}/>}/>
         <Route path="/posts/:id" element={<PostDetails/>}/>
+        <Route path="/posts/tag/:tag" element={<Tagpost/>}/>
+        <Route path="/calendar" element={<Calendar/>}/>
+
         <Route path="/success" element={<Success/>}/>
         <Route path="/failure" element={<Failure/>}/>
         <Route path="/profile" element={<Profile />} />
