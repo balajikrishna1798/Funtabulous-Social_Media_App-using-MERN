@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 var upload = multer({
     storage:storage,
     limits:{fileSize:10000000},
-    fileFilter: (req, file, cb) => {
+    fileFilter: (req, file, cb:any) => {
         if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg"|| file.mimetype == "image/webp") {
           cb(null, true);
           

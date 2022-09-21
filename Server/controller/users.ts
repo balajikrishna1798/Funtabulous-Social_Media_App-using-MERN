@@ -52,11 +52,7 @@ export const signup = async (req, res) => {
   try {
     //checking whether the user is exists or not
     const existingUser = await Users.findOne({ email });
-
-
-
-
-                
+       
     //if email already exists decline
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
@@ -343,11 +339,11 @@ export const searchUsers = async(req,res) =>{
     }
 
 
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "balajikrishna44589@gmail.com",
-        pass: "gjvkdihwboxlykyz",
-      },
-    });
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "balajikrishna44589@gmail.com",
+    pass: "gjvkdihwboxlykyz",
+  },
+});
       

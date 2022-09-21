@@ -9,6 +9,7 @@ const Services_1 = __importDefault(require("../controller/Services"));
 const auth_1 = require("../middleware/auth");
 const router = express_1.default.Router();
 router.get('/search', posts_1.getPostsBySearch);
+router.get('/tag/:tag', posts_1.getPostByTag);
 router.get('/', posts_1.getPosts);
 router.get('/:id', posts_1.getPost);
 router.post('/', auth_1.auth, Services_1.default.single('selectedFile'), posts_1.createPosts);

@@ -32,8 +32,8 @@ export const getPostsBySearch = async (req,res)=>{
     } catch (error) {
         console.log(error);
     }
-
 }
+
 export const createPosts = async (req,res)=>{
     const newPost = new postMessage({...req.body,creator:req.userId,selectedFile:req.file?.filename,createdAt:new Date().toISOString()});
     try {
@@ -106,4 +106,17 @@ export const getPostsByUser = async (req,res)=>{
      res.status(200).json(userPosts)
 }
 
+export const getPostByTag = async (req,res) =>{
 
+    const {tag} = req.params
+    try {
+
+        const posts = await postMessage.find({ tags:{$in:tag} });
+        console.log(posts);
+        res.json(posts)
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPostsByUser = exports.commentPosts = exports.likePosts = exports.deletePosts = exports.updatePosts = exports.createPosts = exports.getPostsBySearch = exports.getPost = exports.getPosts = void 0;
+exports.getPostByTag = exports.getPostsByUser = exports.commentPosts = exports.likePosts = exports.deletePosts = exports.updatePosts = exports.createPosts = exports.getPostsBySearch = exports.getPost = exports.getPosts = void 0;
 const PostsMessage_1 = require("../models/PostsMessage");
 const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -118,4 +118,16 @@ const getPostsByUser = (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.status(200).json(userPosts);
 });
 exports.getPostsByUser = getPostsByUser;
+const getPostByTag = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tag } = req.params;
+    try {
+        const posts = yield PostsMessage_1.postMessage.find({ tags: { $in: tag } });
+        console.log(posts);
+        res.json(posts);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.getPostByTag = getPostByTag;
 //# sourceMappingURL=posts.js.map

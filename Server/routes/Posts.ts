@@ -1,10 +1,12 @@
 import express from "express";
-import { createPosts,getPost, deletePosts, getPosts,updatePosts , likePosts, getPostsBySearch, getPostsByUser,commentPosts} from "../controller/posts";
+import { createPosts,getPost, deletePosts, getPosts,updatePosts , likePosts, getPostsBySearch, getPostsByUser,commentPosts, getPostByTag} from "../controller/posts";
 import upload from "../controller/Services";
 import { auth } from "../middleware/auth";
 const router = express.Router();
 
 router.get('/search',getPostsBySearch)
+router.get('/tag/:tag',getPostByTag)
+
 router.get('/',getPosts)
 router.get('/:id',getPost)
 router.post('/',auth,upload.single('selectedFile'),createPosts)
