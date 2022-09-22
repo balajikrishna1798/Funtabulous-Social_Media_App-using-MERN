@@ -16,25 +16,22 @@ exports.getEvent = exports.createEvent = void 0;
 const moment_1 = __importDefault(require("moment"));
 const Event_1 = require("../models/Event");
 const createEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const event = new Event_1.Event(Object.assign(Object.assign({}, req.body), { creator: req.userId, createdAt: new Date().toISOString() }));
-    try {
-        if (event) {
-            yield event.save();
-            console.log(event);
-            res.status(200).send(event);
-        }
-    }
-    catch (err) {
-        res.status(400).send(err);
-    }
+    const event = new Event_1.Event(req.body);
+    yield event.save();
+    console.log(event);
+    res.status(200).send(event);
 });
 exports.createEvent = createEvent;
 const getEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const event = yield Event_1.Event.find({
+    const events = yield Event_1.Event.find({
         start: {
-            $gte: (0, moment_1.default)(req.query.start).toDate
-        }
+            $gte: (0, moment_1.default)(req.query.start).toDate()
+        },
+        end: {
+            $lte: (0, moment_1.default)(req.query.end).toDate()
+        },
     });
+    res.send(events);
 });
 exports.getEvent = getEvent;
 //# sourceMappingURL=calender.js.map

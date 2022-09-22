@@ -1,7 +1,7 @@
 import express from "express";
-import { createEvent } from "../controller/calender";
+import { createEvent, getEvent } from "../controller/calender";
 const router = express.Router();
 
 router.post("/createEvent",createEvent)
-router.get("/getEvent",createEvent)
+router.get("/getEvent",getEvent)
 export default router;

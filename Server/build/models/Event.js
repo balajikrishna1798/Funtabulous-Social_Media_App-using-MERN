@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Event = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const EventSchema = new mongoose_1.default.Schema({
-    from: { type: Date },
-    to: { type: Date },
-    eventMsg: { type: String },
+    start: { type: Date },
+    end: { type: Date },
+    title: { type: String },
 }, {
     //@ts-expect-error
     timeStamps: { type: Boolean, default: true }

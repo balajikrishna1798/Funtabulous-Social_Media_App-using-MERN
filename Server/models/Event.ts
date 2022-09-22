@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const EventSchema = new mongoose.Schema({
 
-    from:{type:Date},
-    to:{type:Date},
-    eventMsg:{type:String},
+    start:{type:Date},
+    end:{type:Date},
+    title:{type:String},
 },{
 //@ts-expect-error
     timeStamps:{type:Boolean,default:true}
