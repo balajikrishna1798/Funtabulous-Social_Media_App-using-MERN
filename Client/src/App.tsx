@@ -19,10 +19,11 @@ import Donate from './components/Donate/Donate';
 import Failure from './components/Donate/Failure';
 import Tagpost from './components/tag/Tagpost';
 import Calendar from './components/Calender/Calendar';
+import  Modal  from 'react-modal';
 
 
 
-
+Modal.setAppElement("#root")
 function App() {
   const [currentId,setCurrentId] = useState(null);
   const stripePromise = loadStripe("pk_live_51LLijESDK40ce5vjWswCCiVxdL3xmFJrbFQhJgBpWBqeBqoYyenL91fZB5LtKea6qBPKpWvcOfzgy1sKUZD8HwRh00XzaANvqu");

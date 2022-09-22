@@ -1,32 +1,7 @@
-.memories{
-    font-size: 2rem;
-}
-.container{
-    margin-top: 1rem;
-}
-.Signin{
-    color:red;
-    font-size: 1rem;    
-   
-    font-weight: 800;
-}
-a{
-    text-decoration: none;
-    color: blue;
-}
-.navbarLogo{
-    width: 3rem;
-    opacity:0.3;
-}
-.userDp{
-    border-radius:50%;
-    height:40;
-    width:70px
-}
-.defaultDp{
-    border-radius:50%;
-    height:40;
-    border:2px solid red;
-    width:40px;
-    background-color:black;
-}
+.text {
+    font-size: 30px;
+    background: -webkit-linear-gradient(rgb(211, 57, 57), rgb(25, 0, 255));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+

@@ -1,18 +1,13 @@
-import { gapi } from 'gapi-script';
-import  { useEffect } from 'react'
+
 import { useState } from 'react'
-import { GoogleLogin } from 'react-google-login';
 import { Link, useNavigate } from 'react-router-dom';
-import { googleSignIn, login, registerr } from '../../features/authSlice';
+import { registerr } from '../../features/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
-//@ts-expect-error
-import video from '../../assets/video.mp4'
 
 const Register = () => {
   
@@ -74,9 +69,8 @@ const Register = () => {
         const showPassword = "https://banner2.cleanpng.com/20190701/gbw/kisspng-computer-icons-password-portable-network-graphics-password-icon-png-vector-clipart-psd-peoplepng-5d1a0c1602a108.9242962015619881180108.jpg"
    return (
     <div className='container'>
-        {//@ts-expect-error
-        <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-fixed' style={{right:0,bottom:0,objectFit:"cover"}}/>}
-        <div className='position-fixed mb' style={{backgroundColor:'rgba(255, 255, 0, 0.7)',paddingTop:"50px",paddingBottom:"70px",width:"50%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
+       
+        <div className='position-fixed mb' style={{paddingTop:"50px",paddingBottom:"70px",width:"50%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
         <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>Sign Up</p>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"> 
             <div className='container w-75'>

@@ -112,16 +112,16 @@ const Post = ({ post, setCurrentId }) => {
 
         <div className="card-body">
           {
-            <Link
+            <Link 
               to={`/${
                 isNaN(post?.creator) ? "userProfile" : "googleuserProfile"
-              }/${post?.creator}`}
+              }/${post?.creator}`} style={{textDecoration:"none"}}
             >
               {user && (
-                <>
+                <div >
                 <h5 style={{ color: "red" }}>{`Uploaded by ${post?.name}  `}</h5>
                 <h6 style={{ color: "blue" }}>{moment(new Date(post?.createdAt)).fromNow()}</h6>
-                </>
+                </div>
               )}
             </Link>
           }
@@ -129,7 +129,7 @@ const Post = ({ post, setCurrentId }) => {
           <h6 className="mb-2">{post?.title}</h6>
           <h6>{post?.tags.map((tag: any) => (
           
-          <Link to={`/posts/tag/${tag}`}> #{tag}</Link>))}</h6>
+          <Link to={`/posts/tag/${tag}`} style={{textDecoration:"none",color:"green"}}> #{tag}</Link>))}</h6>
           <h5>{post?.message}</h5><hr></hr>
           <p className="fw-bold" style={{marginLeft:"80%"}}>
           <LikeCount/>

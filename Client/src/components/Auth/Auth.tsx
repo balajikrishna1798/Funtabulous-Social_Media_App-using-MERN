@@ -11,8 +11,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import './Auth.css'
-//@ts-expect-error
-import video from '../../assets/video.mp4';
+import { Circles } from 'react-loader-spinner';
 
 const Auth = () => {
   const [isRevealPwd, setIsRevealPwd] = useState(false);
@@ -51,6 +50,7 @@ const Auth = () => {
         
     }
 
+    const {loading} = useAppSelector(state=>({...state.auth}))
   
     const googleSuccess = async(res:any) =>{
         const email = res?.profileObj?.email;
@@ -88,8 +88,8 @@ const Auth = () => {
 
    return (
     <div className='container'>
-        {//@ts-expect-error
-        <video src={video} controls={false}  type="video/mp4" loop autoPlay className='position-fixed' style={{right:0,bottom:0,objectFit:"cover"}}/>}
+       
+       
         <div className='position-fixed videoBG' >
         <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>Sign In</p>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"> 
@@ -129,7 +129,18 @@ const Auth = () => {
                     onFailure={googleFailure}
                     cookiePolicy="single_host_origin"
                 />
-                <button type='submit' className='btn btn-outline-success m-1' >Sign In</button>
+                <button type='submit' className='btn btn-outline-success m-1' >
+                {loading && <Circles
+  height="20"
+  width="20"
+  color="black"
+  wrapperStyle={{position:"absolute"}}
+  wrapperClass=""
+  visible={true}
+/>}
+                  Sign In
+                  
+                  </button>
                 <button type='button' className="btn btn-secondary m-1">
                   <Link to="/register"><span className='text-light'>If you don't have and account.Create New!!</span></Link>
                 </button>
