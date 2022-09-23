@@ -17,14 +17,12 @@ const [pic,setPic] = useState()
     const userId = user?.result?._id 
     const googleUserId = user?.result?.googleId;
     const dispatch = useAppDispatch()
-    console.log(userId);
 
     const submitHandler =  async (e:any) =>{
       e.preventDefault();
     const formData = new FormData();
     formData.append("name",formdata.name)
     formData.append("pic",pic)
-    console.log(formData)
 
        await dispatch(updateUser(formData))
        await dispatch(getMyProfile(userId))

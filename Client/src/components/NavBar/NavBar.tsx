@@ -50,14 +50,7 @@ function Navbar() {
 //        className="offset-lg-1 offset-md-1 position-relative btn btn-outline-danger col-lg-1 col-md-2 shadow-none">
 //         Donate
 //       </button>
-// <Modal show={show} onHide={handleModal}>
-//   <Modal.Header closeButton>
-//     Thanks For your Contribution <span style={{fontWeight:600,color:"blue",marginRight:"auto",marginLeft:"3px"}}>{user&&user.result.name}</span>
-//   </Modal.Header>
-// <Modal.Body>
-//   <Donate handleModal={handleModal}/>
-// </Modal.Body>
-// </Modal>
+// 
 
 //       <div className="offset-lg-2 col-md-4 col-8 memories"><Link to = "/">Funtabulous</Link>
      
@@ -83,11 +76,19 @@ function Navbar() {
 //     </div>
 //     </div>
 //     </div>
-<nav className="navbar navbar-expand-lg bg-light">
+<nav className="navbar navbar-expand-lg bg-light sticky-top">
 <button onClick={handleModal} title="Donate to Funtabulous if you wish.ThankYou!!!" 
        className="btn btn-outline-danger col-md-1 shadow-none" style={{marginLeft:"1rem"}}>
          Donate
       </button>
+      <Modal show={show} onHide={handleModal}>
+     <Modal.Header closeButton>
+     Thanks For your Contribution <span style={{fontWeight:600,color:"blue",marginRight:"auto",marginLeft:"3px"}}>{user&&user.result.name}</span>
+   </Modal.Header>
+   <Modal.Body>
+   <Donate handleModal={handleModal}/>
+    </Modal.Body>
+   </Modal>
   <div className="container">
  
     <a className="navbar-brand offset-1"><Link to = "/posts" className="text">Funtabulous</Link></a>
@@ -103,7 +104,18 @@ function Navbar() {
         <Link to="/searchCreator"><i className="fa-brands fa-searchengin mb-2 mt-2" style={{color:"brown",fontSize:"25px",cursor:"pointer"}}></i></Link></li>
         <li className="nav-item dropdown" style={{marginLeft:"30px"}}>
           <a className="nav-link dropdown-toggle text-success align-items-center" role="button" data-bs-toggle="dropdown" >
-          <i className="fa-solid fa-user" style={{fontSize:"25px"}}></i>
+            
+          {!user?.result ? <i className="fa-solid fa-user" style={{fontSize:"25px"}}></i>:
+(
+               <>
+                    {user?.result.pic ?<img className="col-md-2 col-2" style={{borderRadius:"50%"}}
+                     src={user && !user?.result?.googleId ? `http://localhost:5000/uploads/${user?.result.pic}`:`${user?.result.pic}`}></img>
+                   :<h5 className="text-light col-md-2 col-sm-5 col-2 p-1 defaultDp">{user?.result?.name.charAt(0)}</h5>
+                   
+                   }
+</>
+)}
+
           <span style={{fontSize:"16px",marginLeft:"10px"}}>{user?.result?.name}</span>
           </a>
           {user?.result ? (
@@ -132,7 +144,6 @@ function Navbar() {
         <button className="btn btn-outline-success w-25 " onClick={searchPost} type="button"><i className="fab fa-affiliatetheme"></i></button>
       </form>
 </nav>
-
   );
 }
 

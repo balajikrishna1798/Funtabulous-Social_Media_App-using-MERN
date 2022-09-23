@@ -1,5 +1,5 @@
-import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import FullCalendar from '@fullcalendar/react' 
+import dayGridPlugin from '@fullcalendar/daygrid' 
 import AddEventModal from './AddEventModal'
 import { useRef, useState } from 'react'
 import axios from 'axios'

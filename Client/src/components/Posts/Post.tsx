@@ -1,6 +1,5 @@
 import moment from "moment";
 import { useAppDispatch } from "../../hooks";
-import "./Posts.css";
 import { Link, useNavigate } from "react-router-dom";
 import { deletePost, likePost } from "../../features/postSlice";
 import Comments from "../Comments/Comments";
@@ -40,12 +39,7 @@ const Post = ({ post, setCurrentId }) => {
         </>
       );
     }}
-  //   return (
-  //     <>
-  //       <i className="fa-solid fa-thumbs-up ">Like</i>
-  //     </>
-  //   );
-  // };
+ 
   const Likes = () => {
     if (post?.likes.length > 0) {
       return post.likes.find((like: any) => like === userId) ? (

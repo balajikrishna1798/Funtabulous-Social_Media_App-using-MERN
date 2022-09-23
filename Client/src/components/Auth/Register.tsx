@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { registerr } from '../../features/authSlice';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import 'react-toastify/dist/ReactToastify.css';
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from "yup";

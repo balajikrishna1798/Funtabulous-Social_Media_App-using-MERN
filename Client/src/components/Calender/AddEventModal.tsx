@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import Datetime from 'react-datetime';
 import Modal from 'react-modal'
 const AddEventModal = ({isOpen,onClose,onEventAdded}) => {
