@@ -12,21 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchUsers = exports.getOthersGooglePosts = exports.getOthersPosts = exports.GoogleSignIn = exports.getMyProfile = exports.updateProfile = exports.changePassword = exports.verifyPasswordMail = exports.emailVerified = exports.payment = exports.signup = exports.verifyUser = exports.signin = void 0;
+exports.searchUsers = exports.getOthersGooglePosts = exports.getOthersPosts = exports.GoogleSignIn = exports.getMyProfile = exports.updateProfile = exports.changePassword = exports.payment = exports.follow = exports.signup = exports.signin = void 0;
 //importing libraries
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const PostsMessage_1 = require("../models/PostsMessage");
-const nodemailer_1 = __importDefault(require("nodemailer"));
 const crypto_1 = __importDefault(require("crypto"));
 const Otp_1 = require("../models/Otp");
 const Users_1 = require("../models/Users");
+const express_validator_1 = require("express-validator");
+const Transporter_1 = __importDefault(require("./Transporter"));
 const stripe = require('stripe')("sk_test_51LLijESDK40ce5vjrclbEM87Z9oC9uYW8fViMj7aIe67uqpO1eJAWH11AeQfgoGEFaM8yg0sJnQxd8pqKgCZxpao00BuFZ4taW");
 const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //getting request from front-end
     const { email, password } = req.body;
     //checking whether the user is exists or not
-    const existingUser = yield Users_1.Users.findOne({ email });
+    const existingUser = yield Users_1.Users.findOne({ email }).populate("followers following", "-password");
     //decline if there is no existing User
     if (!existingUser) {
         return res.status(400).json({ message: "EmailId is not found" });
@@ -38,25 +39,19 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: "Password is incorrect" });
         }
-        //assign token and results to front-end by using Secret-Key
         const token = jsonwebtoken_1.default.sign({ email: existingUser.email, id: existingUser._id }, "test");
         res.status(200).json({ result: existingUser, token });
     }
 });
 exports.signin = signin;
-const verifyUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield Users_1.Users.findOne({ email: req.body.email });
-    if (user && user.isVerified) {
-        next();
-    }
-    else {
-        return res.status(400).json({ message: "EmailId is not found" });
-    }
-});
-exports.verifyUser = verifyUser;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     //getting request from front-end
-    const { firstName, email, password, confirmPassword } = req.body;
+    const { firstName, email, password, confirmPassword, gender } = req.body;
+    let username = firstName.toLowerCase().replace(/ /g, '');
     try {
         //checking whether the user is exists or not
         const existingUser = yield Users_1.Users.findOne({ email });
@@ -74,9 +69,10 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const User = new Users_1.Users({
             email,
             password: hashedPassword,
-            name: firstName,
+            name: username,
             isVerified: false,
             emailToken: crypto_1.default.randomBytes(64).toString("hex"),
+            gender
         });
         yield User.save();
         //sending Email to the user to verify
@@ -85,9 +81,9 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             to: User.email,
             subject: "Verify your email address",
             html: `<p>Hello ${User.name}! Welcome to funtabulous.Please Verify your email address to complete the signup process and login to your account</p>
-            <p>press here <a href="http://${req.headers.host}/users/verify-email?token=${User.emailToken}"> here</a> to verify your mailId. </p>`,
+            <p>press here <a href="http://${req.headers.host}/api/users/verify-email?token=${User.emailToken}"> here</a> to verify your mailId. </p>`,
         };
-        transporter.sendMail(mailOptions, function (error, info) {
+        Transporter_1.default.sendMail(mailOptions, function (error) {
             if (error) {
                 console.log(error);
             }
@@ -100,6 +96,14 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
+const follow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    Users_1.Users.findByIdAndUpdate(req.body.followId, {
+        $push: { followers: req.userId }
+    }, {
+        new: true
+    });
+});
+exports.follow = follow;
 const payment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const amount = req.body.amount;
     const quantity = req.body.quantity;
@@ -124,93 +128,6 @@ const payment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({ url: session.url });
 });
 exports.payment = payment;
-const emailVerified = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        //getting token from mail verification
-        const token = req.query.token;
-        //Checking if there any emailToken with token
-        const user = yield Users_1.Users.findOne({ emailToken: token });
-        if (user) {
-            //assign value to database as verified
-            user.emailToken = null;
-            user.isVerified = true;
-            yield user.save();
-            //redirect to login page after verify email
-            res.redirect("http://localhost:3000/auth");
-        }
-        else {
-            console.log("Email is not verified");
-        }
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
-exports.emailVerified = emailVerified;
-const verifyPasswordMail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //Checking emailid from front-end
-    const User = yield Users_1.Users.findOne({ email: req.body.email });
-    if (User && User.isVerified) {
-        const OtpUser = yield Otp_1.Otp.findOne({ email: req.body.email });
-        if (!OtpUser) {
-            //generate OTP 
-            let otpCode = Math.floor(Math.random() * 10000 + 1);
-            //save OTP to database with expire time
-            let otpData = new Otp_1.Otp({
-                email: req.body.email,
-                code: otpCode,
-                expiresIn: new Date().getTime() + 300 * 1000,
-            });
-            yield otpData.save();
-            //send OTP to mail
-            const mailOptions = {
-                from: "balajikrishna44589@gmail.com",
-                to: User.email,
-                subject: "verify your email",
-                html: `<p>Hello ${User.name}. Your OTP is ${otpData.code}`,
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                }
-                else {
-                    console.log(info);
-                    console.log("Verification Mail sent");
-                }
-            });
-            res.status(200).json({ message: "Success" });
-        }
-        if (OtpUser) {
-            //generate OTP 
-            let otpCode = Math.floor(Math.random() * 10000 + 1);
-            //save OTP to database with expire time
-            OtpUser.code = otpCode;
-            OtpUser.expiresIn = new Date().getTime() + 300 * 1000,
-                yield OtpUser.save();
-            //send OTP to mail
-            const mailOptions = {
-                from: "balajikrishna44589@gmail.com",
-                to: User.email,
-                subject: "verify your email",
-                html: `<p>Hello ${User.name}. Your OTP is ${OtpUser.code}`,
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                }
-                else {
-                    console.log(info);
-                    console.log("Verification Mail sent");
-                }
-            });
-            res.status(200).json({ message: "Success" });
-        }
-    }
-    else {
-        return res.status(400).json({ message: "EmailId not yet registered with funtabulous" });
-    }
-});
-exports.verifyPasswordMail = verifyPasswordMail;
 const changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //Checking whether is there any OTP with that mail address
     let data = yield Otp_1.Otp.findOne({ email: req.body.email, code: req.body.code });
@@ -336,11 +253,4 @@ const searchUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.searchUsers = searchUsers;
-var transporter = nodemailer_1.default.createTransport({
-    service: "gmail",
-    auth: {
-        user: "balajikrishna44589@gmail.com",
-        pass: "gjvkdihwboxlykyz",
-    },
-});
 //# sourceMappingURL=users.js.map

@@ -4,9 +4,8 @@ const OtpSchema = new mongoose.Schema({
 
     email:{type:String},
     code:{type:String},
-    expiresIn:{type:Number},
+    expiresIn:{type:Number}
 },{
-    //@ts-expect-error
-    timeStamps:{type:Boolean,default:true}
+    timestamps:true
 })
 export const Otp = mongoose.model("Otp",OtpSchema)

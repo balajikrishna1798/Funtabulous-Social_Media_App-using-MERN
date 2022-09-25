@@ -2,19 +2,25 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { postMessage } from "../models/PostsMessage";
-import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { Otp } from "../models/Otp";
 import { Users } from "../models/Users";
+import { validationResult } from "express-validator";
+import { Request, Response } from "express";
+import transporter from "./Transporter";
 
 const stripe = require( 'stripe')("sk_test_51LLijESDK40ce5vjrclbEM87Z9oC9uYW8fViMj7aIe67uqpO1eJAWH11AeQfgoGEFaM8yg0sJnQxd8pqKgCZxpao00BuFZ4taW")
 
+export interface IGetUserAuthInfoRequest extends Request {
+  userId: string
+}
 
-export const signin = async (req, res) => {
+
+export const signin = async (req:IGetUserAuthInfoRequest, res:Response) => {
   //getting request from front-end
   const { email, password } = req.body;
   //checking whether the user is exists or not
-  const existingUser:any = await Users.findOne({ email });
+  const existingUser:any = await Users.findOne({ email }).populate("followers following","-password")  ;
   //decline if there is no existing User
   if (!existingUser) {
     return res.status(400).json({ message: "EmailId is not found" });
@@ -28,7 +34,7 @@ export const signin = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Password is incorrect" });
     }
-    //assign token and results to front-end by using Secret-Key
+
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       "test"
@@ -37,18 +43,20 @@ export const signin = async (req, res) => {
   }
 };
 
-export const verifyUser = async (req, res, next) => {
-  const user:any = await Users.findOne({ email: req.body.email });
-  if (user && user.isVerified) {
-    next();
-  } else {
-    return res.status(400).json({ message: "EmailId is not found" });
-  }
-};
 
-export const signup = async (req, res) => {
+
+export const signup = async (req:IGetUserAuthInfoRequest, res:Response) => {
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+
+    return res.status(400).json({ errors: errors.array() });
+
+  }
   //getting request from front-end
-  const { firstName, email, password, confirmPassword } = req.body;
+  const { firstName, email, password, confirmPassword,gender } = req.body;
+  let username = firstName.toLowerCase().replace(/ /g,'')
   try {
     //checking whether the user is exists or not
     const existingUser = await Users.findOne({ email });
@@ -67,9 +75,10 @@ export const signup = async (req, res) => {
     const User:any = new Users({
       email,
       password: hashedPassword,
-      name: firstName,
+      name: username,
       isVerified: false, 
       emailToken: crypto.randomBytes(64).toString("hex"),
+      gender
     });
     await User.save();
     //sending Email to the user to verify
@@ -78,9 +87,9 @@ export const signup = async (req, res) => {
       to: User.email,
       subject: "Verify your email address",
       html: `<p>Hello ${User.name}! Welcome to funtabulous.Please Verify your email address to complete the signup process and login to your account</p>
-            <p>press here <a href="http://${req.headers.host}/users/verify-email?token=${User.emailToken}"> here</a> to verify your mailId. </p>`,
+            <p>press here <a href="http://${req.headers.host}/api/users/verify-email?token=${User.emailToken}"> here</a> to verify your mailId. </p>`,
     };
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function (error:Error) {
       if (error) {
         console.log(error);
       } 
@@ -93,7 +102,10 @@ export const signup = async (req, res) => {
 };
 
 
-export const payment = async (req,res) =>{
+
+
+
+export const payment = async (req:IGetUserAuthInfoRequest, res:Response) =>{
   const amount = req.body.amount
   const quantity = req.body.quantity
 
@@ -122,95 +134,9 @@ export const payment = async (req,res) =>{
 };
 
 
-export const emailVerified = async (req, res) => {
 
-  try {
-    //getting token from mail verification
-    const token = req.query.token;
-    //Checking if there any emailToken with token
-    const user = await Users.findOne({ emailToken: token });
-    if (user) {
-    //assign value to database as verified
-      user.emailToken = null;
-      user.isVerified = true;
-      await user.save();
-      //redirect to login page after verify email
-      res.redirect("http://localhost:3000/auth");
-    } else {
-      console.log("Email is not verified");
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-export const verifyPasswordMail = async (req, res) => {
-    //Checking emailid from front-end
-  const User:any = await Users.findOne({ email: req.body.email });
-
-  if (User&&User.isVerified) {
-    const OtpUser:any = await Otp.findOne({ email: req.body.email });
-if(!OtpUser){
-    //generate OTP 
-    let otpCode:any = Math.floor(Math.random() * 10000 + 1);
-    //save OTP to database with expire time
-    let otpData:any = new Otp({
-      email: req.body.email,
-      code: otpCode,
-      expiresIn: new Date().getTime() + 300 * 1000,
-    });
-    await otpData.save();
-    //send OTP to mail
-  
-    const mailOptions:any = {
-      from: "balajikrishna44589@gmail.com",
-      to: User.email,
-      subject: "verify your email",
-      html: `<p>Hello ${User.name}. Your OTP is ${otpData.code}`,
-    };
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(info);
-        console.log("Verification Mail sent");
-      }
-    });
-    res.status(200).json({message:"Success"})
-  }
-  if(OtpUser){
-     //generate OTP 
-     let otpCode:any = Math.floor(Math.random() * 10000 + 1);
-     //save OTP to database with expire time
-     OtpUser.code = otpCode
-     OtpUser.expiresIn = new Date().getTime() + 300 * 1000,
-    
-     await OtpUser.save();
-     //send OTP to mail
-   
-     const mailOptions:any = {
-       from: "balajikrishna44589@gmail.com",
-       to: User.email,
-       subject: "verify your email",
-       html: `<p>Hello ${User.name}. Your OTP is ${OtpUser.code}`,
-     };
-     transporter.sendMail(mailOptions, function (error, info) {
-       if (error) {
-         console.log(error);
-       } else {
-         console.log(info);
-         console.log("Verification Mail sent");
-       }
-     });
-     res.status(200).json({message:"Success"})
-   
-  }
-  } else {
-    return res.status(400).json({message:"EmailId not yet registered with funtabulous"});
-  }
-};
-
-export const changePassword = async (req, res) => {
+export const changePassword = async (req:IGetUserAuthInfoRequest, res:Response) => {
     //Checking whether is there any OTP with that mail address
   let data:any = await Otp.findOne({ email: req.body.email, code: req.body.code });
 
@@ -235,7 +161,7 @@ export const changePassword = async (req, res) => {
 };
 
 
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req:IGetUserAuthInfoRequest, res:Response) => {
  
   try {
    
@@ -258,7 +184,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-export const getMyProfile = async (req, res) => {
+export const getMyProfile = async (req:IGetUserAuthInfoRequest, res:Response) => {
   try {
     const existingUser:any = await Users.findById(req.userId);
     const token = jwt.sign(
@@ -271,7 +197,7 @@ export const getMyProfile = async (req, res) => {
   } catch (error) {}
 };
 
-export const GoogleSignIn = async (req, res) => {
+export const GoogleSignIn = async (req:IGetUserAuthInfoRequest, res:Response) => {
   const { email, name, token, googleId,imageUrl } = req.body;
   try {
     const existingUser:any = await Users.findOne({ email });
@@ -294,7 +220,7 @@ export const GoogleSignIn = async (req, res) => {
   }
 };
 
-export const getOthersPosts = async (req, res) => {
+export const getOthersPosts = async (req:IGetUserAuthInfoRequest, res:Response) => {
   Users.findOne({ _id: req.params.id })
     .then((user) => {
       postMessage
@@ -310,7 +236,7 @@ export const getOthersPosts = async (req, res) => {
     });
 };
 
-export const getOthersGooglePosts = async (req, res) => {
+export const getOthersGooglePosts = async (req:IGetUserAuthInfoRequest, res:Response) => {
   Users.findOne({ googleId: req.params.id })
     .then((user) => {
       postMessage
@@ -327,7 +253,7 @@ export const getOthersGooglePosts = async (req, res) => {
 };
 
 
-export const searchUsers = async(req,res) =>{
+export const searchUsers = async(req:IGetUserAuthInfoRequest, res:Response) =>{
     const name = req.body.name
     Users.find({name:{$regex:name,$options:'$i'}})
     .then(user=>{
@@ -338,12 +264,64 @@ export const searchUsers = async(req,res) =>{
     })
     }
 
+    export const follow = async(req:IGetUserAuthInfoRequest, res:Response) => {
+      console.log(req.body.userId);
+      console.log(req.params.id);
+      if (req.body.userId !== req.params.id) {
+        
+        
+        try {
+          const user = await Users.findById(req.params.id);
+          const currentUser = await Users.findById(req.body.userId);
+          if (!user.followers.includes(req.body.userId)) {
+            await user.updateOne({ $push: { followers: req.body.userId } });
+            await currentUser.updateOne({ $push: { following: req.params.id } });
+            res.status(200).json("user has been followed");
+          } else {
+            res.status(403).json("you allready follow this user");
+          }
+        } catch (err) {
+          res.status(500).json(err);
+        }
+      } else {
+        res.status(403).json("you cant follow yourself");
+      }
+    };
+    export const unfollow = async(req:IGetUserAuthInfoRequest, res:Response) => {
+      if (req.body.userId !== req.params.id) {
+        try {
+          const user = await Users.findById(req.params.id);
+          const currentUser = await Users.findById(req.body.userId);
+          if (user.followers.includes(req.body.userId)) {
+            await user.updateOne({ $pull: { followers: req.body.userId } });
+            await currentUser.updateOne({ $pull: { following: req.params.id } });
+            res.status(200).json("user has been unfollowed");
+          } else {
+            res.status(403).json("you dont followed this user");
+          }
+        } catch (err) {
+          res.status(500).json(err);
+        }
+      } else {
+        res.status(403).json("you cant unfollow yourself");
+      }
+    };
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "balajikrishna44589@gmail.com",
-    pass: "gjvkdihwboxlykyz",
-  },
-});
-      
+    export const friends =  async (req, res) => {
+      try {
+        const user = await Users.findById(req.params.userId);
+        const friends = await Promise.all(
+          user.following.map((friendId) => {
+            return Users.findById(friendId);
+          })
+        );
+        let friendList = [];
+        friends.map((friend) => {
+          const { _id, name, pic } = friend;
+          friendList.push({ _id, name, pic });
+        });
+        res.status(200).json(friendList)
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    };

@@ -10,8 +10,7 @@ const EventSchema = new mongoose_1.default.Schema({
     end: { type: Date },
     title: { type: String },
 }, {
-    //@ts-expect-error
-    timeStamps: { type: Boolean, default: true }
+    timestamps: true
 });
 exports.Event = mongoose_1.default.model("Event", EventSchema);
 //# sourceMappingURL=Event.js.map

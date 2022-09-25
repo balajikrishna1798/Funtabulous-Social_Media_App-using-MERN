@@ -6,7 +6,6 @@ const EventSchema = new mongoose.Schema({
     end:{type:Date},
     title:{type:String},
 },{
-//@ts-expect-error
-    timeStamps:{type:Boolean,default:true}
+    timestamps:true
 })
 export const Event = mongoose.model("Event",EventSchema)

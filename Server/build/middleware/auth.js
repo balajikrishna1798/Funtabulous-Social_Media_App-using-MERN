@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = void 0;
+exports.verifyUser = exports.auth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const Users_1 = require("../models/Users");
 const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
@@ -33,4 +34,14 @@ const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.auth = auth;
+const verifyUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield Users_1.Users.findOne({ email: req.body.email });
+    if (user && user.isVerified) {
+        next();
+    }
+    else {
+        return res.status(400).json({ message: "EmailId is not found" });
+    }
+});
+exports.verifyUser = verifyUser;
 //# sourceMappingURL=auth.js.map

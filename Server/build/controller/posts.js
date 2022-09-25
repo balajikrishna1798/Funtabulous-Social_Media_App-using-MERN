@@ -53,7 +53,7 @@ const createPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(200).send(newPost);
         }
         else {
-            res.status(400).json({ message: "sdasdsa" });
+            res.status(400).json({ message: "Cannot create posts" });
         }
     }
     catch (error) {

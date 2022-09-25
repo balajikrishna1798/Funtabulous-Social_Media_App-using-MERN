@@ -1,6 +1,11 @@
 import { postMessage } from "../models/PostsMessage"
+import { Request, RequestHandler, Response } from 'express';
 
-export const getPosts = async (req,res)=>{
+export interface IGetUserAuthInfoRequest extends Request {
+    userId: string
+  }
+
+export const getPosts: RequestHandler = async (req,res)=>{
     try {
         
         const postMessages = await postMessage.find();
@@ -10,7 +15,7 @@ export const getPosts = async (req,res)=>{
     }
 }
 
-export const getPost = async (req,res)=>{
+export const getPost: RequestHandler = async (req,res)=>{
     const {id} = req.params
     try {
         const postMessages = await postMessage.findById(id);
@@ -21,7 +26,7 @@ export const getPost = async (req,res)=>{
     }
 }
 
-export const getPostsBySearch = async (req,res)=>{
+export const getPostsBySearch: RequestHandler = async (req,res)=>{
     const title = req.query.title
     try {
 
@@ -34,7 +39,7 @@ export const getPostsBySearch = async (req,res)=>{
     }
 }
 
-export const createPosts = async (req,res)=>{
+export const createPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const newPost = new postMessage({...req.body,creator:req.userId,selectedFile:req.file?.filename,createdAt:new Date().toISOString()});
     try {
         if(newPost){
@@ -43,7 +48,7 @@ export const createPosts = async (req,res)=>{
         res.status(200).send(newPost)
         }
         else{
-            res.status(400).json({message:"sdasdsa"})
+            res.status(400).json({message:"Cannot create posts"})
         }
     } catch (error) {
         console.log(error);
@@ -51,7 +56,7 @@ export const createPosts = async (req,res)=>{
 }
 
 
-export const updatePosts = async (req,res)=>{
+export const updatePosts: RequestHandler = async (req,res)=>{
     const {id:_id } = req.params;
     console.log("updatedData",_id,req.body)
 
@@ -63,7 +68,7 @@ export const updatePosts = async (req,res)=>{
     }
 }
 
-export const deletePosts = async (req,res)=>{
+export const deletePosts: RequestHandler = async (req,res)=>{
     const {id } = req.params;
     try {
        await postMessage.findByIdAndRemove(id)
@@ -72,7 +77,7 @@ export const deletePosts = async (req,res)=>{
         
     }
 }
-export const likePosts = async (req,res)=>{
+export const likePosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const {id } = req.params;
         if(!req.userId) return res.json({message:"Unauthorized"})
        const post = await postMessage.findById(id)
@@ -87,7 +92,7 @@ export const likePosts = async (req,res)=>{
        res.json(updatedPost)
 }
 
-export const commentPosts = async (req,res)=>{
+export const commentPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const {id} = req.params
     if(!req.userId) return res.json({message:"Unauthorized"})
     const comment = {
@@ -100,13 +105,13 @@ export const commentPosts = async (req,res)=>{
     }   
 
 
-export const getPostsByUser = async (req,res)=>{
+export const getPostsByUser = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const {id } = req.params;
      const userPosts = await postMessage.find({creator:id})
      res.status(200).json(userPosts)
 }
 
-export const getPostByTag = async (req,res) =>{
+export const getPostByTag = async (req: IGetUserAuthInfoRequest,res:Response) =>{
 
     const {tag} = req.params
     try {

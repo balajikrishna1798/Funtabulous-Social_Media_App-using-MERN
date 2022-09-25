@@ -6,14 +6,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const userSchema = new mongoose_1.default.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
+    id: { type: String },
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true },
     pic: { type: String },
-    password: { type: String },
+    password: { type: String, trim: true },
     googleId: { type: String },
     emailToken: { type: String },
-    id: { type: String },
-    isVerified: Boolean
+    gender: { type: String },
+    isVerified: Boolean,
+    followers: [{
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "user"
+        }],
+    following: [{
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "user"
+        }],
+    mobileNumber: { type: String, default: "" }
+}, {
+    timestamps: true
 });
-exports.Users = mongoose_1.default.model("User", userSchema);
+exports.Users = mongoose_1.default.model("user", userSchema);
 //# sourceMappingURL=Users.js.map

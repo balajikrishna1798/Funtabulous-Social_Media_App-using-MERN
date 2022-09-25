@@ -1,10 +1,11 @@
+import { Request } from "express";
 import multer from "multer";
 
 const storage = multer.diskStorage({
-    destination:function(req,file,cb){
+    destination:function(req:Request,file:Express.Multer.File,cb:any){
         cb(null,'./uploads')
     },
-    filename: function (req, file, cb) {
+    filename: function (req:Request,file:Express.Multer.File,cb:any) {
         console.log(file);
         cb(null, Date.now() + "-" + file.originalname);
     }
@@ -12,9 +13,12 @@ const storage = multer.diskStorage({
 
 var upload = multer({
     storage:storage,
-    limits:{fileSize:10000000},
-    fileFilter: (req, file, cb:any) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg"|| file.mimetype == "image/webp") {
+    limits:{fileSize:1024*1024},
+    
+    fileFilter: (req:Request, file:Express.Multer.File, cb:any) => {
+        const fileType = file.mimetype ;
+        
+        if (fileType=="image/png" ||fileType=="image/jpg" ||fileType=="image/jpeg"||fileType=="image/webp") {
           cb(null, true);
           
         } else {

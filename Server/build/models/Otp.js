@@ -8,10 +8,9 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const OtpSchema = new mongoose_1.default.Schema({
     email: { type: String },
     code: { type: String },
-    expiresIn: { type: Number },
+    expiresIn: { type: Number }
 }, {
-    //@ts-expect-error
-    timeStamps: { type: Boolean, default: true }
+    timestamps: true
 });
 exports.Otp = mongoose_1.default.model("Otp", OtpSchema);
 //# sourceMappingURL=Otp.js.map
