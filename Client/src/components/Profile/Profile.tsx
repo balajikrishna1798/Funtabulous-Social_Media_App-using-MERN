@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import {  getMyProfile, updateUser } from '../../features/authSlice'
 import { getPostByUser,getPostByGoogleUser} from '../../features/postSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
+import Navbar from '../NavBar/NavBar'
 
 const Profile = () => {
   const [formdata,setFormData] = useState({
@@ -49,22 +50,23 @@ useEffect(()=>{
   checkID();
 },[userId,googleUserId])
   return (
+    <div>
+    <Navbar />
     <div className='container mb-5'>
 
         <div className='position-relative' style={{zIndex:100}}>
-      <Link to="/posts"> <i className="fa-solid fa-backward" style={{color:"blue"}}></i></Link>
-      <p className='text-center text-danger' style={{fontWeight:600,fontSize:"40px"}}>Profile</p>
+      <p className='text-center text-danger' style={{fontWeight:500,fontSize:"30px"}}>Profile</p>
       
       <p ><span style={{fontSize:"25px"}}>Name:</span><span className='text-success' style={{fontWeight:600,fontSize:"25px"}}>&nbsp;{user?.result?.name}</span></p>
       
       <form onSubmit={submitHandler} encType="multipart/form-data">
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
         <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={handleChange}/>
-        <label htmlFor="pic" style={{cursor:"pointer"}}>
+        <label htmlFor="pic" style={{cursor:"pointer",width:"100%"}}>
           <div 
-          style={{ border: "solid 2px #9f070a",borderRadius: "100%",backgroundColor:"black",
-          width:" 100px",height: "100px",textAlign:"center"}}>
-          <i className="fa-sharp fa-solid fa-upload" style={{fontSize:"30px",margin: "27%",color:"white"}}></i>
+          style={{ border: "solid 2px #9f070a",borderRadius: "100%",backgroundColor:"black",marginLeft:"50%",
+          width:"60px",height: "60px",textAlign:"center"}}>
+          <i className="fa-sharp fa-solid fa-upload" style={{fontSize:"30px",margin: "25%",color:"white"}}></i>
           </div>
           </label>
         <input type="file"
@@ -93,7 +95,7 @@ useEffect(()=>{
       </div>
       </div>
     </div>
- 
+    </div>
   )
 }
 

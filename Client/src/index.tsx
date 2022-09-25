@@ -4,8 +4,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import store from './store';
 import {ToastContainer} from 'react-toastify'
-import "react-datetime/css/react-datetime.css";
-
+import "./index.css"
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

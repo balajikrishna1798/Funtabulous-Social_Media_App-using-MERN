@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getPosts,getPostBySearch } from "../../features/postSlice";
 import ChipInput from "material-ui-chip-input";
 import Navbar from "../NavBar/NavBar";
+import RightBar from "../RightBar/RightBar";
 
 
 function Home({setCurrentId}) {
@@ -46,6 +47,7 @@ function Home({setCurrentId}) {
     
     </div>
               </div>}
+              <RightBar />
           </div> 
 
   );

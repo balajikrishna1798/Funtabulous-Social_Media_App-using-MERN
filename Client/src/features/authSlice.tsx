@@ -4,6 +4,8 @@ import * as api from '../api'
 const initialState= {
     user:null,
     error:"",
+    followers:[],
+    following:[],
     loading:false
 }
     export const login:any = createAsyncThunk("auth/login",async(data:any,{rejectWithValue})=>{
@@ -17,6 +19,33 @@ const initialState= {
         return rejectWithValue(error.response.data)
     }
 }) 
+
+export const follow:any = createAsyncThunk("auth/follow",async(data:any,{rejectWithValue})=>{
+    const {id,userId}=data
+try {
+    const response = await api.follow(id,{userId})
+    console.log(id,userId);
+    
+    console.log(response);
+    
+    return response.data
+} catch (error) {
+    return rejectWithValue(error.response.data)
+}
+}) 
+
+export const unfollow:any = createAsyncThunk("auth/unfollow",async(data:any,{rejectWithValue})=>{
+    const {id,userId}=data
+try {
+    const response = await api.unfollow(id,{userId})
+    console.log(response);
+    
+    return response.data
+} catch (error) {
+    return rejectWithValue(error.response.data)
+}
+}) 
+
 
 export const changePassword:any = createAsyncThunk("auth/changePassword",async(data:any,{rejectWithValue})=>{
     const {formData,navigate,toast}=data
@@ -132,6 +161,36 @@ const authSlice = createSlice({
             state.error= action.payload.message
             toast.error(state.error);
         });
+
+        builder.addCase(follow.pending,(state)=>{
+            state.loading = true;
+       });
+       builder.addCase(follow.fulfilled,(state,action)=>{
+           state.loading = false;
+            state.user = action.payload;
+            console.log(state.user);
+            
+       });
+       builder.addCase(follow.rejected,(state,action)=>{
+           state.loading = false
+           state.error= action.payload.message
+           toast.error(state.error);
+       });
+       builder.addCase(unfollow.pending,(state)=>{
+        state.loading = true;
+   });
+   builder.addCase(unfollow.fulfilled,(state,action)=>{
+       state.loading = false;
+        state.user = action.payload;
+        console.log(state.user);
+        
+   });
+   builder.addCase(unfollow.rejected,(state,action)=>{
+       state.loading = false
+       state.error= action.payload.message
+       toast.error(state.error);
+   });
+
         builder.addCase(forgotPassword.pending,(state)=>{
             state.loading = true;
        });

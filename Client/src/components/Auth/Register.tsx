@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-
+import "./Auth.css"
 
 const Register = () => {
   
@@ -68,10 +68,10 @@ const Register = () => {
         const hidePassword = "https://png.pngitem.com/pimgs/s/495-4950508_show-password-show-password-icon-png-transparent-png.png"
         const showPassword = "https://banner2.cleanpng.com/20190701/gbw/kisspng-computer-icons-password-portable-network-graphics-password-icon-png-vector-clipart-psd-peoplepng-5d1a0c1602a108.9242962015619881180108.jpg"
    return (
-    <div className='container'>
+    <div className='boody'>
        
-        <div className='position-fixed mb' style={{paddingTop:"50px",paddingBottom:"70px",width:"50%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
-        <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>Sign Up</p>
+        <div className='position-fixed mb authpage' style={{paddingTop:"50px",paddingBottom:"70px",width:"50%", left:"50%",top:"50%",transform: "translate(-50%, -50%)"}}>
+        <p className='text-center text text-primary' style={{fontWeight:600,fontSize:"25px"}}>Funtabulous</p>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"> 
             <div className='container w-75'>
               
@@ -118,7 +118,7 @@ const Register = () => {
                
                 <button type='submit' className='btn btn-outline-success w-25' >Sign Up</button>
                 <button type='button' className="btn btn-secondary w-50">
-                    <Link to = "/auth"><span style={{color:"black"}} >Already have an account?Sign In</span></Link>
+                    <Link to = "/auth"><span style={{color:"white"}} >Already have an account?Sign In</span></Link>
                 </button>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { deletePost, likePost } from "../../features/postSlice";
 import Comments from "../Comments/Comments";
 import {  useState } from "react";
-
+import './Posts.css'
 
 const Post = ({ post, setCurrentId }) => {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ const Post = ({ post, setCurrentId }) => {
         <img
           src={`http://localhost:5000/uploads/${post?.selectedFile}`}
           alt=""
-          className="card-img-top position-relative"
+          className="card-img-top position-relative img"
           style={{ cursor: "pointer", height: "500px" }}
           onClick={openPost}
         />
@@ -109,7 +109,7 @@ const Post = ({ post, setCurrentId }) => {
             <Link 
               to={`/${
                 isNaN(post?.creator) ? "userProfile" : "googleuserProfile"
-              }/${post?.creator}`} style={{textDecoration:"none"}}
+              }/${post?.creator}`}
             >
               {user && (
                 <div >
@@ -123,7 +123,7 @@ const Post = ({ post, setCurrentId }) => {
           <h6 className="mb-2">{post?.title}</h6>
           <h6>{post?.tags.map((tag: any) => (
           
-          <Link to={`/posts/tag/${tag}`} style={{textDecoration:"none",color:"green"}}> #{tag}</Link>))}</h6>
+          <Link to={`/posts/tag/${tag}`} style={{color:"green"}}> #{tag}</Link>))}</h6>
           <h5>{post?.message}</h5><hr></hr>
           <p className="fw-bold" style={{marginLeft:"80%"}}>
           <LikeCount/>

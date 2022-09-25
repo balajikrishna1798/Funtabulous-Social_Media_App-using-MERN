@@ -83,7 +83,7 @@ function Navbar() {
       </button>
       <Modal show={show} onHide={handleModal}>
      <Modal.Header closeButton>
-     Thanks For your Contribution <span style={{fontWeight:600,color:"blue",marginRight:"auto",marginLeft:"3px"}}>{user&&user.result.name}</span>
+     Thanks For your Contribution <span style={{fontWeight:600,color:"blue",marginRight:"auto",marginLeft:"3px"}}>{user&&user.result?.name}</span>
    </Modal.Header>
    <Modal.Body>
    <Donate handleModal={handleModal}/>
@@ -108,9 +108,9 @@ function Navbar() {
           {!user?.result ? <i className="fa-solid fa-user" style={{fontSize:"25px"}}></i>:
 (
                <>
-                    {user?.result.pic ?<img className="col-md-2 col-2" style={{borderRadius:"50%"}}
+                    {user&&user.result.pic ?<img className="col-md-2 col-2" style={{borderRadius:"50%",width:"40px",height:"30px"}}
                      src={user && !user?.result?.googleId ? `http://localhost:5000/uploads/${user?.result.pic}`:`${user?.result.pic}`}></img>
-                   :<h5 className="text-light col-md-2 col-sm-5 col-2 p-1 defaultDp">{user?.result?.name.charAt(0)}</h5>
+                   :<img className="col-md-2 col-2" style={{borderRadius:"50%",width:"20px"}} src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"></img>
                    
                    }
 </>
@@ -122,9 +122,7 @@ function Navbar() {
           <ul className="dropdown-menu">
             
             <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-            <li><Link className="dropdown-item" to="/posts">Dark Mode</Link></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
+            <li><button className="dropdown-item" onClick={logout}>Logout</button></li>
           </ul>
           ):(
             <ul className="dropdown-menu">

@@ -7,6 +7,11 @@ API.interceptors.request.use((req)=>{
     return req
 })
 export const fetchPosts = () => API.get("/posts")
+export const getFriends = (userId:any) => API.get(`/users/friends/${userId}`)
+export const follow = (id,userId) => API.put(`/users/${id}/follow`,userId)
+export const unfollow = (id,userId) => API.put(`/users/${id}/unfollow`,userId)
+
+
 export const fetchPost = (id:any) => API.get(`/posts/${id}`)
 export const fetchPostsByUser = (userId:any) => API.get(`/posts/userPosts/${userId}`)
 export const fetchPostsByGoogleUser = (googleUserId:any) => API.get(`/posts/userPosts/${googleUserId}`)

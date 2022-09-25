@@ -11,7 +11,6 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import './Auth.css'
-import { Circles } from 'react-loader-spinner';
 
 const Auth = () => {
   const [isRevealPwd, setIsRevealPwd] = useState(false);
@@ -87,11 +86,11 @@ const Auth = () => {
     const showPassword = "https://banner2.cleanpng.com/20190701/gbw/kisspng-computer-icons-password-portable-network-graphics-password-icon-png-vector-clipart-psd-peoplepng-5d1a0c1602a108.9242962015619881180108.jpg"
 
    return (
-    <div className='container'>
+    <div className='boody'>
        
        
-        <div className='position-fixed videoBG' >
-        <p className='text-center text-primary' style={{fontWeight:600,fontSize:"25px"}}>Sign In</p>
+        <div className='container position-fixed authpage' >
+        <p className='text-center text text-primary' style={{fontWeight:600,fontSize:"25px"}}>Funtabulous</p>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"> 
             <div className='container w-75'>
                  
@@ -130,14 +129,7 @@ const Auth = () => {
                     cookiePolicy="single_host_origin"
                 />
                 <button type='submit' className='btn btn-outline-success m-1' >
-                {loading && <Circles
-  height="20"
-  width="20"
-  color="black"
-  wrapperStyle={{position:"absolute"}}
-  wrapperClass=""
-  visible={true}
-/>}
+               
                   Sign In
                   
                   </button>

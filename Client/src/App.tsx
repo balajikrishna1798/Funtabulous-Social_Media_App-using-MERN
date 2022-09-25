@@ -15,15 +15,12 @@ import Register from './components/Auth/Register';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from '@stripe/react-stripe-js';
 import Success from './components/Donate/Success';
-import Donate from './components/Donate/Donate';
 import Failure from './components/Donate/Failure';
 import Tagpost from './components/tag/Tagpost';
-import Calendar from './components/Calender/Calendar';
-import  Modal  from 'react-modal';
 
 
 
-Modal.setAppElement("#root")
+
 function App() {
   const [currentId,setCurrentId] = useState(null);
   const stripePromise = loadStripe("pk_live_51LLijESDK40ce5vjWswCCiVxdL3xmFJrbFQhJgBpWBqeBqoYyenL91fZB5LtKea6qBPKpWvcOfzgy1sKUZD8HwRh00XzaANvqu");
@@ -35,7 +32,8 @@ function App() {
   })
   return (
     <Router>
-
+       
+         
       <Routes>
       <Route path="/" element={<Navigate to="/posts"/>}/>
         <Route path="/posts" element={<Elements stripe={stripePromise}> <Home setCurrentId={setCurrentId}/></Elements>} />
@@ -43,7 +41,6 @@ function App() {
         <Route path="/forms" element={<Forms currentId={currentId} setCurrentId={setCurrentId}/>}/>
         <Route path="/posts/:id" element={<PostDetails/>}/>
         <Route path="/posts/tag/:tag" element={<Tagpost/>}/>
-        <Route path="/calendar" element={<Calendar/>}/>
 
         <Route path="/success" element={<Success/>}/>
         <Route path="/failure" element={<Failure/>}/>
@@ -57,6 +54,7 @@ function App() {
         <Route path="/ChangePassword" element={<ChangePassword />} />
         
       </Routes>
+    
     </Router>
    
   );
