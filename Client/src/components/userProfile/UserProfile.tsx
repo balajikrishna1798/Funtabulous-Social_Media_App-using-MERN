@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { usersProfile, googleusersProfile, follow, unfollow } from '../../features/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
@@ -11,15 +11,16 @@ const UserProfile = () => {
   const { googleid } = useParams()
   const [followed,setFollowed] = useState(true)
   console.log(user);
-  
+  const navigate = useNavigate();
   const dispatch = useAppDispatch()
   useEffect(()=>{
-    setFollowed(userId?.result?.following.includes(id))
-    console.log(user);
-    console.log(userId?.result?.following);    
-    console.log(userId?.result?.following.includes(id));
+    console.log(userId);
     
-  },[id])
+    setFollowed(userId?.result?.following.includes(id))
+    
+    
+   
+  },[id,userId])
   useEffect(() => {
     if (id) {
       dispatch(usersProfile(id))
@@ -28,23 +29,28 @@ const UserProfile = () => {
       dispatch(googleusersProfile(googleid))
     }
   }, [id,googleid])
+
+
   const handleClick =async () =>{
-    if(followed){
-     await dispatch(follow({id:id,userId:userId?.result?._id}))
-      
-    }
+   
     if(!followed){
      await dispatch(follow({id:id,userId:userId?.result?._id}))
-        } 
-  }
+    }  
+    else{
+      await dispatch(unfollow({id:id,userId:userId?.result?._id}))
+         } 
+         setFollowed(!followed)
+    }
+  
 
   return (
     <div className='container mt-5'>
       <div><span className='fw-bold'>Name:</span><span className="fw-bolder p-3 text-success" style={{fontSize:"20px"}}>{user?.user?.name}</span></div>
       <span className='fw-bold'>Email Address:</span><span className="fw-bolder p-3 text-success" style={{fontSize:"20px"}}>{user?.user?.email}</span>
+      <button onClick={handleClick} style={{width:"90px",marginLeft:"90%"}} className="btn btn-primary shadow-none">{followed?"Unfollow":"Follow"}</button>
       <div className='row mt-5' >
         <p style={{ fontWeight: 600, fontSize: "20px", color: "red", textAlign: "center" }}> {user && user?.user?.name} <span>Posts</span></p>
-        <button onClick={handleClick}>follow</button>
+       
         <hr />
         {user && user.posts && user.posts.map((item: any) => (
           <div className="col-md-4" >

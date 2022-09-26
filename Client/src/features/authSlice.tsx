@@ -162,12 +162,14 @@ const authSlice = createSlice({
             toast.error(state.error);
         });
 
+
         builder.addCase(follow.pending,(state)=>{
             state.loading = true;
        });
        builder.addCase(follow.fulfilled,(state,action)=>{
            state.loading = false;
-            state.user = action.payload;
+           localStorage.setItem("profile",JSON.stringify({...action.payload}));
+            state.following = action.payload;
             console.log(state.user);
             
        });
@@ -181,7 +183,8 @@ const authSlice = createSlice({
    });
    builder.addCase(unfollow.fulfilled,(state,action)=>{
        state.loading = false;
-        state.user = action.payload;
+       localStorage.setItem("profile",JSON.stringify({...action.payload}));
+        state.following = action.payload;
         console.log(state.user);
         
    });

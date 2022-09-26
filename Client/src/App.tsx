@@ -17,6 +17,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import Success from './components/Donate/Success';
 import Failure from './components/Donate/Failure';
 import Tagpost from './components/tag/Tagpost';
+import FunChat from './components/FunChat/FunChat';
 
 
 
@@ -36,6 +37,8 @@ function App() {
          
       <Routes>
       <Route path="/" element={<Navigate to="/posts"/>}/>
+      <Route path="/funchat" element={<FunChat />}/>
+
         <Route path="/posts" element={<Elements stripe={stripePromise}> <Home setCurrentId={setCurrentId}/></Elements>} />
         <Route path="/searchCreator" element={<SearchCreator/>} />
         <Route path="/forms" element={<Forms currentId={currentId} setCurrentId={setCurrentId}/>}/>
