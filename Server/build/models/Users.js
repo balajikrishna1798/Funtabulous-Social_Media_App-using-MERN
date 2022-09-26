@@ -16,12 +16,12 @@ const userSchema = new mongoose_1.default.Schema({
     gender: { type: String },
     isVerified: Boolean,
     followers: [{
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "user"
+            type: Array,
+            default: []
         }],
     following: [{
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "user"
+            type: Array,
+            default: []
         }],
     mobileNumber: { type: String, default: "" }
 }, {

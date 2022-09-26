@@ -13,6 +13,9 @@ const router = express_1.default.Router();
 //routes for users
 router.post("/signin", auth_1.verifyUser, users_1.signin);
 router.post("/signup", (0, express_validator_1.body)('firstName').isLength({ min: 2 }), (0, express_validator_1.body)('email').isEmail(), (0, express_validator_1.body)('password').isLength({ min: 6 }), users_1.signup);
+router.put("/:id/follow", auth_1.auth, users_1.follow);
+router.put("/:id/unfollow", auth_1.auth, users_1.unfollow);
+router.get("/friends/:userId", auth_1.auth, users_1.friends);
 router.post("/googleSignIn", users_1.GoogleSignIn);
 router.post('/profile', auth_1.auth, Services_1.default.single('pic'), users_1.updateProfile);
 router.get("/profile", auth_1.auth, users_1.getMyProfile);

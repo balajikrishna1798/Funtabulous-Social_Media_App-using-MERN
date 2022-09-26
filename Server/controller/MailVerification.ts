@@ -7,7 +7,8 @@ export interface IGetUserAuthInfoRequest extends Request {
     userId: string
   }
 
-export const emailVerified = async (req:IGetUserAuthInfoRequest, res:Response) => {
+export class verifyClass {
+emailVerified = async (req:IGetUserAuthInfoRequest, res:Response) => {
 
     try {
       //getting token from mail verification
@@ -29,7 +30,7 @@ export const emailVerified = async (req:IGetUserAuthInfoRequest, res:Response) =
     }
   };
   
-  export const verifyPasswordMail = async (req:IGetUserAuthInfoRequest, res:Response) => {
+verifyPasswordMail = async (req:IGetUserAuthInfoRequest, res:Response) => {
       //Checking emailid from front-end
     const User = await Users.findOne({ email: req.body.email });
   
@@ -94,3 +95,4 @@ export const emailVerified = async (req:IGetUserAuthInfoRequest, res:Response) =
       return res.status(400).json({message:"EmailId not yet registered with funtabulous"});
     }
   };
+}

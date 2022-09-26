@@ -9,18 +9,18 @@ import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 import transporter from "./Transporter";
 
-const stripe = require( 'stripe')("sk_test_51LLijESDK40ce5vjrclbEM87Z9oC9uYW8fViMj7aIe67uqpO1eJAWH11AeQfgoGEFaM8yg0sJnQxd8pqKgCZxpao00BuFZ4taW")
+const stripe = require('stripe')("sk_test_51LLijESDK40ce5vjrclbEM87Z9oC9uYW8fViMj7aIe67uqpO1eJAWH11AeQfgoGEFaM8yg0sJnQxd8pqKgCZxpao00BuFZ4taW")
 
 export interface IGetUserAuthInfoRequest extends Request {
   userId: string
 }
+export class userClass {
 
-
-export const signin = async (req:IGetUserAuthInfoRequest, res:Response) => {
+signin = async (req: IGetUserAuthInfoRequest, res: Response) => {
   //getting request from front-end
   const { email, password } = req.body;
   //checking whether the user is exists or not
-  const existingUser:any = await Users.findOne({ email }).populate("followers following","-password")  ;
+  const existingUser: any = await Users.findOne({ email }).populate("followers following", "-password");
   //decline if there is no existing User
   if (!existingUser) {
     return res.status(400).json({ message: "EmailId is not found" });
@@ -45,7 +45,7 @@ export const signin = async (req:IGetUserAuthInfoRequest, res:Response) => {
 
 
 
-export const signup = async (req:IGetUserAuthInfoRequest, res:Response) => {
+ signup = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
   const errors = validationResult(req);
 
@@ -55,12 +55,12 @@ export const signup = async (req:IGetUserAuthInfoRequest, res:Response) => {
 
   }
   //getting request from front-end
-  const { firstName, email, password, confirmPassword,gender } = req.body;
-  let username = firstName.toLowerCase().replace(/ /g,'')
+  const { firstName, email, password, confirmPassword, gender } = req.body;
+  let username = firstName.toLowerCase().replace(/ /g, '')
   try {
     //checking whether the user is exists or not
     const existingUser = await Users.findOne({ email });
-       
+
     //if email already exists decline
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
@@ -72,11 +72,11 @@ export const signup = async (req:IGetUserAuthInfoRequest, res:Response) => {
     //bcrypting  given password
     const hashedPassword = await bcrypt.hash(password, 12);
     //saving to database if all the validation passed
-    const User:any = new Users({
+    const User: any = new Users({
       email,
       password: hashedPassword,
       name: username,
-      isVerified: false, 
+      isVerified: false,
       emailToken: crypto.randomBytes(64).toString("hex"),
       gender
     });
@@ -89,12 +89,12 @@ export const signup = async (req:IGetUserAuthInfoRequest, res:Response) => {
       html: `<p>Hello ${User.name}! Welcome to funtabulous.Please Verify your email address to complete the signup process and login to your account</p>
             <p>press here <a href="http://${req.headers.host}/api/users/verify-email?token=${User.emailToken}"> here</a> to verify your mailId. </p>`,
     };
-    transporter.sendMail(mailOptions, function (error:Error) {
+    transporter.sendMail(mailOptions, function (error: Error) {
       if (error) {
         console.log(error);
-      } 
-        console.log("Verification Mail sent");
-        res.status(400).json({ message: "Verification Mail sent" });
+      }
+      console.log("Verification Mail sent");
+      res.status(400).json({ message: "Verification Mail sent" });
     });
   } catch (error) {
     console.log(error);
@@ -105,12 +105,12 @@ export const signup = async (req:IGetUserAuthInfoRequest, res:Response) => {
 
 
 
-export const payment = async (req:IGetUserAuthInfoRequest, res:Response) =>{
+ payment = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const amount = req.body.amount
   const quantity = req.body.quantity
 
-  console.log(amount,quantity);
-  
+  console.log(amount, quantity);
+
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -119,7 +119,7 @@ export const payment = async (req:IGetUserAuthInfoRequest, res:Response) =>{
           product_data: {
             name: 'Donate',
           },
-          unit_amount: amount*100,
+          unit_amount: amount * 100,
         },
         quantity,
       },
@@ -129,16 +129,16 @@ export const payment = async (req:IGetUserAuthInfoRequest, res:Response) =>{
     cancel_url: 'http://localhost:3000/failure',
   });
 
-  res.json({url:session.url});
-  
+  res.json({ url: session.url });
+
 };
 
 
 
 
-export const changePassword = async (req:IGetUserAuthInfoRequest, res:Response) => {
-    //Checking whether is there any OTP with that mail address
-  let data:any = await Otp.findOne({ email: req.body.email, code: req.body.code });
+changePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  //Checking whether is there any OTP with that mail address
+  let data: any = await Otp.findOne({ email: req.body.email, code: req.body.code });
 
   if (data) {
     let currentTime = new Date().getTime();
@@ -147,8 +147,8 @@ export const changePassword = async (req:IGetUserAuthInfoRequest, res:Response) 
     if (diff < 0) {
       return res.status(400).json("error");
     } else {
-    //if valid new password will be save.
-      const User:any = await Users.findOne({ email: req.body.email });
+      //if valid new password will be save.
+      const User: any = await Users.findOne({ email: req.body.email });
       const hashedPassword = await bcrypt.hash(req.body.password, 12);
       User.password = hashedPassword;
       User.save();
@@ -156,24 +156,24 @@ export const changePassword = async (req:IGetUserAuthInfoRequest, res:Response) 
       res.status(200).json("Password Changed");
     }
   } else {
-    return res.status(400).json({message:"Enter correct OTP"});
+    return res.status(400).json({ message: "Enter correct OTP" });
   }
 };
 
 
-export const updateProfile = async (req:IGetUserAuthInfoRequest, res:Response) => {
- 
+ updateProfile = async (req: IGetUserAuthInfoRequest, res: Response) => {
+
   try {
-   
+
     //checking any user with that id
-    const existingUser:any = await Users.findById(req.userId);
+    const existingUser: any = await Users.findById(req.userId);
     //if user exists update details in database
     if (existingUser) {
       existingUser.name = req.body.name || existingUser.name;
       existingUser.email = req.body.email || existingUser.email;
-      existingUser.pic=  req.file?.filename|| existingUser.pic,
-       await existingUser.save();
-       console.log(existingUser);
+      existingUser.pic = req.file?.filename || existingUser.pic,
+        await existingUser.save();
+      console.log(existingUser);
       console.log(req.file);
       return res.status(200).json({ result: existingUser });
     }
@@ -184,9 +184,9 @@ export const updateProfile = async (req:IGetUserAuthInfoRequest, res:Response) =
   }
 };
 
-export const getMyProfile = async (req:IGetUserAuthInfoRequest, res:Response) => {
+getMyProfile = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
-    const existingUser:any = await Users.findById(req.userId);
+    const existingUser: any = await Users.findById(req.userId);
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       "test"
@@ -194,14 +194,14 @@ export const getMyProfile = async (req:IGetUserAuthInfoRequest, res:Response) =>
     if (existingUser) {
       return res.status(200).json({ result: existingUser, token });
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
-export const GoogleSignIn = async (req:IGetUserAuthInfoRequest, res:Response) => {
-  const { email, name, token, googleId,imageUrl } = req.body;
+GoogleSignIn = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  const { email, name, token, googleId, imageUrl } = req.body;
   try {
-    const existingUser:any = await Users.findOne({ email });
-    if (existingUser &&existingUser.isVerified) {
+    const existingUser: any = await Users.findOne({ email });
+    if (existingUser && existingUser.isVerified) {
       res.status(400).json({ message: "Email Address already exists" });
     } else if (existingUser) {
       res.status(200).json({ result: existingUser, token });
@@ -211,7 +211,7 @@ export const GoogleSignIn = async (req:IGetUserAuthInfoRequest, res:Response) =>
         email,
         name,
         googleId,
-        pic:imageUrl
+        pic: imageUrl
       });
       res.status(200).json({ result, token });
     }
@@ -220,7 +220,7 @@ export const GoogleSignIn = async (req:IGetUserAuthInfoRequest, res:Response) =>
   }
 };
 
-export const getOthersPosts = async (req:IGetUserAuthInfoRequest, res:Response) => {
+getOthersPosts = async (req: IGetUserAuthInfoRequest, res: Response) => {
   Users.findOne({ _id: req.params.id })
     .then((user) => {
       postMessage
@@ -236,7 +236,7 @@ export const getOthersPosts = async (req:IGetUserAuthInfoRequest, res:Response) 
     });
 };
 
-export const getOthersGooglePosts = async (req:IGetUserAuthInfoRequest, res:Response) => {
+getOthersGooglePosts = async (req: IGetUserAuthInfoRequest, res: Response) => {
   Users.findOne({ googleId: req.params.id })
     .then((user) => {
       postMessage
@@ -253,75 +253,88 @@ export const getOthersGooglePosts = async (req:IGetUserAuthInfoRequest, res:Resp
 };
 
 
-export const searchUsers = async(req:IGetUserAuthInfoRequest, res:Response) =>{
-    const name = req.body.name
-    Users.find({name:{$regex:name,$options:'$i'}})
-    .then(user=>{
-       res.json({user})     
-    }).catch(err=>{
-        console.log(err);
-        res.send(err)                                 
+searchUsers = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  const name = req.body.name
+  Users.find({ name: { $regex: name, $options: '$i' } })
+    .then(user => {
+      res.json({ user })
+    }).catch(err => {
+      console.log(err);
+      res.send(err)
     })
-    }
+}
 
-    export const follow = async(req:IGetUserAuthInfoRequest, res:Response) => {
-      console.log(req.body.userId);
-      console.log(req.params.id);
-      if (req.body.userId !== req.params.id) {
-        
-        
-        try {
-          const user = await Users.findById(req.params.id);
-          const currentUser = await Users.findById(req.body.userId);
-          if (!user.followers.includes(req.body.userId)) {
-            await user.updateOne({ $push: { followers: req.body.userId } });
-            await currentUser.updateOne({ $push: { following: req.params.id } });
-            res.status(200).json("user has been followed");
-          } else {
-            res.status(403).json("you allready follow this user");
-          }
-        } catch (err) {
-          res.status(500).json(err);
-        }
-      } else {
-        res.status(403).json("you cant follow yourself");
-      }
-    };
-    export const unfollow = async(req:IGetUserAuthInfoRequest, res:Response) => {
-      if (req.body.userId !== req.params.id) {
-        try {
-          const user = await Users.findById(req.params.id);
-          const currentUser = await Users.findById(req.body.userId);
-          if (user.followers.includes(req.body.userId)) {
-            await user.updateOne({ $pull: { followers: req.body.userId } });
-            await currentUser.updateOne({ $pull: { following: req.params.id } });
-            res.status(200).json("user has been unfollowed");
-          } else {
-            res.status(403).json("you dont followed this user");
-          }
-        } catch (err) {
-          res.status(500).json(err);
-        }
-      } else {
-        res.status(403).json("you cant unfollow yourself");
-      }
-    };
-
-    export const friends =  async (req, res) => {
-      try {
-        const user = await Users.findById(req.params.userId);
-        const friends = await Promise.all(
-          user.following.map((friendId) => {
-            return Users.findById(friendId);
-          })
+follow = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  console.log(req.body.userId);
+  console.log(req.params.id);
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await Users.findById(req.params.id);
+      const currentUser = await Users.findById(req.body.userId);
+      if (!user.followers.includes(req.body.userId)) {
+        await user.updateOne({ $push: { followers: req.body.userId }},{new:true} );
+        await currentUser.updateOne({ $push: { following: req.params.id }},{new:true});
+        const followings = await Users.findById(req.body.userId);
+        console.log(followings);
+        const token = jwt.sign(
+          { email: currentUser.email, id: currentUser._id },
+          "test"
         );
-        let friendList = [];
-        friends.map((friend) => {
-          const { _id, name, pic } = friend;
-          friendList.push({ _id, name, pic });
-        });
-        res.status(200).json(friendList)
-      } catch (err) {
-        res.status(500).json(err);
+        res.status(200).json({result:followings,token});
+      } else {
+        res.status(403).json("you already follow this user");
       }
-    };
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("you cant follow yourself");
+  }
+};
+
+
+
+unfollow = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await Users.findById(req.params.id);
+      const currentUser = await Users.findById(req.body.userId);
+      if (user.followers.includes(req.body.userId)) {
+        await user.updateOne({ $pull: { followers: req.body.userId } });
+        await currentUser.updateOne({ $pull: { following: req.params.id } });
+        const followings = await Users.findById(req.body.userId);
+        const token = jwt.sign(
+          { email: currentUser.email, id: currentUser._id },
+          "test"
+        );
+        res.status(200).json({result:followings,token});
+      } else {
+        res.status(403).json("you dont followed this user");
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("you cant unfollow yourself");
+  }
+};
+
+friends = async (req:IGetUserAuthInfoRequest, res: Response) => {
+  try {
+    const user = await Users.findById(req.params.userId);
+    const friends = await Promise.all(
+      user.following.map((friendId) => {
+        return Users.findById(friendId);
+      })
+    );
+    let friendList = [];
+    friends.map((friend) => {
+      const { _id, name, pic } = friend;
+      friendList.push({ _id, name, pic });
+    });
+    res.status(200).json(friendList)
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+}

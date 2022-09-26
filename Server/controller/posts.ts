@@ -5,7 +5,9 @@ export interface IGetUserAuthInfoRequest extends Request {
     userId: string
   }
 
-export const getPosts: RequestHandler = async (req,res)=>{
+export class postClass {
+
+getPosts: RequestHandler = async (req,res)=>{
     try {
         
         const postMessages = await postMessage.find();
@@ -15,7 +17,7 @@ export const getPosts: RequestHandler = async (req,res)=>{
     }
 }
 
-export const getPost: RequestHandler = async (req,res)=>{
+getPost: RequestHandler = async (req,res)=>{
     const {id} = req.params
     try {
         const postMessages = await postMessage.findById(id);
@@ -26,7 +28,7 @@ export const getPost: RequestHandler = async (req,res)=>{
     }
 }
 
-export const getPostsBySearch: RequestHandler = async (req,res)=>{
+getPostsBySearch: RequestHandler = async (req,res)=>{
     const title = req.query.title
     try {
 
@@ -39,7 +41,7 @@ export const getPostsBySearch: RequestHandler = async (req,res)=>{
     }
 }
 
-export const createPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
+createPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const newPost = new postMessage({...req.body,creator:req.userId,selectedFile:req.file?.filename,createdAt:new Date().toISOString()});
     try {
         if(newPost){
@@ -56,7 +58,7 @@ export const createPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
 }
 
 
-export const updatePosts: RequestHandler = async (req,res)=>{
+updatePosts: RequestHandler = async (req,res)=>{
     const {id:_id } = req.params;
     console.log("updatedData",_id,req.body)
 
@@ -68,7 +70,7 @@ export const updatePosts: RequestHandler = async (req,res)=>{
     }
 }
 
-export const deletePosts: RequestHandler = async (req,res)=>{
+deletePosts: RequestHandler = async (req,res)=>{
     const {id } = req.params;
     try {
        await postMessage.findByIdAndRemove(id)
@@ -77,7 +79,7 @@ export const deletePosts: RequestHandler = async (req,res)=>{
         
     }
 }
-export const likePosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
+likePosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const {id } = req.params;
         if(!req.userId) return res.json({message:"Unauthorized"})
        const post = await postMessage.findById(id)
@@ -92,7 +94,7 @@ export const likePosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
        res.json(updatedPost)
 }
 
-export const commentPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
+commentPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const {id} = req.params
     if(!req.userId) return res.json({message:"Unauthorized"})
     const comment = {
@@ -105,13 +107,13 @@ export const commentPosts = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     }   
 
 
-export const getPostsByUser = async (req: IGetUserAuthInfoRequest,res:Response)=>{
+getPostsByUser = async (req: IGetUserAuthInfoRequest,res:Response)=>{
     const {id } = req.params;
      const userPosts = await postMessage.find({creator:id})
      res.status(200).json(userPosts)
 }
 
-export const getPostByTag = async (req: IGetUserAuthInfoRequest,res:Response) =>{
+getPostByTag = async (req: IGetUserAuthInfoRequest,res:Response) =>{
 
     const {tag} = req.params
     try {
@@ -124,4 +126,5 @@ export const getPostByTag = async (req: IGetUserAuthInfoRequest,res:Response) =>
         console.log(error);
     }
 
+}
 }

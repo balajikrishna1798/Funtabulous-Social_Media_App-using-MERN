@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchUsers = exports.getOthersGooglePosts = exports.getOthersPosts = exports.GoogleSignIn = exports.getMyProfile = exports.updateProfile = exports.changePassword = exports.payment = exports.follow = exports.signup = exports.signin = void 0;
+exports.friends = exports.unfollow = exports.follow = exports.searchUsers = exports.getOthersGooglePosts = exports.getOthersPosts = exports.GoogleSignIn = exports.getMyProfile = exports.updateProfile = exports.changePassword = exports.payment = exports.signup = exports.signin = void 0;
 //importing libraries
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -96,14 +96,6 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
-const follow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    Users_1.Users.findByIdAndUpdate(req.body.followId, {
-        $push: { followers: req.userId }
-    }, {
-        new: true
-    });
-});
-exports.follow = follow;
 const payment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const amount = req.body.amount;
     const quantity = req.body.quantity;
@@ -253,4 +245,70 @@ const searchUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
 });
 exports.searchUsers = searchUsers;
+const follow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body.userId);
+    console.log(req.params.id);
+    if (req.body.userId !== req.params.id) {
+        try {
+            const user = yield Users_1.Users.findById(req.params.id);
+            const currentUser = yield Users_1.Users.findById(req.body.userId);
+            if (!user.followers.includes(req.body.userId)) {
+                yield user.updateOne({ $push: { followers: req.body.userId } });
+                yield currentUser.updateOne({ $push: { following: req.params.id } });
+                res.status(200).json("user has been followed");
+            }
+            else {
+                res.status(403).json("you allready follow this user");
+            }
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
+    }
+    else {
+        res.status(403).json("you cant follow yourself");
+    }
+});
+exports.follow = follow;
+const unfollow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.body.userId !== req.params.id) {
+        try {
+            const user = yield Users_1.Users.findById(req.params.id);
+            const currentUser = yield Users_1.Users.findById(req.body.userId);
+            if (user.followers.includes(req.body.userId)) {
+                yield user.updateOne({ $pull: { followers: req.body.userId } });
+                yield currentUser.updateOne({ $pull: { following: req.params.id } });
+                res.status(200).json("user has been unfollowed");
+            }
+            else {
+                res.status(403).json("you dont followed this user");
+            }
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
+    }
+    else {
+        res.status(403).json("you cant unfollow yourself");
+    }
+});
+exports.unfollow = unfollow;
+const friends = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield Users_1.Users.findById(req.params.userId);
+        const friends = yield Promise.all(user.following.map((friendId) => {
+            return Users_1.Users.findById(friendId);
+        }));
+        let friendList = [];
+        friends.map((friend) => {
+            const { _id, name, pic } = friend;
+            friendList.push({ _id, name, pic });
+        });
+        res.status(200).json(friendList);
+    }
+    catch (err) {
+        res.status(500).json(err);
+    }
+});
+exports.friends = friends;
 //# sourceMappingURL=users.js.map
