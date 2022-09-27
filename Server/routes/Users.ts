@@ -22,6 +22,8 @@ router.get("/friends/:userId", auth,users.friends)
 router.post("/googleSignIn",users.GoogleSignIn)
 router.post('/profile',auth,upload.single('pic'),users.updateProfile)
 router.get("/profile",auth,users.getMyProfile)
+router.get("/",users.getUsers)
+
 router.get("/usersProfile/:id",auth,users.getOthersPosts)
 router.get("/googleusersProfile/:id",auth,users.getOthersGooglePosts)
 router.get("/verify-email",verify.emailVerified)
