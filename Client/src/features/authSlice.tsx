@@ -3,9 +3,11 @@ import { toast } from "react-toastify";
 import * as api from '../api'
 const initialState= {
     user:null,
+    users:[],
     error:"",
     followers:[],
     following:[],
+    convo:[],
     loading:false
 }
     export const login:any = createAsyncThunk("auth/login",async(data:any,{rejectWithValue})=>{
@@ -100,6 +102,27 @@ export const usersProfile:any = createAsyncThunk("auth/usersProfile",async(id,{r
         return rejectWithValue(error.response.data)
     }
 })
+
+// export const getUsers:any = createAsyncThunk("auth/getUsers",async(_,{rejectWithValue})=>{
+//     try {
+//         const response = await api.getUsers()
+//         console.log(response.data);
+//         return response.data;
+//     } catch (error) {
+//         return rejectWithValue(error.response.data)
+//     }
+// })
+
+export const getConversation:any = createAsyncThunk("auth/getConversation",async(userId,{rejectWithValue})=>{
+    try {
+        const response = await api.getConversation(userId)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
+})
+
 export const getMyProfile:any = createAsyncThunk("auth/getMyProfile",async(_)=>{
     try {
         const response = await api.getMyProfile()
@@ -206,6 +229,21 @@ const authSlice = createSlice({
            state.error= action.payload.message
            toast.error(state.error);
        });
+
+       builder.addCase(getConversation.pending,(state)=>{
+        state.loading = true;
+   });
+   builder.addCase(getConversation.fulfilled,(state,action)=>{
+       state.loading = false
+       state.convo = action.payload
+
+   });
+   builder.addCase(getConversation.rejected,(state,action)=>{
+       state.loading = false
+       state.error= action.payload.message
+       toast.error(state.error);
+   });
+
         builder.addCase(changePassword.pending,(state)=>{
             state.loading = true;
        });
@@ -230,6 +268,19 @@ const authSlice = createSlice({
            state.loading = false
            toast.error(state.error);
        });
+
+//        builder.addCase(getUsers.pending,(state)=>{
+//         state.loading = true
+//    });
+//    builder.addCase(getUsers.fulfilled,(state,action)=>{
+//        state.loading = false
+//         state.users = action.payload
+//    });
+//    builder.addCase(getUsers.rejected,(state,action)=>{
+//        state.loading = false
+//        toast.error(state.error);
+//    });
+
        builder.addCase(getMyProfile.pending,(state)=>{
         state.loading = true
    });
