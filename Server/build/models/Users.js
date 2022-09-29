@@ -15,14 +15,14 @@ const userSchema = new mongoose_1.default.Schema({
     emailToken: { type: String },
     gender: { type: String },
     isVerified: Boolean,
-    followers: [{
-            type: Array,
-            default: []
-        }],
-    following: [{
-            type: Array,
-            default: []
-        }],
+    followers: {
+        type: Array,
+        default: []
+    },
+    following: {
+        type: Array,
+        default: []
+    },
     mobileNumber: { type: String, default: "" }
 }, {
     timestamps: true

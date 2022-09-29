@@ -1,6 +1,9 @@
+import { Request, Response } from "express";
 import { conversation } from "../models/Conversation";
 
-export const Conversation = async(req,res) => {
+export class conversationClass {
+
+Conversation = async(req:Request, res:Response) => {
   const newConversation = new conversation({
     members: [req.body.senderId, req.body.receiverId],
   });
@@ -13,9 +16,8 @@ export const Conversation = async(req,res) => {
   }
 };
 
-//get conv of a user
 
-export const userId = async (req, res) => {
+userId = async (req:Request, res:Response) => {
   try {
     const Conversation = await conversation.find({
       members: { $in: [req.params.userId] },
@@ -26,9 +28,8 @@ export const userId = async (req, res) => {
   }
 };
 
-// get conv includes two userId
 
-export const findUserId =  async (req, res) => {
+findUserId =  async (req:Request, res:Response) => {
   try {
     const Conversation = await conversation.findOne({
       members: { $all: [req.params.firstUserId, req.params.secondUserId] },
@@ -37,5 +38,6 @@ export const findUserId =  async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-};
+}
+}
 

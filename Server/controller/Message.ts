@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 import { messages } from "../models/Message";
 
 
-export const message =  async (req, res) => {
+export const message =  async (req:Request, res:Response) => {
   const newMessage = new messages(req.body);
 
   try {
@@ -14,7 +15,7 @@ export const message =  async (req, res) => {
 
 //get
 
-export const conversationId =   async (req, res) => {
+export const conversationId =   async (req:Request, res:Response) => {
   try {
     const Messages = await messages.find({
       conversationId: req.params.conversationId,
