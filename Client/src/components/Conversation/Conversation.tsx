@@ -9,8 +9,7 @@ const Conversation = ({ conversation, currentUser }) => {
     const [users,setUsers] = useState(null)
 
     useEffect(() => {
-        const friendId = conversation.members.find((m: any) => m !== currentUser._id);
-        console.log(friendId);
+        const friendId = conversation.members.find((m: any) => m !== currentUser?.result?._id);
         
         const getUser = async () => {
           try {
@@ -20,7 +19,7 @@ const Conversation = ({ conversation, currentUser }) => {
             console.log(err);
           }
         };
-        getUser();
+         getUser();
       }, [currentUser, conversation]);
 
   return (

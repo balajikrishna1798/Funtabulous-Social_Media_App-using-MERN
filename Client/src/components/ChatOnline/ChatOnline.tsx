@@ -1,16 +1,64 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { getFriends } from '../../api';
 import './ChatOnline.css'
 
-const ChatOnline = () => {
+const ChatOnline = ({onlineUsers,currentId,setCurrentChat}) => {
+  const [friends, setFriends] = useState([]);
+  const [onlineFriends, setOnlineFriends] = useState([]);
+
+  useEffect(() => {
+    const getFriendsList = async () => {
+      const res = await getFriends(currentId);
+
+      setFriends(res.data)
+    };
+
+    getFriendsList();
+  }, [currentId]);
+
+const onlineFriendFilter = friends.filter((f) => onlineUsers?.includes(f._id))
+
+  useEffect(() => {
+    setOnlineFriends(onlineFriendFilter);
+    console.log("first")
+
+  }, [ friends,onlineUsers]);
+
+  
+  const handleClick = async (user) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/conversation/find/${currentId}/${user._id}`
+      );
+      
+      setCurrentChat(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+
   return (
     <div className='chatOnline'>
-        <div className="chatOnlineFriend">
-            <div className="chatOnlineImgContainer">
-                <img className='chatOnlineImg' src="https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_91_1_1528x800/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=7lrLYx-B" alt="" />
-                <div className="chatOnlineBadge"></div>
-            </div>
-            <span className='chatOnlineName'>Pooja shetty</span>
+        {onlineFriends.map((o) => (
+        <div className="chatOnlineFriend" onClick={() => handleClick(o)}>
+          <div className="chatOnlineImgContainer">
+            <img
+              className="chatOnlineImg"
+              src={
+                o?.pic
+                  ?  `http://localhost:5000/uploads/${o.pic}`
+                  :  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+              }
+              alt=""
+            />
+            <div className="chatOnlineBadge"></div>
+          </div>
+          <span className="chatOnlineName">{o?.name}</span>
         </div>
+      ))}
     </div>
   )
 }

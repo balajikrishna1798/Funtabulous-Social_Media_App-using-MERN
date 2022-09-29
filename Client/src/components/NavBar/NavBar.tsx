@@ -6,6 +6,7 @@ import { Logout } from "../../features/authSlice";
 import { Modal } from "react-bootstrap";
 import Donate from "../Donate/Donate";
 import { getPosts,getPostBySearch } from "../../features/postSlice";
+import { searchUsers } from '../../api';
 
 function Navbar() {
   const [show,setShow] = useState(false);
@@ -13,7 +14,10 @@ function Navbar() {
   const [user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const dispatch = useAppDispatch();
   const location = useLocation()
+  const [userDetails,setUserDetails] = useState([])
   const [search,setSearch] = useState('')
+
+  const [userSearch,setUserSearch] = useState('')
   const logout = () =>{
     //@ts-expect-error
     dispatch(Logout())
@@ -37,7 +41,19 @@ function Navbar() {
   const handleModal = () =>{
     setShow(!show)
   }
-  
+  const fetchUsers = (name) =>{
+    setUserSearch(name)
+    searchUsers({name:name}).then(results =>{
+      console.log(results)
+      setUserDetails(results?.data?.user)
+      
+    })
+  }
+
+  const handleClose = () =>{
+    setUserSearch("")
+    setUserDetails([])
+  }
 
   return (
     
@@ -58,19 +74,47 @@ function Navbar() {
   <div className="container">
  
     <a className="navbar-brand offset-1"><Link to = "/posts" className="text">Funtabulous</Link></a>
-   
+
     <div className="menu" id="navbarSupportedContent">
     
       <ul className="navbar-nav">
-        
         <li className="nav-item" >
         <Link to="/forms"> <i className="fa-solid fa-square-plus mb-2 mt-2" style={{color:"blue",fontSize:"25px"}}></i></Link>
         </li>
+        <li className="nav-item"  style={{marginLeft:"30px",listStyle:"none"}}>
+        <i className="position-absolute mt-3 fas fa-ban" style={{color:"red",fontSize:"15px",cursor:"pointer",marginLeft:126}} onClick={handleClose}></i>
+        <input type="text" className="form-control shadow-none mb-2 mt-2 search"  name="name" value={userSearch} placeholder="Search Users" autoComplete="off"
+         onChange={(e)=>fetchUsers(e.target.value)} />
+          <ul>
+            <div className="position-absolute">
+      {userDetails && userDetails.map(item=>{
+        return(
+          <div key={item._id} >
+          
+        <Link to={`${item.googleId ? "/googleuserProfile/"+item.googleId : "/userProfile/"+item._id}`}> 
+        <div>
+        
+        {(item.isVerified||item.googleId)&&<li className="card p-2" key={item._id} style={{color:"blue",fontWeight:500,border:"solid 1px black",width:"150px",right:"26px"
+      }}>
+           {item.name}
+      
+        </li>}
+        
+        </div>
+        </Link>
+        </div>
+        
+        )
+      })}
+      
+      </div>
+    </ul>
+        </li>
         <li className="nav-item"  style={{marginLeft:"30px"}}>
-        <Link to="/searchCreator"><i className="fa-brands fa-searchengin mb-2 mt-2" style={{color:"brown",fontSize:"25px",cursor:"pointer"}}></i></Link></li>
+        <Link to="/funchat"><i className="fas fa-comment-dots mb-2 mt-2" style={{color:"red",fontSize:"25px"}}></i></Link>
+        </li>
         <li className="nav-item dropdown" style={{marginLeft:"30px"}}>
           <a className="nav-link dropdown-toggle text-success align-items-center" role="button" data-bs-toggle="dropdown" >
-            
           {!user?.result ? <i className="fa-solid fa-user" style={{fontSize:"25px"}}></i>:
 (
                <>
@@ -84,6 +128,7 @@ function Navbar() {
 
           <span style={{fontSize:"16px",marginLeft:"10px"}}>{user?.result?.name}</span>
           </a>
+          
           {user?.result ? (
           <ul className="dropdown-menu">
             

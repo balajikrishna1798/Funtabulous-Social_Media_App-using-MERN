@@ -32,23 +32,18 @@ function Home({setCurrentId}) {
 
         <Navbar />
 
-      <div>
-         </div>
-          <div>
-            <Posts setCurrentId={setCurrentId}/>
+      
+          <div className="row">
+            <div className="mx-5 col-md-1 mt-5">
+            <RightBar />
             </div>
-            <div>
-         </div>
+         <div className="col-md-8">
         
-         {user?.result?.name&&<div style={{marginBottom:"70px"}}>
-             <div className="d-flex justify-content-around fixed-bottom" style={{backgroundColor:"pink"}}>  
-    
- 
-    
-    </div>
-              </div>}
-              <RightBar />
+         <Posts setCurrentId={setCurrentId}/>
+         </div>
+              
           </div> 
+          </div>
 
   );
 }

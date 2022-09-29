@@ -70,7 +70,7 @@ const Post = ({ post, setCurrentId }) => {
       
       <div
         className="card mt-5"
-        style={{ width: "50%", marginLeft: "auto", marginRight: "auto" }}
+        style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
         key={post?._id}
       >
       

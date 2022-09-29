@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { searchUsers } from '../../api';
 import { getPosts } from '../../features/postSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-
+import './SearchCreator.css'
 const SearchCreator = () => {
     const [search,setSearch] = useState("")
     const dispatch = useAppDispatch()
@@ -25,9 +25,10 @@ const SearchCreator = () => {
   return (
     <div className='container'>
    
-     <div className='d-flex justify-content-center align-items-center w-100'><i className="fa-solid fa-magnifying-glass"></i>
-     <input type="text" className="form-control mb-2 mt-2 col-md-4 p-3" style={{height:25,marginLeft:"10px"}} name="name" value={search} placeholder="Search user" autoComplete="off" 
-     onChange={(e)=>fetchUsers(e.target.value)}/></div>
+     {/* <div className=''><i className="fa-solid fa-magnifying-glass"></i> */}
+     <input type="text" className="form-control shadow-none mb-2 mt-2 col-md-4 p-3 search"  name="name" value={search} placeholder="Search user" autoComplete="off" 
+     onChange={(e)=>fetchUsers(e.target.value)}/>
+     {/* </div> */}
     <ul>
       {userDetails && userDetails.map(item=>{
         return(

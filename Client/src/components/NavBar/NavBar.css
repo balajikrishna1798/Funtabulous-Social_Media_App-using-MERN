@@ -4,4 +4,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-
+  .search{
+    width:157px !important;
+    height: 30px;
+    border-radius: 15px;
+  }

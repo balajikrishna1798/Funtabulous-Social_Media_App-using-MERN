@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createPost, updatePost } from '../../features/postSlice';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import Navbar from '../NavBar/NavBar';

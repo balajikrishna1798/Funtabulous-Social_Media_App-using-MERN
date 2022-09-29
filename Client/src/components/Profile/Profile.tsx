@@ -64,9 +64,9 @@ useEffect(()=>{
         <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={handleChange}/>
         <label htmlFor="pic" style={{cursor:"pointer",width:"100%"}}>
           <div 
-          style={{ border: "solid 2px #9f070a",borderRadius: "100%",backgroundColor:"black",marginLeft:"50%",
+          style={{ border: "solid 2px #9f070a",borderRadius: "100%",backgroundColor:"black",marginLeft:"48%",
           width:"60px",height: "60px",textAlign:"center"}}>
-          <i className="fa-sharp fa-solid fa-upload" style={{fontSize:"30px",margin: "25%",color:"white"}}></i>
+          <i className="fa-sharp fa-solid fa-upload" style={{fontSize:"30px",margin: "20%",color:"white"}}></i>
           </div>
           </label>
         <input type="file"
