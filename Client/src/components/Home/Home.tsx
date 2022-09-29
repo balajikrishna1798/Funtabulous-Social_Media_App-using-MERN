@@ -27,12 +27,7 @@ function Home({setCurrentId}) {
   
 
   return (
-    
-      <div>
-
-        <Navbar />
-
-      
+         
           <div className="row">
             <div className="mx-5 col-md-1 mt-5">
             <RightBar />
@@ -43,7 +38,6 @@ function Home({setCurrentId}) {
          </div>
               
           </div> 
-          </div>
 
   );
 }

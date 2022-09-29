@@ -108,8 +108,6 @@ useEffect(() => {
 
 
   return (
-    <div>
-      <Navbar />
       <div className='funchat'>
         <div className='chatMenu'>
           <div className='chatMenuWrapper'>
@@ -151,9 +149,9 @@ useEffect(() => {
           <button className='chatSubmitButton' onClick={handleSubmit}>Send</button>
         </div>
         </>):(
-          <span className="noConversationText">
+          <h1 style={{textAlign:"center"}}>
           Open a conversation to start a chat.
-        </span>
+        </h1>
       )}
         </div>
         </div>
@@ -163,7 +161,6 @@ useEffect(() => {
           </div>
         </div>
       </div>
-    </div>
   )
 }
 

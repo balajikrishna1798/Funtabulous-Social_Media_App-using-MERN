@@ -18,6 +18,7 @@ import Success from './components/Donate/Success';
 import Failure from './components/Donate/Failure';
 import Tagpost from './components/tag/Tagpost';
 import FunChat from './components/FunChat/FunChat';
+import Navbar from './components/NavBar/NavBar';
 
 
 
@@ -34,7 +35,7 @@ function App() {
   return (
     <Router>
        
-         
+         <Navbar />
       <Routes>
       <Route path="/" element={<Navigate to="/posts"/>}/>
       <Route path="/funchat" element={<FunChat />}/>

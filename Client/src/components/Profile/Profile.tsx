@@ -7,7 +7,7 @@ import Navbar from '../NavBar/NavBar'
 
 const Profile = () => {
   const [formdata,setFormData] = useState({
-    name:"",email:""
+    name:"",email:"",mobileNumber:""
 })
 
 const [pic,setPic] = useState()
@@ -23,6 +23,7 @@ const [pic,setPic] = useState()
       e.preventDefault();
     const formData = new FormData();
     formData.append("name",formdata.name)
+    formData.append("mobileNumber",formdata.mobileNumber)
     formData.append("pic",pic)
 
        await dispatch(updateUser(formData))
@@ -50,18 +51,17 @@ useEffect(()=>{
   checkID();
 },[userId,googleUserId])
   return (
-    <div>
-    <Navbar />
-    <div className='container mb-5'>
+    <div className='container mb-5 w-50'>
 
         <div className='position-relative' style={{zIndex:100}}>
       <p className='text-center text-danger' style={{fontWeight:500,fontSize:"30px"}}>Profile</p>
-      
+      <img src={`http://localhost:5000/uploads/${user?.result?.pic}`} style={{width:"60px",borderRadius:"50%",height:50}}/>
       <p ><span style={{fontSize:"25px"}}>Name:</span><span className='text-success' style={{fontWeight:600,fontSize:"25px"}}>&nbsp;{user?.result?.name}</span></p>
-      
-      <form onSubmit={submitHandler} encType="multipart/form-data">
+      <p ><span style={{fontSize:"25px"}}>Contact Number:</span><span className='text-dark' style={{fontWeight:600,fontSize:"25px"}}>&nbsp;{user?.result?.mobileNumber}</span></p>
+      <form onSubmit={submitHandler} encType="multipart/form-data" autoComplete='off'>
         <input type="text" className="form-control mb-3" defaultValue={user?.result?.name} placeholder='Name' name="name" onChange={handleChange}/>
         <input type="text" placeholder='Email' defaultValue={user?.result?.email} className="form-control mb-3" name="email" disabled onChange={handleChange}/>
+        <input type="text" className="form-control mb-3 shadow-none" defaultValue={user?.result?.mobileNumber} placeholder='Mobile Number' name="mobileNumber" onChange={handleChange}/>
         <label htmlFor="pic" style={{cursor:"pointer",width:"100%"}}>
           <div 
           style={{ border: "solid 2px #9f070a",borderRadius: "100%",backgroundColor:"black",marginLeft:"48%",
@@ -94,7 +94,6 @@ useEffect(()=>{
       }
       </div>
       </div>
-    </div>
     </div>
   )
 }

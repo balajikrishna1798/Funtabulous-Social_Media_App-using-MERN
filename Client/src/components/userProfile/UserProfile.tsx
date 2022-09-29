@@ -45,8 +45,14 @@ const UserProfile = () => {
 
   return (
     <div className='container mt-5'>
+      <img src={`http://localhost:5000/uploads/${user?.user?.pic}`} style={{width:"60px",borderRadius:"50%",height:50}}/>
       <div><span className='fw-bold'>Name:</span><span className="fw-bolder p-3 text-success" style={{fontSize:"20px"}}>{user?.user?.name}</span></div>
-      <span className='fw-bold'>Email Address:</span><span className="fw-bolder p-3 text-success" style={{fontSize:"20px"}}>{user?.user?.email}</span>
+      <div><span className='fw-bold'>Email Address:</span><span className="fw-bolder p-3 text-success" style={{fontSize:"20px"}}>{user?.user?.email}</span></div>
+      {user?.user?.mobileNumber &&<>
+      <span className='fw-bold'>Mobile Number:</span><span className="fw-bolder p-3 text-success" style={{fontSize:"20px"}}>{user?.user?.mobileNumber}</span>
+      </>
+      }
+      
       <button onClick={handleClick} style={{width:"90px",marginLeft:"90%"}} className="btn btn-primary shadow-none">{followed?"Unfollow":"Follow"}</button>
       <div className='row mt-5' >
         <p style={{ fontWeight: 600, fontSize: "20px", color: "red", textAlign: "center" }}> {user && user?.user?.name} <span>Posts</span></p>
