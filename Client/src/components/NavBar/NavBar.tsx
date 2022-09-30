@@ -58,7 +58,7 @@ function Navbar() {
   return (
     
     
-<nav className="navbar navbar-expand-lg bg-light sticky-top">
+<nav className="navbar navbar-expand-lg bg-light sticky-top" >
 <button onClick={handleModal} title="Donate to Funtabulous if you wish.ThankYou!!!" 
        className="btn btn-outline-danger col-md-1 shadow-none" style={{marginLeft:"1rem"}}>
          Donate
@@ -94,7 +94,7 @@ function Navbar() {
         <Link to={`${item.googleId ? "/googleuserProfile/"+item.googleId : "/userProfile/"+item._id}`}> 
         <div>
         
-        {(item.isVerified||item.googleId)&&<li className="card p-2" key={item._id} style={{color:"blue",fontWeight:500,border:"solid 1px black",width:"150px",right:"26px"
+        {(item.isVerified||item.googleId)&&<li className="card p-2" onClick={handleClose} key={item._id} style={{color:"blue",fontWeight:500,border:"solid 1px black",width:"150px",right:"26px"
       }}>
            {item.name}
       

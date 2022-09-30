@@ -2,7 +2,6 @@ import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { createPost, updatePost } from '../../features/postSlice';
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import Navbar from '../NavBar/NavBar';
 import './Forms.css'
 
 interface post{
@@ -64,8 +63,6 @@ useEffect(() => {
 
 
   return (
-    <>
-    <Navbar />
     <div className='container'>
       <form onSubmit={handleSubmit} className='mt-4' autoComplete='off' encType="multipart/form-data">
        <div className='text-center fw-bold mb-2'>{!props.currentId?'Creating' : 'Editing'} a Memory</div>
@@ -93,7 +90,6 @@ useEffect(() => {
 
       </form>
       </div>
-      </>
   
   )
 }

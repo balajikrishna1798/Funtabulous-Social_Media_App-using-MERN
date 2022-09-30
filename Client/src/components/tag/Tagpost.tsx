@@ -22,7 +22,6 @@ const {tag} = useParams()
 
   return (
  <div>
-    <Navbar />
     <h5 className='text-center mt-4 text-success'>#{tag}</h5>
    { tagPosts&&tagPosts.map(tags=>(      
     

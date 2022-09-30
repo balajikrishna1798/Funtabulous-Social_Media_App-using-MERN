@@ -1,6 +1,5 @@
 import {BrowserRouter as Router,Routes,Route, Navigate} from 'react-router-dom'
 import Home from "./components/Home/Home";
-import PostDetails from "./PostDetails/PostDetails";
 import Auth from "./components/Auth/Auth";
 import Forms from "./components/Form/Forms";
 import { useEffect, useState } from "react";
@@ -19,6 +18,7 @@ import Failure from './components/Donate/Failure';
 import Tagpost from './components/tag/Tagpost';
 import FunChat from './components/FunChat/FunChat';
 import Navbar from './components/NavBar/NavBar';
+import PostDetails from './components/PostDetails/PostDetails';
 
 
 

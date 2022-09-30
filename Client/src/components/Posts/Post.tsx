@@ -5,6 +5,7 @@ import { deletePost, likePost } from "../../features/postSlice";
 import Comments from "../Comments/Comments";
 import {  useState } from "react";
 import './Posts.css'
+import { LikeCount } from "../LikeCount/LikeCount";
 
 const Post = ({ post, setCurrentId }) => {
   const navigate = useNavigate();
@@ -22,23 +23,7 @@ const Post = ({ post, setCurrentId }) => {
   const handleClick = () => {
     setShowComment((prevshowComment) => !prevshowComment);
   };
-   const LikeCount = () => {
-    if (post?.likes.length > 0) {
-      return post.likes.find((like: any) => like === userId) ? (
-        <>
-    
-          {post?.likes.length > 2
-            ? `you and ${post?.likes.length - 1} others liked`
-            : `${post?.likes.length} like${post?.likes.length > 1 ? "s" : ""}`}
-        </>
-      ) : (
-        <>
-          {post?.likes.length}
-          {post?.likes.length === 1 ? "Like" : "Likes"}
-         
-        </>
-      );
-    }}
+  
  
   const Likes = () => {
     if (post?.likes.length > 0) {
@@ -66,11 +51,11 @@ const Post = ({ post, setCurrentId }) => {
 
 
   return (
-    <div className=" ">
+    <div className=" " >
       
       <div
         className="card mt-5"
-        style={{ width: "70%", marginLeft: "auto", marginRight: "auto" }}
+        style={{  marginLeft: "auto", marginRight: "auto" }}
         key={post?._id}
       >
       
@@ -126,7 +111,7 @@ const Post = ({ post, setCurrentId }) => {
           <Link to={`/posts/tag/${tag}`} style={{color:"green"}}> #{tag}</Link>))}</h6>
           <h5>{post?.message}</h5><hr></hr>
           <p className="fw-bold" style={{marginLeft:"80%"}}>
-          <LikeCount/>
+          <LikeCount post={post}/>
           </p>
           <hr></hr>
           <div className="row">

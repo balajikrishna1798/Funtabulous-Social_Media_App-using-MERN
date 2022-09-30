@@ -51,7 +51,7 @@ useEffect(()=>{
   checkID();
 },[userId,googleUserId])
   return (
-    <div className='container mb-5 w-50'>
+    <div className='container mb-5 w-50' >
 
         <div className='position-relative' style={{zIndex:100}}>
       <p className='text-center text-danger' style={{fontWeight:500,fontSize:"30px"}}>Profile</p>

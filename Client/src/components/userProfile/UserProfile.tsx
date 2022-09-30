@@ -23,7 +23,7 @@ const UserProfile = () => {
   },[id,userId])
   useEffect(() => {
     if (id) {
-      dispatch(usersProfile(id))
+      dispatch(usersProfile(id))  
     }
     if (googleid) {
       dispatch(googleusersProfile(googleid))
