@@ -9,45 +9,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserId = exports.userId = exports.Conversation = void 0;
+exports.conversationClass = void 0;
 const Conversation_1 = require("../models/Conversation");
-const Conversation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newConversation = new Conversation_1.conversation({
-        members: [req.body.senderId, req.body.receiverId],
-    });
-    try {
-        const savedConversation = yield newConversation.save();
-        res.status(200).json(savedConversation);
-    }
-    catch (err) {
-        res.status(500).json(err);
-    }
-});
-exports.Conversation = Conversation;
-//get conv of a user
-const userId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const Conversation = yield Conversation_1.conversation.find({
-            members: { $in: [req.params.userId] },
+class conversationClass {
+    constructor() {
+        this.Conversation = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const newConversation = new Conversation_1.conversation({
+                members: [req.body.senderId, req.body.receiverId],
+            });
+            try {
+                const savedConversation = yield newConversation.save();
+                res.status(200).json(savedConversation);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
         });
-        res.status(200).json(Conversation);
-    }
-    catch (err) {
-        res.status(500).json(err);
-    }
-});
-exports.userId = userId;
-// get conv includes two userId
-const findUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const Conversation = yield Conversation_1.conversation.findOne({
-            members: { $all: [req.params.firstUserId, req.params.secondUserId] },
+        this.userId = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const Conversation = yield Conversation_1.conversation.find({
+                    members: { $in: [req.params.userId] },
+                });
+                res.status(200).json(Conversation);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
         });
-        res.status(200).json(Conversation);
+        this.findUserId = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const Conversation = yield Conversation_1.conversation.findOne({
+                    members: { $all: [req.params.firstUserId, req.params.secondUserId] },
+                });
+                res.status(200).json(Conversation);
+            }
+            catch (err) {
+                res.status(500).json(err);
+            }
+        });
     }
-    catch (err) {
-        res.status(500).json(err);
-    }
-});
-exports.findUserId = findUserId;
+}
+exports.conversationClass = conversationClass;
 //# sourceMappingURL=Conversation.js.map

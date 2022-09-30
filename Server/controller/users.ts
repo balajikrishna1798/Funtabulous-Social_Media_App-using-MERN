@@ -171,6 +171,7 @@ changePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     if (existingUser) {
       existingUser.name = req.body.name || existingUser.name;
       existingUser.email = req.body.email || existingUser.email;
+      existingUser.mobileNumber = req.body.mobileNumber || existingUser.mobileNumber;
       existingUser.pic = req.file?.filename || existingUser.pic,
         await existingUser.save();
       console.log(existingUser);

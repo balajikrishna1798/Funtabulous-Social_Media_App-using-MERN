@@ -163,6 +163,7 @@ class userClass {
                 if (existingUser) {
                     existingUser.name = req.body.name || existingUser.name;
                     existingUser.email = req.body.email || existingUser.email;
+                    existingUser.mobileNumber = req.body.mobileNumber || existingUser.mobileNumber;
                     existingUser.pic = ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) || existingUser.pic,
                         yield existingUser.save();
                     console.log(existingUser);
